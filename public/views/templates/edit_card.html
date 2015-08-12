@@ -28,7 +28,7 @@
                 <table>
                     <tr>
                         <td style="width:30%;"><b class="blue-text">Description:</b></td>
-                        <td>{{card.description}}</td>
+                        <td ng-bind-html="parseTrustSnippt(card.description)"></td>
                     </tr>
                     <tr>
                         <td style="width:30%;"><b class="blue-text">Assignee:</b></td>

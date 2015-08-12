@@ -3,21 +3,9 @@
   <div class="navbar navbar-inverse">
     <ul class="nav navbar-nav navbar-left">
       <div class="choise-select">
-        <span>Release</span>
-        <select class="selectpicker">
-          <option>Mustard</option>
-          <option>Ketchup</option>
-          <option>Relish</option>
-        </select>
-      </div> <!-- end of choise-select -->
-      <div class="choise-select">
-        <span>Sprint</span>
-        <select class="selectpicker">
-          <option>Mustard</option>
-          <option>Ketchup</option>
-          <option>Relish</option>
-        </select>
-      </div> <!-- end of choise-select -->
+        <span>Project</span>
+        <select ng-model="selected_project" ng-options="project.name for project in user_projects track by project.id" ng-change="go(selected_project)"></select>
+      </div> 
       <a href="#">Scrummer</a>
     </ul>
   </div> <!-- end of navbar -->
@@ -107,11 +95,15 @@
                                         <table>
                                           <tr>
                                               <td style="width:30%;"><b class="blue-text">Description:</b></td>
-                                              <td>{{task.description}}</td>
+                                              <td ng-bind-html="parseTrustSnippt(task.description)"></td>
                                           </tr>
                                           <tr>
                                               <td style="width:30%;"><b class="blue-text">Assignee:</b></td>
                                               <td>{{task.assigned_to.name}}</td>
+                                          </tr>
+                                          <tr>
+                                              <td style="width:30%;"><b class="blue-text">Priority:</b></td>
+                                              <td>{{task.priority.name}}</td>
                                           </tr>
                                           <tr>
                                               <td style="width:30%;"><b class="blue-text">Status:</b></td>

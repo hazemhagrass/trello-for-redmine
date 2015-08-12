@@ -28,6 +28,10 @@ angular.module('trelloRedmine')
 
         if(!$scope.project_id) return; 
 
+        $scope.go = function (page) {
+            $location.path('/trello/' + page.id);
+        };
+
         $scope.priorities = [];
 
         redmineService.getProjectMembers($scope.project_id)
@@ -205,16 +209,18 @@ angular.module('trelloRedmine')
         $scope.moved = false;
 
         $scope.addNewSubTask = function(card) {
-            $scope.card = card;
+            $scope.temp_card = card;
             $modalInstance = $modal.open({
                 scope: $scope,
                 templateUrl: 'views/templates/add_subtask.html',
-                backdropClass: "backdrop-fix",
-                resolve: {
-                    card: function() {
-                        return card;
-                    }
-                }
+                backdropClass: "backdrop-fix"//,
+                // USELESS WITHOUT A CONTROLLER TO PASS PARAMETERS TO IT
+                // resolve: {
+                //     card: function() {
+                //         return card;
+                //     }
+                // }
+
             });
         }
 
@@ -253,14 +259,14 @@ angular.module('trelloRedmine')
             dropOnEmpty: true,
             'ui-floating': true,
             stop: function(event, ui) {
-            	var index = ui.item.sortable.index;
-            	var targetIndex = ui.item.sortable.dropindex;
-            	var moved = ui.item.sortable.received;
-            	if(moved || targetIndex !== undefined && (targetIndex !== index)) {
-            		$scope.updateIssue(ui.item.attr('id'), {
+                var index = ui.item.sortable.index;
+                var targetIndex = ui.item.sortable.dropindex;
+                var moved = ui.item.sortable.received;
+                if(moved || targetIndex !== undefined && (targetIndex !== index)) {
+                    $scope.updateIssue(ui.item.attr('id'), {
                         status_id: ui.item.sortable.droptarget.attr('widget-status')
                     });
-            	}
+                }
                 $(ui.item).find("#overlay").show();
                 setTimeout(function() {
                     $(ui.item).find("#overlay").hide();
@@ -291,21 +297,21 @@ angular.module('trelloRedmine')
         };
 
         $scope.updateBackend = function() {
-        	var dashboard = {
-				"dashboard": {
-					"widgets": $scope.widgets
-				}
-			};
+            var dashboard = {
+                "dashboard": {
+                    "widgets": $scope.widgets
+                }
+            };
 
-			$http.post('/dashboard/save', dashboard)
-			.success(function(data, status){
-				console.log(status)
-			}).error(function(err, status){
-				console.log(err);
-			});
+            $http.post('/dashboard/save', dashboard)
+            .success(function(data, status){
+                console.log(status)
+            }).error(function(err, status){
+                console.log(err);
+            });
 
-			console.log(dashboard);
-			delete dashboard;
+            console.log(dashboard);
+            delete dashboard;
         };
 
         $scope.getConfigData = function() {
