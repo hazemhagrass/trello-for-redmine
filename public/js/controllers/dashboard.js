@@ -69,7 +69,15 @@ angular.module('trelloRedmine')
         redmineService.getUserProjects('current')
         .then(function (result) {
             $scope.current_user = result.data.user;
-            $scope.user_projects = result.data.user.memberships;
+            // scope.user_projects = result.data.user.memberships;
+            $scope.user_projects = result.data.user.memberships.map(function(project){
+                return project.project;
+            });
+            $scope.user_projects.forEach(function(project) {
+                if(project.id == $scope.project_id) {
+                    $scope.selected_project = project;
+                }
+            });
         });
 
         redmineService.getIssuesStatuses()
