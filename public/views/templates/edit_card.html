@@ -36,7 +36,7 @@
                     </tr>
                     <tr>
                         <td style="width:30%;"><b class="blue-text">Story-size:</b></td>
-                        <td>0</td>
+                        <td editable-select="card.custom_fields[0].value" e-ng-options="s for s in estimateSizes" onaftersave="updateTask(card)">{{card.custom_fields[0].value}}</td>
                     </tr>
                     <tr>
                         <td style="width:30%;"><b class="blue-text">Business value:</b></td>

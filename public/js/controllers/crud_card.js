@@ -5,7 +5,7 @@ angular.module('trelloRedmine')
         $scope.widget = widget;
         $scope.status_val = false;
         $scope.dropAreaState = false;
-        $scope.estimateSizes = [0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 60, 100, 200];
+        $scope.estimateSizes = ['0.0', '0.5', '1.0', '2.0', '3.0', '5.0', '8.0', '13.0','20.0','40.0','60.0','100.0', '200.0'];
         $scope.storySize = 0;
         $scope.businessValue = 0;
         $scope.release = 0;
@@ -37,6 +37,7 @@ angular.module('trelloRedmine')
                 if(field.name == "Story-size") $scope.storySize = field.value;
                 if(field.name == "Business Value") $scope.businessValue = field.value;
                 if(field.name == "Release") $scope.release = field.value;
+                // why not $scope[field.name] = field.value; 
             });
         };
 
