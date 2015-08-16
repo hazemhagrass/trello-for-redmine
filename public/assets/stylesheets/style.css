@@ -221,6 +221,14 @@ input {
     border-top: 1px solid #dfeff4;
     padding-top: 5px;
 }
+
+.id.finished-task{
+    color: green;
+}
+
+.modal-header.finished-task-modal{
+    border-bottom: 5px solid green;
+}
 /*-------------------------- card footer--------------------------*/
 .card-footer {
     background-color: #dfeff4;

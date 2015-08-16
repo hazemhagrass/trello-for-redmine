@@ -55,7 +55,7 @@
                         <div class="task-line">
                           <div class="task-line-info">
                             <input class="pull-left" type="checkbox" ng-click="changeTaskStatus(card, task, status_val)" ng-model="status_val" ng-checked="task.status.id == 14">
-                            <a target="_blank" href="http://{{config.host}}/issues/{{task.id}}" class="id">{{task.id}}</a>
+                            <a target="_blank" href="http://{{config.host}}/issues/{{task.id}}" class="id" ng-class="taskClass(task.status.id, false)">{{task.id}}</a>
                             <p>{{task.subject}}</p>
                           </div> <!-- end of task-line-info -->
 
@@ -75,7 +75,7 @@
                         <div class="modal fade" id="relatedTask-modal{{task.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header" ng-class="taskClass(task.status.id, true)">
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                   <h4 class="modal-title" id="myModalLabel"><div onaftersave="updateIssue(task.id, task, card)" editable-text="task.subject">{{task.subject}}</div></h4>
                                 </div>
@@ -106,8 +106,9 @@
                                               <td>{{task.priority.name}}</td>
                                           </tr>
                                           <tr>
+                                              <!-- select as label for (key , value) in object -->
                                               <td style="width:30%;"><b class="blue-text">Status:</b></td>
-                                              <td>{{task.status.name}}</td>
+                                              <td editable-select="task.status.id" e-ng-options="o.id as o.name for o in allowed_statuses_object" onaftersave="changeTaskStatus(card, task, task.status.id)">{{task.status.name}}</td>
                                           </tr>
                                         </table>
                                     </div>

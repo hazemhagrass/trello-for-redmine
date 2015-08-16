@@ -14,6 +14,13 @@ angular.module('trelloRedmine')
         $scope.styleUrl = 'assets/stylesheets/cards_style.css';
         // TODO: make it dynamic
         $scope.allowed_statuses = [8, 9, 10];
+        $scope.allowed_statuses_names = ['Defined', 'In progress', 'Completed'];
+        $scope.allowed_statuses_object = [
+            { id: 8, name: 'Defined' },
+            { id: 9, name: 'In progress' },
+            { id: 10, name: 'Completed' },
+            { id: 14, name: 'Finished' }
+        ];
 
         $scope.setCurrentUser = function (api_key) {
             $localStorage.current_api_key = api_key;
@@ -88,6 +95,74 @@ angular.module('trelloRedmine')
             for(var i = 0; i < $scope.allowed_statuses.length; i++) {
                 $scope.widgets[$scope.allowed_statuses[i] - 1].allowed = true;
             }
+
+            // BUG FIX: if getProjectUserStories gets called before getIssuesStatuses, $scope.widgets is undefined
+            redmineService.getProjectUserStories($scope.project_id)
+            .then(function (result) {
+                
+                for(var i = 0; i < $scope.widgets.length; i++) {
+                    $scope.widgets[i].cards = [];
+                }
+
+                for(var key in result.data) {
+                    if(result.data.hasOwnProperty(key)) {
+                        try{
+                            $scope.widgets[key - 1].cards = result.data[key];
+                        } catch (err){
+                            console.log('debug');
+                        }
+                        
+                        //get user data
+                        for(var card_key in $scope.widgets[key - 1].cards) {
+                            var card = $scope.widgets[key - 1].cards[card_key];
+                            card.showDetails = false;
+                            console.log(card)
+                            var getAttachments = function(card) {
+                                redmineService.getIssueAttachments(card.id)
+                                .then(function (result) {
+                                    card.attachments = result.data.issue.attachments;
+                                    if(card.attachments.length > 0) {
+                                        card.hasAttachments = true;
+                                    } else {
+                                        card.hasAttachments = false;
+                                    }
+                                    $scope.getLastImage(card)
+                                }, function (error) {
+                                    console.log(error);
+                                });
+                            }
+
+                            var getSubTasks = function(card){
+                                var storyId = card.id;
+                                var projectId = card.project.id;
+                                var issues = [];                        
+                                var subTasks = [];
+
+                                card.finishedTasks = 0;
+                                card.subTasks = [];
+
+                                redmineService.getStoryTasks(projectId, storyId)
+                                .then(function (result) {
+                                    issues = result.data.issues;
+                                    angular.forEach(issues, function(issue) {    
+                                        if (issue.parent && issue.parent.id == storyId) {
+                                            if (issue.status.id == 14) card.finishedTasks++;
+                                            this.push(issue);
+                                        }
+                                    }, subTasks);
+
+                                    card.subTasks = subTasks;
+                                }, function (error) {
+                                    console.log(error);
+                                });
+                            }
+
+                            getSubTasks(card);
+                            getAttachments(card);
+                        }
+                    }
+                }
+            });
         }); 
 
         /*redmineService.getProjectMembers($scope.project_id)
@@ -103,69 +178,6 @@ angular.module('trelloRedmine')
             console.log(error);
         });*/
 
-        redmineService.getProjectUserStories($scope.project_id)
-        .then(function (result) {
-            
-            for(var i = 0; i < $scope.widgets.length; i++) {
-                $scope.widgets[i].cards = [];
-            }
-
-            for(var key in result.data) {
-                if(result.data.hasOwnProperty(key)) {
-                    $scope.widgets[key - 1].cards = result.data[key];
-                    
-                    //get user data
-                    for(var card_key in $scope.widgets[key - 1].cards) {
-                        var card = $scope.widgets[key - 1].cards[card_key];
-                        card.showDetails = false;
-                        console.log(card)
-                        var getAttachments = function(card) {
-                            redmineService.getIssueAttachments(card.id)
-                            .then(function (result) {
-                                card.attachments = result.data.issue.attachments;
-                                if(card.attachments.length > 0) {
-                                    card.hasAttachments = true;
-                                } else {
-                                    card.hasAttachments = false;
-                                }
-                                $scope.getLastImage(card)
-                            }, function (error) {
-                                console.log(error);
-                            });
-                        }
-
-                        var getSubTasks = function(card){
-                            var storyId = card.id;
-                            var projectId = card.project.id;
-                            var issues = [];                        
-                            var subTasks = [];
-
-                            card.finishedTasks = 0;
-                            card.subTasks = [];
-
-                            redmineService.getStoryTasks(projectId, storyId)
-                            .then(function (result) {
-                                issues = result.data.issues;
-                                angular.forEach(issues, function(issue) {    
-                                    if (issue.parent && issue.parent.id == storyId) {
-                                        if (issue.status.id == 14) card.finishedTasks++;
-                                        this.push(issue);
-                                    }
-                                }, subTasks);
-
-                                card.subTasks = subTasks;
-                            }, function (error) {
-                                console.log(error);
-                            });
-                        }
-
-                        getSubTasks(card);
-                        getAttachments(card);
-                    }
-                }
-            }
-        });
-      
         $scope.gridsterOptions = {
             margins: [20, 20],
             columns: 3,
@@ -420,12 +432,24 @@ angular.module('trelloRedmine')
         };
 
         $scope.changeTaskStatus = function(card, task, state_val) {
-            if(state_val) {
-                card.finishedTasks++;
-                task.status_id = 14;
+            if(!angular.isNumber(state_val)){
+                if(state_val) {
+                    card.finishedTasks++;
+                    task.status_id = 14;
+                    task.status.name = 'Finished';
+                } else {
+                    card.finishedTasks--;
+                    task.status_id = 9;
+                    task.status.name = 'In progress';
+                }
             } else {
-                card.finishedTasks--;
-                task.status_id = 9;
+                task.status_id = state_val;
+                $scope.allowed_statuses_object.some(function(status){
+                    if(status.id === state_val){
+                        task.status.name = status.name;
+                        return true;
+                    }
+                })
             }
             $scope.updateIssue(task.id, task, card);
             $scope.calculateProgress(card);
@@ -434,5 +458,14 @@ angular.module('trelloRedmine')
         $scope.calculateProgress = function (task) {
             task.progress = ( task.subTasks.length == 0) ? 0 : parseInt(( task.finishedTasks / task.subTasks.length ) * 100);
         };
+
+        $scope.taskClass = function(task_status_id, in_modal){
+            if( in_modal ){
+                return task_status_id === 10  || task_status_id === 14 ? 'finished-task-modal' : '';
+            } else {
+                return task_status_id === 10  || task_status_id === 14 ? 'finished-task' : '';
+            }
+        };
+
     }
 ]);
