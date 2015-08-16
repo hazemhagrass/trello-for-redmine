@@ -246,6 +246,18 @@ router.post('/login/user', function (req, res, next) {
 	
 });
 
+router.post('/authenticate', function (req, res, next) {
+	// var data = req.body;
+
+	// var user_data = JSON.parse(data);
+	var api_key = req.body.api_key;
+	redis_client.set(api_key, api_key);
+	req.session.current_api_key = api_key;
+	setApiKey(api_key);
+	res.send(200);
+	
+});
+
 router.post('/upload/file/:issue_id/:api_key', function (req, res, next) {
 	var api_key = req.session.current_api_key || req.params.api_key;
 	var issue_id = req.params.issue_id;
