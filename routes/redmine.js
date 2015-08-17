@@ -304,6 +304,19 @@ router.get('/issue/:issue_id/attachments/:api_key', function (req, res, next) {
 	});
 });
 
+router.get('/issue/:issue_id/:api_key', function (req, res, next) {
+	var api_key = req.session.current_api_key;
+	var issue_id = req.params.issue_id;
+	setApiKey(req.session.current_api_key ||  req.params.api_key);
+	redmine.get('issues/' + issue_id, {}).success(function (data) {	
+		res.json(data);
+	}).error(function (err) {
+		console.log(err);
+		res.status(404).json(err);
+	});
+});
+
+
 router.delete('/attachments/:attachment_id/:api_key', function (req, res, next) {
 	var api_key = req.session.current_api_key ||  req.params.api_key;
 	var attachment_id = req.params.attachment_id;

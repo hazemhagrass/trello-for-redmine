@@ -92,4 +92,9 @@ angular.module('trelloRedmine')
         return restAPI('get', query);
     };
 
+    this.getIssue = function (issue_id) {
+        var query = '/redmine/issue/'+ issue_id + '/' + current_api_key;
+        return restAPI('get', query);
+    };
+
 }]);

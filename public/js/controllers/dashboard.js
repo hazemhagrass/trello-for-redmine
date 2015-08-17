@@ -218,7 +218,7 @@ angular.module('trelloRedmine')
             redmineService.createTask($scope.newTask)
             .then(function (result) {
                 var issue = result.data.issue;
-                card.subTasks.push(issue);
+                card.subTasks.unshift(issue);
                 $scope.calculateProgress(card);
             }, function (error) {
                 console.log(error);
@@ -297,6 +297,7 @@ angular.module('trelloRedmine')
         $scope.updateIssue = function(issue_id, updated_data, card) {
             redmineService.updateIssue(issue_id, updated_data)
             .then(function (result) {
+                // Check the updated data is a task inside a card
                 if(updated_data.parent) {
                     var task_index = 0;
                     for (var i = 0; i < card.subTasks.length; i++) {
@@ -310,7 +311,26 @@ angular.module('trelloRedmine')
                     if(result.config.data.status_id) {
                         card.subTasks[task_index].status.id = result.config.data.status_id;
                     }
+
+                    redmineService.getIssue(updated_data.parent.id)
+                    .then(function (result) {
+                        var old_card = card;
+                        var new_card = result.data.issue;
+                        var old_card_status_id = old_card.status.id;
+                        var new_card_status_id = new_card.status.id;
+                        if(old_card_status_id !== new_card_status_id){
+                            var source_widget = $scope.widgets[old_card_status_id - 1];
+                            var target_widget = $scope.widgets[new_card_status_id - 1];
+                            var card_index = source_widget.cards.indexOf(old_card);
+                            source_widget.cards.splice( card_index, 1 );
+                            old_card.status = new_card.status;
+                            target_widget.cards.push( old_card );
+                        }
+                    }, function (error) {
+                        console.log(error);
+                    });
                 }               
+
             }, function (error) {
                 console.log(error);
             });
