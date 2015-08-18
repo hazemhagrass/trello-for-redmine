@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', 'redmineService', '$localStorage', '$location', '$sce',
-    function($scope, $timeout, $modal, $http, redmineService, $localStorage, $location, $sce) {
+.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', 'redmineService', '$localStorage', '$location', '$sce', '$route',
+    function($scope, $timeout, $modal, $http, redmineService, $localStorage, $location, $sce, $route) {
 
         $scope.current_user = {};
         $scope.user_projects = [];
@@ -325,6 +325,9 @@ angular.module('trelloRedmine')
                             source_widget.cards.splice( card_index, 1 );
                             old_card.status = new_card.status;
                             target_widget.cards.push( old_card );
+                            // $route.reload();
+                            // angular.element('.connectedSortable').sortable('refresh');
+                            // $(".connectedSortable").trigger("sortupdate");
                         }
                     }, function (error) {
                         console.log(error);
@@ -487,5 +490,8 @@ angular.module('trelloRedmine')
             }
         };
 
+        $scope.refresh = function(){
+            $route.reload();
+        }
     }
 ]);
