@@ -1,4 +1,5 @@
 <div>
+  <div class="alert alert-info" role="alert" ng-if='alert'>{{ alert }}</div>
   <link rel="stylesheet" ng-href="{{ styleUrl }}" />
   <div class="navbar navbar-inverse">
     <ul class="nav navbar-nav navbar-left">
@@ -43,7 +44,7 @@
             </div> <!-- end of box-header -->
             <div class="box-content">
               <ul class="connectedSortable" ui-sortable="sortableTemplates" sortable ng-model="widget.cards" widget-status="{{widget.status_id}}">
-                <li class="card" ng-repeat="card in widget.cards | orderBy: '-id'" id="{{card.id}}">
+                <li class="card" ng-repeat="card in widget.cards" id="{{card.id}}">
                   <div class="card-header heigh">
                     <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
                     <h5>{{card.subject}}</h5>

@@ -286,6 +286,7 @@ angular.module('trelloRedmine')
                     $scope.updateIssue(ui.item.attr('id'), {
                         status_id: ui.item.sortable.droptarget.attr('widget-status')
                     });
+                    reorderWidgetElement(ui.item.sortable.droptargetModel, ui.item.attr('id'));
                 }
                 $(ui.item).find("#overlay").show();
                 setTimeout(function() {
@@ -323,8 +324,12 @@ angular.module('trelloRedmine')
                             var target_widget = $scope.widgets[new_card_status_id - 1];
                             var card_index = source_widget.cards.indexOf(old_card);
                             source_widget.cards.splice( card_index, 1 );
+                            $scope.alert = 'Moved card from ' +  old_card.status.name + ' to ' +  new_card.status.name + '.';
+                            $timeout(function() {
+                                $scope.alert = '';
+                            }, 3000);
                             old_card.status = new_card.status;
-                            target_widget.cards.push( old_card );
+                            insertInOrder(target_widget.cards, old_card);
                             // $route.reload();
                             // angular.element('.connectedSortable').sortable('refresh');
                             // $(".connectedSortable").trigger("sortupdate");
@@ -380,6 +385,24 @@ angular.module('trelloRedmine')
 
         //get config data
         $scope.getConfigData();
+
+        function insertInOrder(array, element){
+            var i = 0;
+            while(i < array.length && element.id < array[i++].id);
+            array.splice(i-1, 0, element);
+        }
+
+        function reorderWidgetElement(array, id){
+            var card = null;
+            array.some(function(element, index){
+                if(element.id == id){
+                    card = element;
+                    array.splice(index, 1);
+                    return true;
+                }
+            });
+            insertInOrder(array, card);
+        }
 
         function getUserInfo(index, assign_to_id) {
             redmineService.getUserInfo(assign_to_id)
