@@ -42,7 +42,7 @@ angular.module('trelloRedmine')
 
         redmineService.getProjectMembers($scope.project_id)
         .then(function(result) {
-            console.log(JSON.stringify(result));
+            // console.log(JSON.stringify(result));
         }, function(error) {
             console.log(error);
         });
@@ -91,7 +91,7 @@ angular.module('trelloRedmine')
         redmineService.getIssuesStatuses()
         .then(function (result) {
             $scope.widgets = result.data;
-            console.log($scope.widgets)
+            // console.log($scope.widgets)
             // TODO: do it in better way
             for(var i = 0; i < $scope.allowed_statuses.length; i++) {
                 $scope.widgets[$scope.allowed_statuses[i] - 1].allowed = true;
@@ -117,7 +117,7 @@ angular.module('trelloRedmine')
                         for(var card_key in $scope.widgets[key - 1].cards) {
                             var card = $scope.widgets[key - 1].cards[card_key];
                             card.showDetails = false;
-                            console.log(card)
+                            // console.log(card);
                             var getAttachments = function(card) {
                                 redmineService.getIssueAttachments(card.id)
                                 .then(function (result) {
@@ -367,7 +367,7 @@ angular.module('trelloRedmine')
         $scope.getConfigData = function() {
             $http.get('/settings/config/' + $localStorage.current_api_key)
             .success(function(data, status){
-                console.log(data.host);
+                // console.log(data.host);
                 $scope.config = data;
             }).error(function(err, status){
                 console.log(err);
@@ -454,12 +454,6 @@ angular.module('trelloRedmine')
                 this.push(activity);
             }, $scope.activities)
         });
-
-        $scope.showCardAccordion = function(card) {
-            $timeout(function() {
-                angular.element("#accord-" + card.id).trigger('click');
-            }, 100);
-        };
 
         $scope.changeTaskStatus = function(card, task, state_val) {
             if(!angular.isNumber(state_val)){
