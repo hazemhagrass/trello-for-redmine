@@ -1,6 +1,5 @@
 angular.module('trelloRedmine')
-.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', 'redmineService', '$localStorage', '$location', '$sce', '$route',
-    function($scope, $timeout, $modal, $http, redmineService, $localStorage, $location, $sce, $route) {
+.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', 'redmineService', '$localStorage', '$location', '$sce', '$route', 'cardsOrder', function($scope, $timeout, $modal, $http, redmineService, $localStorage, $location, $sce, $route, cardsOrder) {
 
         $scope.current_user = {};
         $scope.user_projects = [];
@@ -286,7 +285,7 @@ angular.module('trelloRedmine')
                     $scope.updateIssue(ui.item.attr('id'), {
                         status_id: ui.item.sortable.droptarget.attr('widget-status')
                     });
-                    reorderWidgetElement(ui.item.sortable.droptargetModel, ui.item.attr('id'));
+                    cardsOrder.reorderWidgetElement(ui.item.sortable.droptargetModel, ui.item.attr('id'));
                 }
                 $(ui.item).find("#overlay").show();
                 setTimeout(function() {
@@ -327,9 +326,9 @@ angular.module('trelloRedmine')
                             $scope.alert = 'Moved card from ' +  old_card.status.name + ' to ' +  new_card.status.name + '.';
                             $timeout(function() {
                                 $scope.alert = '';
-                            }, 3000);
+                            }, 10000);
                             old_card.status = new_card.status;
-                            insertInOrder(target_widget.cards, old_card);
+                            cardsOrder.insertInOrder(target_widget.cards, old_card);
                             // $route.reload();
                             // angular.element('.connectedSortable').sortable('refresh');
                             // $(".connectedSortable").trigger("sortupdate");
@@ -386,24 +385,6 @@ angular.module('trelloRedmine')
         //get config data
         $scope.getConfigData();
 
-        function insertInOrder(array, element){
-            var i = 0;
-            while(i < array.length && element.id < array[i++].id);
-            array.splice(i-1, 0, element);
-        }
-
-        function reorderWidgetElement(array, id){
-            var card = null;
-            array.some(function(element, index){
-                if(element.id == id){
-                    card = element;
-                    array.splice(index, 1);
-                    return true;
-                }
-            });
-            insertInOrder(array, card);
-        }
-
         function getUserInfo(index, assign_to_id) {
             redmineService.getUserInfo(assign_to_id)
             .then(function (result) {
@@ -444,19 +425,19 @@ angular.module('trelloRedmine')
             }, card.last_image);
         };
 
-        $scope.addNewAllowedStatus = function(id, state) {
-            if(state) {
-                $scope.allowed_statuses.push(id+1);
-            } else {
-                for (var i = 0; i <  $scope.allowed_statuses.length; i++) {
-                    if($scope.allowed_statuses[i]-1 == id){
-                        $scope.allowed_statuses.splice(i, 1);
-                        break;
-                    }
-                };
-            }
-            $scope.saveUserLists();
-        }
+        // $scope.addNewAllowedStatus = function(id, state) {
+        //     if(state) {
+        //         $scope.allowed_statuses.push(id+1);
+        //     } else {
+        //         for (var i = 0; i <  $scope.allowed_statuses.length; i++) {
+        //             if($scope.allowed_statuses[i]-1 == id){
+        //                 $scope.allowed_statuses.splice(i, 1);
+        //                 break;
+        //             }
+        //         };
+        //     }
+        //     $scope.saveUserLists();
+        // }
 
         $scope.parseTrustSnippt = function(html) {
             return $sce.trustAsHtml(html) || 'no description provided';
