@@ -75,6 +75,8 @@ angular.module('trelloRedmine')
         redmineService.getUserProjects('current')
         .then(function (result) {
             $scope.current_user = result.data.user;
+            $localStorage.user_mail = $scope.current_user.mail;
+
             // scope.user_projects = result.data.user.memberships;
             $scope.user_projects = result.data.user.memberships.map(function(project){
                 return project.project;
@@ -217,6 +219,7 @@ angular.module('trelloRedmine')
             redmineService.createTask($scope.newTask)
             .then(function (result) {
                 var issue = result.data.issue;
+                issue.assigned_to.mail = $localStorage.user_mail;
                 card.subTasks.unshift(issue);
                 $scope.calculateProgress(card);
             }, function (error) {
