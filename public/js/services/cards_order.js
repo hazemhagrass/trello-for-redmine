@@ -4,7 +4,8 @@ angular.module('trelloRedmine')
     this.insertInOrder = function(array, element){
         var i = 0;
         while(i < array.length && element.id < array[i++].id);
-        array.splice(i-1, 0, element);
+        // i is incremented by 1 when reaching the required place so we insert in i-1, CORNER CASE the element is with the least id, so we don't decrement i
+        i === array.length ? array.splice(i, 0, element) : array.splice(i-1, 0, element);
     }
 
     this.reorderWidgetElement = function(array, id){
