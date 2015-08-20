@@ -1,8 +1,14 @@
 angular.module('trelloRedmine')
-.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', 'redmineService', '$localStorage', '$location', '$sce', '$route', 'cardsOrder', function($scope, $timeout, $modal, $http, redmineService, $localStorage, $location, $sce, $route, cardsOrder) {
+.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', '$localStorage', '$location', '$sce', '$route', '$routeParams', 'redmineService', 'redmineAPI', 'cardsOrder', function($scope, $timeout, $modal, $http, $localStorage, $location, $sce, $route, $routeParams, redmineService, redmineAPI, cardsOrder) {
+
+        redmineAPI.setProjectId($routeParams.project_id);
+        redmineAPI.populateData();
+        $scope.dashboard = redmineAPI.data;
 
         $scope.current_user = {};
+        $scope.current_user = redmineAPI.current_user;
         $scope.user_projects = [];
+        $scope.user_projects = redmineAPI.data.user_projects;
         $scope.widgets = [];
         $scope.card = {};
         $scope.card.attachments = [];
@@ -33,19 +39,18 @@ angular.module('trelloRedmine')
         $scope.project_id = project_url[2];
 
         if(!$scope.project_id) return; 
-
         $scope.go = function (page) {
             $location.path('/trello/' + page.id);
         };
 
         $scope.priorities = [];
 
-        redmineService.getProjectMembers($scope.project_id)
-        .then(function(result) {
-            // console.log(JSON.stringify(result));
-        }, function(error) {
-            console.log(error);
-        });
+        // redmineService.getProjectMembers($scope.project_id)
+        // .then(function(result) {
+        //     // console.log(JSON.stringify(result));
+        // }, function(error) {
+        //     console.log(error);
+        // });
 
         redmineService.getIssuePriorities()
         .then(function (result) {
@@ -72,21 +77,22 @@ angular.module('trelloRedmine')
 
         $scope.getUserLists();*/
 
-        redmineService.getUserProjects('current')
-        .then(function (result) {
-            $scope.current_user = result.data.user;
-            $localStorage.user_mail = $scope.current_user.mail;
+        // redmineService.getUserProjects('current')
+        // .then(function (result) {
+        //     $scope.current_user = result.data.user;
+        //     $localStorage.user_mail = $scope.current_user.mail;
 
-            // scope.user_projects = result.data.user.memberships;
-            $scope.user_projects = result.data.user.memberships.map(function(project){
-                return project.project;
-            });
-            $scope.user_projects.forEach(function(project) {
-                if(project.id == $scope.project_id) {
-                    $scope.selected_project = project;
-                }
-            });
-        });
+        //     // scope.user_projects = result.data.user.memberships;
+        //     $scope.user_projects = result.data.user.memberships.map(function(project){
+        //         return project.project;
+        //     });
+        //     $scope.user_projects.forEach(function(project) {
+        //         if(project.id == $scope.project_id) {
+        //             $scope.selected_project = project;
+        //         }
+        //     });
+        // });
+
 
         redmineService.getIssuesStatuses()
         .then(function (result) {
