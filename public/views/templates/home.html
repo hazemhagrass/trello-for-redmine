@@ -5,7 +5,7 @@
     <ul class="nav navbar-nav navbar-left">
       <div class="choise-select">
         <span>Project</span>
-        <select ng-model="dashboard.selected_project" ng-options="project.name for project in dashboard.user_projects track by project.id" ng-change="go(dashboard.selected_project)"></select>
+        <select ng-model="selected_project" ng-options="project.name for project in user_projects track by project.id" ng-change="goToProject(selected_project)"></select>
       </div> 
       <button class='btn btn-info' ng-click='refresh()'>Reload</button>
       <a href="#">Scrummer</a>
