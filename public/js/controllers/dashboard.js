@@ -9,6 +9,8 @@ angular.module('trelloRedmine')
         $scope.priorities = redmineAPI.priorities;
         $scope.widgets = redmineAPI.widgets;
         $scope.activities = redmineAPI.activities;
+        $scope.allowed_statuses = redmineAPI.allowed_statuses;
+        $scope.allowed_statuses_object = redmineAPI.allowed_statuses_object;
         $scope.config = redmineAPI.config;
 
         $scope.card = {};
