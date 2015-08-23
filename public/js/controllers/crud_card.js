@@ -37,7 +37,6 @@ angular.module('trelloRedmine')
                 if(field.name == "Story-size") $scope.storySize = field.value;
                 if(field.name == "Business Value") $scope.businessValue = field.value;
                 if(field.name == "Release") $scope.release = field.value;
-                // why not $scope[field.name] = field.value; 
             });
         };
 

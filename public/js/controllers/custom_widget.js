@@ -49,9 +49,9 @@ angular.module('trelloRedmine')
             .then(function (result) {
                 var issue = result.data.issue;
                 issue.assigned_to.mail = $localStorage.user_mail;
+                issue.subTasks = []; 
+                issue.attachments = [];
                 widget.cards.unshift(issue);
-                widget.cards[widget.cards.length - 1 ].subTasks = []; 
-                widget.cards[widget.cards.length - 1 ].attachments = [];
             }, function (error) {
                 console.log(error);
             });
