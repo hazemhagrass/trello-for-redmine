@@ -111,6 +111,16 @@ angular.module('trelloRedmine')
             });
         }
 
+        $scope.editTask = function(card, task) { 
+            $scope.modalTask = task;
+            $scope.modalCard = card;
+            $modalInstance = $modal.open({
+                scope: $scope,
+                templateUrl: 'views/templates/edit_task.html',
+                backdropClass: "backdrop-fix"
+            });
+        }
+
         $scope.sortableTemplates = {
             connectWith: '.connectedSortable',
             dropOnEmpty: true,
