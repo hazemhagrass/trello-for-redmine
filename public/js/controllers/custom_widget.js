@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('CustomWidgetCtrl', ['$scope', '$modal', 'redmineService', '$localStorage',
-    function($scope, $modal, redmineService, $localStorage) {
+.controller('CustomWidgetCtrl', ['$scope', '$modal', '$localStorage', 'redmineService',
+    function($scope, $modal, $localStorage, redmineService) {
 
         $scope.newCard = {
             subject: "",
@@ -16,15 +16,14 @@ angular.module('trelloRedmine')
 
         $scope.isNewCard = false;
         
-        $scope.statuses = [];
+        // $scope.statuses = [];
 
-
-        redmineService.getIssuesStatuses()
-        .then(function (result) {
-            $scope.statuses = result.data;
-        }, function (error) {
-            console.log(error);
-        });
+        // redmineService.getIssuesStatuses()
+        // .then(function (result) {
+        //     $scope.statuses = result.data;
+        // }, function (error) {
+        //     console.log(error);
+        // });
 
         $scope.remove = function(widget) {
             $scope.widgets.splice($scope.widgets.indexOf(widget), 1);
@@ -50,10 +49,9 @@ angular.module('trelloRedmine')
             .then(function (result) {
                 var issue = result.data.issue;
                 issue.assigned_to.mail = $localStorage.user_mail;
-                var widget_index = $scope.widgets.indexOf(widget);
-                $scope.widgets[widget_index].cards.unshift(issue);
-                $scope.widgets[widget_index].cards[$scope.widgets[widget_index].cards.length - 1 ].subTasks = []; 
-                $scope.widgets[widget_index].cards[$scope.widgets[widget_index].cards.length - 1 ].attachments = [];
+                widget.cards.unshift(issue);
+                widget.cards[widget.cards.length - 1 ].subTasks = []; 
+                widget.cards[widget.cards.length - 1 ].attachments = [];
             }, function (error) {
                 console.log(error);
             });

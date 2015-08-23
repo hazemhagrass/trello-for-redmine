@@ -57,8 +57,6 @@ angular.module('trelloRedmine')
             $scope.updateIssue(task.id, task);
         };
 
-        
-
         $scope.showName = function(task) {
             var selected = filterFilter($scope.projectMembers, {id: task.assigned_to.id});
             return (task.assigned_to.id && selected.length) ? selected[0].name : 'Not set';
