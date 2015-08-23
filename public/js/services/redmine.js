@@ -97,4 +97,9 @@ angular.module('trelloRedmine')
         return restAPI('get', query);
     };
 
+    this.getConfig = function () {
+        var query = '/settings/config/' + $localStorage.current_api_key;
+        return restAPI('get', query);
+    };
+
 }]);

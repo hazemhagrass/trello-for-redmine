@@ -7,11 +7,12 @@ angular.module('trelloRedmine')
         $scope.user_projects = redmineAPI.user_projects;
         $scope.selected_project = redmineAPI.selected_project;
         $scope.priorities = redmineAPI.priorities;
-
         $scope.widgets = redmineAPI.widgets;
+        $scope.activities = redmineAPI.activities;
+        $scope.config = redmineAPI.config;
+
         $scope.card = {};
         $scope.card.attachments = [];
-        $scope.activities = redmineAPI.activities;
         $scope.projectMembers = [];
         $scope.subject = "";
 
@@ -193,19 +194,7 @@ angular.module('trelloRedmine')
 
             console.log(dashboard);
             delete dashboard;
-        };
-
-        $scope.getConfigData = function() {
-            $http.get('/settings/config/' + $localStorage.current_api_key)
-            .success(function(data, status){
-                // console.log(data.host);
-                $scope.config = data;
-            }).error(function(err, status){
-                console.log(err);
-            });
-        };
-
-       
+        };     
 
         $scope.saveUserLists = function() {
             $http.post('/settings/config/lists/' + $localStorage.current_api_key, $scope.allowed_statuses)
@@ -215,9 +204,6 @@ angular.module('trelloRedmine')
                 console.log(err);
             });
         };
-
-        //get config data
-        $scope.getConfigData();
 
         function getUserInfo(index, assign_to_id) {
             redmineService.getUserInfo(assign_to_id)

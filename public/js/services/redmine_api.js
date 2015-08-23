@@ -8,6 +8,7 @@ angular.module('trelloRedmine')
   var priorities = [];
   var widgets = [];
   var activities = [];
+  var config = {};
   // TODO: make it dynamic
   var allowed_statuses = [8, 9, 10];
   var allowed_statuses_names = ['Defined', 'In progress', 'Completed'];
@@ -26,6 +27,7 @@ angular.module('trelloRedmine')
     widgets: widgets,
     allowed_statuses: allowed_statuses,
     activities: activities,
+    config: config,
     populateData: populateData
   };
   
@@ -143,6 +145,13 @@ angular.module('trelloRedmine')
       angular.forEach(data.activities, function(activity){
         activities.push(activity);
       })
+    });
+
+    redmineService.getConfig()
+    .then(function (result) {
+      angular.extend(config, result.data);
+    }, function (error) {
+      console.log(error);
     });
 
     // redmineService.getProjectMembers($scope.project_id)
