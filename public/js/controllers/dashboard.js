@@ -132,27 +132,18 @@ angular.module('trelloRedmine')
             }
         };
 
-        $scope.updateIssue = function(issue_id, updated_data, card) {
+        $scope.updateIssue = function(issue_id, updated_data, parent_card) {
             redmineService.updateIssue(issue_id, updated_data)
             .then(function (result) {
                 // Check the updated data is a task inside a card
-                if(updated_data.parent) {
-                    var task_index = 0;
-                    for (var i = 0; i < card.subTasks.length; i++) {
-                        if (card.subTasks[i].id == updated_data.id ){
-                            task_index = i;
-                            break;
-                        } 
-                    };
-                    card.subTasks[task_index] = result.config.data;
-                    if(result.config.data.assigned_to_id) getUserInfo(task_index, result.config.data.assigned_to_id);
-                    if(result.config.data.status_id) {
-                        card.subTasks[task_index].status.id = result.config.data.status_id;
-                    }
+                if(parent_card) {
+                    var task_index = parent_card.subTasks.indexOf(updated_data);
+                    if(updated_data.assigned_to_id) { getUserInfo(task_index, updated_data.assigned_to_id); }
+                    if(updated_data.status_id) { parent_card.subTasks[task_index].status.id = updated_data.status_id; }
 
                     redmineService.getIssue(updated_data.parent.id)
                     .then(function (result) {
-                        var old_card = card;
+                        var old_card = parent_card;
                         var new_card = result.data.issue;
                         var old_card_status_id = old_card.status.id;
                         var new_card_status_id = new_card.status.id;
