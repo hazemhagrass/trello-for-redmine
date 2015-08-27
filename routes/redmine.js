@@ -8,6 +8,7 @@ var express = require('express'),
     fs = require('fs'),
     querystring = require('querystring');
 
+var host = 'http://' + config.host + '/';
 // list all trackers in redmine
 router.get('/trackers/:api_key', function (req, res, next) {
 	setApiKey(req.session.current_api_key ||  req.params.api_key);
@@ -209,7 +210,7 @@ router.delete('/issues/:issue_id/:api_key', function (req, res, next) {
 // GET project members
 router.get('/projects/:project_id/memberships/:api_key', function (req, res, next) {
 	var api_key = req.session.current_api_key ||  req.params.api_key;
-	var url = "http://redmine.badrit.com/projects/" + req.params.project_id + "/memberships.json"
+	var url = host + "projects/" + req.params.project_id + "/memberships.json";
 
 	request.get({
 		headers: {'X-Redmine-API-Key': api_key},
@@ -221,7 +222,7 @@ router.get('/projects/:project_id/memberships/:api_key', function (req, res, nex
 
 router.post('/login/user', function (req, res, next) {
 	var data = req.body;
-	request("http://" + data.username + ":" + data.password + "@redmine.badrit.com/users/current.json", function (error, response, body) {
+	request("http://" + data.username + ":" + data.password + "@" + config.host + "/users/current.json", function (error, response, body) {
   		if (!error && response.statusCode == 200) {
     		var user_data = JSON.parse(body);
     		redis_client.set(user_data.user.api_key, body);
@@ -262,15 +263,15 @@ router.post('/upload/file/:issue_id/:api_key', function (req, res, next) {
 	var api_key = req.session.current_api_key || req.params.api_key;
 	var issue_id = req.params.issue_id;
 	var file = req.files.file;
-    fs.readFile(file.path, function (err,file_data) {
-  		if (err) {
-  			console.log(err)
-    		return console.log(err);
-  		}
-  		request.post({
-  			headers: {'content-type' : 'application/octet-stream', 'X-Redmine-API-Key': api_key},
-  			url:     'http://redmine.badrit.com/uploads.json',
-  			body:    file_data
+  fs.readFile(file.path, function (err,file_data) {
+		if (err) {
+			console.log(err)
+			return console.log(err);
+		}
+		request.post({
+			headers: {'content-type' : 'application/octet-stream', 'X-Redmine-API-Key': api_key},
+			url:     host + 'uploads.json',
+			body:    file_data
 		}, function(error, response, body){
   			var parsed_data = JSON.parse(body);
 		    setApiKey(api_key);
@@ -287,7 +288,6 @@ router.post('/upload/file/:issue_id/:api_key', function (req, res, next) {
 			});
 		});
 	});
-    
 });
 
 router.get('/issue/:issue_id/attachments/:api_key', function (req, res, next) {
@@ -322,7 +322,7 @@ router.delete('/attachments/:attachment_id/:api_key', function (req, res, next) 
 	var attachment_id = req.params.attachment_id;
 	request.del({
 		headers: {'X-Redmine-API-Key': api_key},
-		url:     'http://redmine.badrit.com/attachments/' + attachment_id +'.json'
+		url:     host + 'attachments/' + attachment_id +'.json'
 	}, function(error, response, body){
 		res.json(body);
 	});
@@ -331,7 +331,7 @@ router.delete('/attachments/:attachment_id/:api_key', function (req, res, next) 
 router.get('/activities/:project_id/:api_key', function (req, res, next) {
 	var api_key = req.session.current_api_key ||  req.params.api_key;
 	var project_id = req.params.project_id;
-	var url = "http://redmine.badrit.com/projects/" + project_id + "/activity.json";
+	var url = host + "projects/" + project_id + "/activity.json";
 	request.get({
 		headers: {'X-Redmine-API-Key': api_key},
 		url:     url
