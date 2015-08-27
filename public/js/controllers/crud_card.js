@@ -32,7 +32,7 @@ angular.module('trelloRedmine')
             };
         }
         
-        $scope.getCustomeFieldValues = function () {
+        function getCustomeFieldValues() {
             $scope.card.custom_fields.forEach(function(field){
                 if(field.name == "Story-size") $scope.storySize = field.value;
                 if(field.name == "Business Value") $scope.businessValue = field.value;
@@ -40,49 +40,49 @@ angular.module('trelloRedmine')
             });
         };
 
-        $scope.getCustomeFieldValues();
+        getCustomeFieldValues();
 
         $scope.dismiss = function() {
             $modalInstance.dismiss();
         };
 
-        $scope.submit = function() {
-            widget.cards.push($scope.card);
-            $modalInstance.close(widget);
-            $scope.updateBackend();
-        };
+        // $scope.submit = function() {
+        //     widget.cards.push($scope.card);
+        //     $modalInstance.close(widget);
+        //     $scope.updateBackend();
+        // };
 
         $scope.updateTask = function(task) {
             $scope.updateIssue(task.id, task);
         };
 
-        $scope.showName = function(task) {
-            var selected = filterFilter($scope.projectMembers, {id: task.assigned_to.id});
-            return (task.assigned_to.id && selected.length) ? selected[0].name : 'Not set';
-        };
+        // $scope.showName = function(task) {
+        //     var selected = filterFilter($scope.projectMembers, {id: task.assigned_to.id});
+        //     return (task.assigned_to.id && selected.length) ? selected[0].name : 'Not set';
+        // };
 
-        $scope.getTaskColor = function(status_id) {
-            switch(status_id) {
-                case 8:
-                    return "#FF001D";
-                case 9:
-                    return "#ECA21B";
-                case 14:
-                    return "#1BEC3D";
-            }
-        };
+        // $scope.getTaskColor = function(status_id) {
+        //     switch(status_id) {
+        //         case 8:
+        //             return "#FF001D";
+        //         case 9:
+        //             return "#ECA21B";
+        //         case 14:
+        //             return "#1BEC3D";
+        //     }
+        // };
 
-        $scope.getlineThroughState = function(status_id) {
-            if(status_id == 14) {
-                return "text-decoration:line-through";
-            } else {
-                return "";
-            }
-        };
+        // $scope.getlineThroughState = function(status_id) {
+        //     if(status_id == 14) {
+        //         return "text-decoration:line-through";
+        //     } else {
+        //         return "";
+        //     }
+        // };
 
-        $scope.showDropArea = function() {
-            $scope.dropAreaState = !$scope.dropAreaState;
-        };
+        // $scope.showDropArea = function() {
+        //     $scope.dropAreaState = !$scope.dropAreaState;
+        // };
 
         $scope.deleteAttachment = function(attachment_id, id) {
             $scope.card.attachments.splice(id, 1); 
@@ -102,10 +102,10 @@ angular.module('trelloRedmine')
         };
 
         $scope.$watch('files', function () {
-            $scope.upload($scope.files);
+            upload($scope.files);
         });
 
-        $scope.upload = function (files) {
+        function upload(files) {
             if (files && files.length) {
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
