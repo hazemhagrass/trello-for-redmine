@@ -61,8 +61,8 @@ angular.module('trelloRedmine')
             }
         };
 
-        $scope.$watch('files', function () {
-            upload($scope.files, $scope.card);
+        $scope.$watch('card.files', function () {
+            upload($scope.card.files, $scope.card);
         });
 
         function upload(files, card) {
@@ -81,7 +81,7 @@ angular.module('trelloRedmine')
                         .then(function (result) {
                             card.attachments = result.data.issue.attachments;
                             card.hasAttachments = true;
-                            $scope.getLastImage(card);
+                            getLastImage(card);
                         }, function (error) {
                             console.log(error);
                         });
