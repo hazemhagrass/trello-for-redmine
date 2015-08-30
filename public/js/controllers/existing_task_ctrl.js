@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('ExistingTaskCtrl', ['$scope', '$modal', 'redmineService', 'tasksHelpers',
-    function($scope, $modal, redmineService, tasksHelpers) {
+.controller('ExistingTaskCtrl', ['$scope', '$modal', 'redmineService', 'tasksHelpers', 'cardsHelpers',
+    function($scope, $modal, redmineService, tasksHelpers, cardsHelpers) {
         
         $scope.tasksHelpers = tasksHelpers;
 
@@ -19,7 +19,7 @@ angular.module('trelloRedmine')
             var task_index = card.subTasks.indexOf(task);
             card.subTasks.splice(task_index, 1);
             redmineService.deleteTask(task.id);
-            $scope.calculateProgress(card);   
+            cardsHelpers.calculateProgress(card);
         };
     }
 ]);

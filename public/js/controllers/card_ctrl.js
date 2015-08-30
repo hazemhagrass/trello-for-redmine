@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('CardCtrl', ['$scope', '$timeout', '$modal', '$upload', '$localStorage', 'redmineService',
-    function($scope, $timeout, $modal, $upload, $localStorage, redmineService) {
+.controller('CardCtrl', ['$scope', '$timeout', '$modal', '$upload', '$localStorage', 'redmineService', 'cardsHelpers',
+    function($scope, $timeout, $modal, $upload, $localStorage, redmineService, cardsHelpers) {
         
         // $scope.widget = widget;
         // $scope.status_val = false;
@@ -103,7 +103,7 @@ angular.module('trelloRedmine')
          
             // $scope.attachments = [];
 
-            $scope.calculateProgress(card);
+            cardsHelpers.calculateProgress(card);
             
             $modal.open({
                 scope: $scope,

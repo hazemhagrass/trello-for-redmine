@@ -1,7 +1,7 @@
 angular.module('trelloRedmine')
-.controller('NewTaskCtrl', ['$scope', '$modal', '$localStorage', 'redmineService',
-    function($scope, $modal, $localStorage, redmineService) {
-        
+.controller('NewTaskCtrl', ['$scope', '$modal', '$localStorage', 'redmineService', 'cardsHelpers',
+    function($scope, $modal, $localStorage, redmineService, cardsHelpers) {
+
         $scope.newTask = {
             subject: "",
             description: "",
@@ -36,7 +36,7 @@ angular.module('trelloRedmine')
                 var issue = result.data.issue;
                 issue.assigned_to.mail = $localStorage.user_mail;
                 card.subTasks.unshift(issue);
-                $scope.calculateProgress(card);
+                cardsHelpers.calculateProgress(card);
             }, function (error) {
                 console.log(error);
             });
