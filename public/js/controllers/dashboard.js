@@ -11,9 +11,9 @@ angular.module('trelloRedmine')
         $scope.allowed_statuses_object = redmineAPI.allowed_statuses_object;
         $scope.config = redmineAPI.config;
 
-        $scope.card = {};
-        $scope.card.attachments = [];
-        $scope.projectMembers = [];
+        // $scope.card = {};
+        // $scope.card.attachments = [];
+        // $scope.projectMembers = [];
         $scope.subject = "";
 
         $scope.styleUrl = 'assets/stylesheets/cards_style.css';

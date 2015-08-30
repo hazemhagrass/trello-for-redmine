@@ -93,15 +93,15 @@ angular.module('trelloRedmine')
 
         $scope.editCard = function(widget, card) { 
             // I think it need more restructure to improve performence 
-            var storyId = card.id;
-            var projectId = card.project.id;
-            var subTasks = [];
-            var issues = [];
-            $scope.subTasks = [];
-            $scope.progress = 0;
-            $scope.finishedTasks = 0;
+            // var storyId = card.id;
+            // var projectId = card.project.id;
+            // var subTasks = [];
+            // var issues = [];
+            // $scope.subTasks = [];
+            // $scope.progress = 0;
+            // $scope.finishedTasks = 0;
          
-            $scope.attachments = [];
+            // $scope.attachments = [];
 
             $scope.calculateProgress(card);
             
