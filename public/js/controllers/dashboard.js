@@ -1,5 +1,5 @@
 angular.module('trelloRedmine')
-.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', '$localStorage', '$location', '$sce', '$route', '$routeParams', 'redmineService', 'redmineAPI', 'cardsOrder', 'gridsterOptions', 'cardsHelpers', function($scope, $timeout, $modal, $http, $localStorage, $location, $sce, $route, $routeParams, redmineService, redmineAPI, cardsOrder, gridsterOptions, cardsHelpers) {
+.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', '$localStorage', '$location', '$sce', '$route', '$routeParams', 'redmineService', 'redmineAPI', 'gridsterOptions', 'cardsHelpers', function($scope, $timeout, $modal, $http, $localStorage, $location, $sce, $route, $routeParams, redmineService, redmineAPI, gridsterOptions, cardsHelpers) {
 
         $scope.current_user = redmineAPI.current_user;
         $scope.user_projects = redmineAPI.user_projects;
@@ -40,7 +40,7 @@ angular.module('trelloRedmine')
                     $scope.updateIssue(ui.item.attr('id'), {
                         status_id: ui.item.sortable.droptarget.attr('widget-status')
                     });
-                    cardsOrder.reorderWidgetElement(ui.item.sortable.droptargetModel, ui.item.attr('id'));
+                    cardsHelpers.reorderWidgetElement(ui.item.sortable.droptargetModel, ui.item.attr('id'));
                 }
                 $(ui.item).find("#overlay").show();
                 setTimeout(function() {
@@ -74,7 +74,7 @@ angular.module('trelloRedmine')
                                 $scope.alert = '';
                             }, 10000);
                             old_card.status = new_card.status;
-                            cardsOrder.insertInOrder(target_widget.cards, old_card);
+                            cardsHelpers.insertInOrder(target_widget.cards, old_card);
                         }
                     }, function (error) {
                         console.log(error);
@@ -83,6 +83,13 @@ angular.module('trelloRedmine')
 
             }, function (error) {
                 console.log(error);
+            });
+        };
+
+        function getUserInfo(index, assign_to_id) {
+            redmineService.getUserInfo(assign_to_id)
+            .then(function (result) {
+                $scope.subTasks[index].assigned_to = result.data;
             });
         };
 
