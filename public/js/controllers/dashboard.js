@@ -90,30 +90,6 @@ angular.module('trelloRedmine')
             return $sce.trustAsHtml(html) || 'no description provided';
         };
 
-        $scope.changeTaskStatus = function(card, task, state_val) {
-            if(!angular.isNumber(state_val)){
-                if(state_val) {
-                    card.finishedTasks++;
-                    task.status_id = 14;
-                    task.status.name = 'Finished';
-                } else {
-                    card.finishedTasks--;
-                    task.status_id = 9;
-                    task.status.name = 'In progress';
-                }
-            } else {
-                task.status_id = state_val;
-                $scope.allowed_statuses_object.some(function(status){
-                    if(status.id === state_val){
-                        task.status.name = status.name;
-                        return true;
-                    }
-                })
-            }
-            $scope.updateIssue(task.id, task, card);
-            cardsHelpers.calculateProgress(card);
-        };
-
         $scope.refresh = function(){
             $route.reload();
         }
