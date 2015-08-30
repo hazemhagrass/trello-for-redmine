@@ -44,8 +44,8 @@
             </div> <!-- end of box-header -->
             <div class="box-content">
               <ul class="connectedSortable" ui-sortable="sortableTemplates" sortable ng-model="widget.cards" widget-status="{{widget.status_id}}">
-                <li class="card" ng-repeat="card in widget.cards" id="{{card.id}}">
-                  <div class="card-header heigh" ng-controller="CardCtrl">
+                <li class="card" ng-repeat="card in widget.cards" id="{{card.id}}" ng-controller="CardCtrl">
+                  <div class="card-header heigh">
                     <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
                     <h5>{{card.subject}}</h5>
                   </div> <!-- end of card-header -->
