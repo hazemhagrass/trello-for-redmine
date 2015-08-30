@@ -10,7 +10,12 @@
                     })
                     .when('/trello/:project_id', {
                         templateUrl: 'views/templates/home.html',
-                        controller: 'DashboardCtrl'
+                        controller: 'DashboardCtrl',
+                        resolve: {
+                            populationFinished: ['$route', 'redmineAPI', function($route, redmineAPI) {
+                                return redmineAPI.populateData($route.current.params.project_id);
+                            }]
+                        }
                     })
                     .otherwise({
                         redirectTo: '/login'

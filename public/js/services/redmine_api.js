@@ -123,7 +123,7 @@ angular.module('trelloRedmine')
         .then(function (result) {
             
           // RESOLVE PROMISE FOR ROUTE TO DISPLAY CONTROLLER AFTER FETCHING THE PROJECT USERSTORIES
-          deferred.resolve(result);
+          deferred.resolve();
 
           for(var i = 0; i < widgets.length; i++) {
             widgets[i].cards = [];

@@ -1,8 +1,6 @@
 angular.module('trelloRedmine')
 .controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', '$localStorage', '$location', '$sce', '$route', '$routeParams', 'redmineService', 'redmineAPI', 'cardsOrder', 'gridsterOptions', function($scope, $timeout, $modal, $http, $localStorage, $location, $sce, $route, $routeParams, redmineService, redmineAPI, cardsOrder, gridsterOptions) {
 
-        redmineAPI.populateData($routeParams.project_id);
-
         $scope.current_user = redmineAPI.current_user;
         $scope.user_projects = redmineAPI.user_projects;
         $scope.selected_project = redmineAPI.selected_project;
