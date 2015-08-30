@@ -5,8 +5,8 @@ angular.module('trelloRedmine')
         $scope.tasksHelpers = tasksHelpers;
 
         $scope.editTask = function(card, task) { 
-            $scope.modalTask = task;
-            $scope.modalCard = card;
+            // $scope.modalTask = task;
+            // $scope.modalCard = card;
             $modalInstance = $modal.open({
                 scope: $scope,
                 templateUrl: 'views/templates/edit_task.html',
