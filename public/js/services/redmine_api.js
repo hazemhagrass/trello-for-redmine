@@ -1,5 +1,5 @@
 angular.module('trelloRedmine')
-.factory('redmineAPI', ['$localStorage', 'redmineService', function ($localStorage, redmineService) {
+.factory('redmineAPI', ['$localStorage', '$q', 'redmineService', function ($localStorage, $q, redmineService) {
 
   var project_id = null;
   var current_user = {};
@@ -33,6 +33,8 @@ angular.module('trelloRedmine')
   };
   
   function populateData(controller_project_id) {
+    var deferred = $q.defer();
+
     project_id = controller_project_id;
 
     redmineService.getUserProjects('current')
@@ -120,6 +122,9 @@ angular.module('trelloRedmine')
         redmineService.getProjectUserStories(project_id)
         .then(function (result) {
             
+          // RESOLVE PROMISE FOR ROUTE TO DISPLAY CONTROLLER AFTER FETCHING THE PROJECT USERSTORIES
+          deferred.resolve(result);
+
           for(var i = 0; i < widgets.length; i++) {
             widgets[i].cards = [];
           }
@@ -154,6 +159,8 @@ angular.module('trelloRedmine')
     }, function (error) {
       console.log(error);
     });
+
+    return deferred.promise;
 
     // redmineService.getProjectMembers($scope.project_id)
     // .then(function(result) {

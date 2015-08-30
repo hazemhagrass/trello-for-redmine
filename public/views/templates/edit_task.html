@@ -1,4 +1,4 @@
-<div class="modal-header" ng-class="taskClass(modalTask.status.id, true)">
+<div class="modal-header" ng-class="tasksHelpers.taskClass(modalTask.status.id, true)">
   <button type="button" class="close" ng-click="dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <h4 class="modal-title" id="myModalLabel"><div onaftersave="updateIssue(modalTask.id, modalTask, modalCard)" editable-text="modalTask.subject">{{modalTask.subject}}</div></h4>
 </div>
