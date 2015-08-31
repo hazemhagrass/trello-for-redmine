@@ -26,6 +26,7 @@ angular.module('trelloRedmine')
     priorities: priorities,
     widgets: widgets,
     allowed_statuses: allowed_statuses,
+    allowed_statuses_names: allowed_statuses_names,
     allowed_statuses_object: allowed_statuses_object,
     activities: activities,
     config: config,

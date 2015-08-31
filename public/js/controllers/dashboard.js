@@ -33,17 +33,28 @@ angular.module('trelloRedmine')
             dropOnEmpty: true,
             'ui-floating': true,
             stop: function(event, ui) {
-                var moved = ui.item.sortable.received;
-                if(moved) {
-                    $scope.updateIssue(ui.item.attr('id'), {
-                        status_id: ui.item.sortable.droptarget.attr('widget-status')
+
+                var has_moved = ui.item.sortable.received;
+                var card_id = ui.item.attr('id');
+                if(has_moved) {
+                    var target_status = ui.item.sortable.droptarget.attr('widget-status');
+                    var card_target_index = ui.item.sortable.dropindex;
+                    var target_widget = $scope.widgets[target_status-1];
+                    var moved_card = target_widget.cards[card_target_index];
+                    $(ui.item).find("#overlay").show();
+                    redmineService.updateIssue(card_id, {
+                        status_id: target_status
+                    }).then(function(result){
+                        moved_card.status.id = Number(target_status);
+                        moved_card.status.name = redmineAPI.allowed_statuses_names[target_status-8];
+                        cardsHelpers.reorderWidgetElement(target_widget.cards, card_id);
+                        $(ui.item).find("#overlay").hide();
+                    }, function(error){
+                        console.log(error);
                     });
-                    cardsHelpers.reorderWidgetElement(ui.item.sortable.droptargetModel, ui.item.attr('id'));
+                } else {
+                    cardsHelpers.reorderWidgetElement(ui.item.sortable.sourceModel, card_id);
                 }
-                $(ui.item).find("#overlay").show();
-                setTimeout(function() {
-                    $(ui.item).find("#overlay").hide();
-                }, 1000);
             }
         };
 
@@ -77,7 +88,7 @@ angular.module('trelloRedmine')
                     }, function (error) {
                         console.log(error);
                     });
-                }               
+                }
 
             }, function (error) {
                 console.log(error);

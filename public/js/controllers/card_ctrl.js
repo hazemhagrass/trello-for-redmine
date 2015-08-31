@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('CardCtrl', ['$scope', '$timeout', '$modal', '$upload', '$localStorage', 'redmineService', 'cardsHelpers',
-    function($scope, $timeout, $modal, $upload, $localStorage, redmineService, cardsHelpers) {
+.controller('CardCtrl', ['$scope', '$modal', '$upload', '$localStorage', 'redmineService', 'cardsHelpers',
+    function($scope, $modal, $upload, $localStorage, redmineService, cardsHelpers) {
         
         // $scope.widget = widget;
         // $scope.status_val = false;
@@ -25,7 +25,8 @@ angular.module('trelloRedmine')
         getCustomeFieldValues();
 
         $scope.updateCard = function(card) {
-            $scope.updateIssue(card.id, card);
+            // To do: handle error
+            redmineService.updateIssue(card.id, card);
         };
 
         $scope.deleteAttachment = function(attachment_id, id) {
