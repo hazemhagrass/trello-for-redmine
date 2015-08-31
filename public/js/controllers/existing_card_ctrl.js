@@ -106,7 +106,7 @@ angular.module('trelloRedmine')
 
             cardsHelpers.calculateProgress(card);
             
-            $modal.open({
+            $modalInstance = $modal.open({
                 scope: $scope,
                 templateUrl: 'views/templates/edit_card.html',
                 backdropClass: "backdrop-fix"
