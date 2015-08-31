@@ -1,5 +1,5 @@
 angular.module('trelloRedmine')
-.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', '$localStorage', '$location', '$sce', '$route', '$routeParams', 'redmineService', 'redmineAPI', 'gridsterOptions', 'cardsHelpers', function($scope, $timeout, $modal, $http, $localStorage, $location, $sce, $route, $routeParams, redmineService, redmineAPI, gridsterOptions, cardsHelpers) {
+.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', '$localStorage', '$location', '$sce', '$route', '$routeParams', 'toaster', 'redmineService', 'redmineAPI', 'gridsterOptions', 'cardsHelpers', function($scope, $timeout, $modal, $http, $localStorage, $location, $sce, $route, $routeParams, toaster, redmineService, redmineAPI, gridsterOptions, cardsHelpers) {
 
         $scope.current_user = redmineAPI.current_user;
         $scope.user_projects = redmineAPI.user_projects;
@@ -78,10 +78,10 @@ angular.module('trelloRedmine')
                             var target_widget = $scope.widgets[new_card_status_id - 1];
                             var card_index = source_widget.cards.indexOf(old_card);
                             source_widget.cards.splice( card_index, 1 );
-                            $scope.alert = 'Moved card from ' +  old_card.status.name + ' to ' +  new_card.status.name + '.';
-                            $timeout(function() {
-                                $scope.alert = '';
-                            }, 10000);
+                            toaster.pop({ type: 'info',
+                                title: 'Moved card ' + new_card.id + ' from ' +  old_card.status.name + ' to ' +  new_card.status.name + '.',
+                                showCloseButton: true
+                            });
                             old_card.status = new_card.status;
                             cardsHelpers.insertInOrder(target_widget.cards, old_card);
                         }
