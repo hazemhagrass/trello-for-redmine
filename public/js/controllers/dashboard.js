@@ -33,10 +33,8 @@ angular.module('trelloRedmine')
             dropOnEmpty: true,
             'ui-floating': true,
             stop: function(event, ui) {
-                var index = ui.item.sortable.index;
-                var targetIndex = ui.item.sortable.dropindex;
                 var moved = ui.item.sortable.received;
-                if(moved || targetIndex !== undefined && (targetIndex !== index)) {
+                if(moved) {
                     $scope.updateIssue(ui.item.attr('id'), {
                         status_id: ui.item.sortable.droptarget.attr('widget-status')
                     });
