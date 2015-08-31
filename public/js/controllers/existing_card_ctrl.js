@@ -1,5 +1,5 @@
 angular.module('trelloRedmine')
-.controller('CardCtrl', ['$scope', '$modal', '$upload', '$localStorage', 'redmineService', 'cardsHelpers',
+.controller('ExistingCardCtrl', ['$scope', '$modal', '$upload', '$localStorage', 'redmineService', 'cardsHelpers',
     function($scope, $modal, $upload, $localStorage, redmineService, cardsHelpers) {
         
         // $scope.widget = widget;

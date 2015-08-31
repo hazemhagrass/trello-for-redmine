@@ -44,7 +44,7 @@
             </div> <!-- end of box-header -->
             <div class="box-content">
               <ul class="connectedSortable" ui-sortable="sortableTemplates" sortable ng-model="widget.cards" widget-status="{{widget.status_id}}">
-                <li class="card" ng-repeat="card in widget.cards" id="{{card.id}}" ng-controller="CardCtrl">
+                <li class="card" ng-repeat="card in widget.cards" id="{{card.id}}" ng-controller="ExistingCardCtrl">
                   <div class="card-header heigh">
                     <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
                     <h5>{{card.subject}}</h5>
@@ -88,7 +88,7 @@
                 </li> <!-- end of card -->
                 <li ng-show="widget.cards.length===0" style="background-color: #CCEEFA; visibility: hidden;">&nbsp;</li>
               </ul>
-              <ng-include src="'views/templates/new_card_form.html'"></ng-include>
+              <ng-include src="'views/templates/new_card.html'"></ng-include>
             </div> <!-- end of box-content -->
           </div> <!-- end of box -->
         </li> <!-- end of widget -->
