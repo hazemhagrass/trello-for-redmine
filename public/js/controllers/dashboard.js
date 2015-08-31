@@ -41,14 +41,15 @@ angular.module('trelloRedmine')
                     var card_target_index = ui.item.sortable.dropindex;
                     var target_widget = $scope.widgets[target_status-1];
                     var moved_card = target_widget.cards[card_target_index];
-                    $(ui.item).find("#overlay").show();
+                    moved_card.card_loading = true;
                     redmineService.updateIssue(card_id, {
                         status_id: target_status
                     }).then(function(result){
+                        // moved_card.card_loading = false;
+                        delete moved_card.card_loading;
                         moved_card.status.id = Number(target_status);
                         moved_card.status.name = redmineAPI.allowed_statuses_names[target_status-8];
                         cardsHelpers.reorderWidgetElement(target_widget.cards, card_id);
-                        $(ui.item).find("#overlay").hide();
                     }, function(error){
                         console.log(error);
                     });
