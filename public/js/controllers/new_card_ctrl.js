@@ -23,8 +23,6 @@ angular.module('trelloRedmine')
         issue.subTasks = []; 
         issue.attachments = [];
         widget.cards.unshift(issue);
-      }, function (error) {
-        console.log(error);
       });
     };
   }

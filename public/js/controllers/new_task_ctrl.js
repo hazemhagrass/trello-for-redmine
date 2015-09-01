@@ -37,8 +37,6 @@ angular.module('trelloRedmine')
                 issue.assigned_to.mail = $localStorage.user_mail;
                 card.subTasks.unshift(issue);
                 cardsHelpers.calculateProgress(card);
-            }, function (error) {
-                console.log(error);
             });
         };
     }

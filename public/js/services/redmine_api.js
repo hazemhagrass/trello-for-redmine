@@ -60,8 +60,6 @@ angular.module('trelloRedmine')
     redmineService.getIssuePriorities()
     .then(function (result) {
       angular.extend(priorities, result.data.issue_priorities);
-    }, function (error) {
-      console.log(error);
     });
 
     function getLastImage(card) {
@@ -82,8 +80,6 @@ angular.module('trelloRedmine')
           card.hasAttachments = false;
         }
         getLastImage(card);
-      }, function (error) {
-        console.log(error);
       });
     }
 
@@ -107,8 +103,6 @@ angular.module('trelloRedmine')
         }, subTasks);
 
         card.subTasks = subTasks;
-      }, function (error) {
-        console.log(error);
       });
     }
 
@@ -157,8 +151,6 @@ angular.module('trelloRedmine')
     redmineService.getConfig()
     .then(function (result) {
       angular.extend(config, result.data);
-    }, function (error) {
-      console.log(error);
     });
 
     return deferred.promise;

@@ -26,10 +26,8 @@ angular.module('trelloRedmine')
         moved_card.status.id = Number(target_status);
         moved_card.status.name = redmineAPI.allowed_statuses_names[target_status-8];
         sortingUtility.reorderWidgetElement(target_widget.cards, card_id);
-      }, function(error){
-        console.log(error);
       }).finally(function() {
-        delete parent_card.card_loading;
+        delete moved_card.card_loading;
       });
     } else {
       sortingUtility.reorderWidgetElement(item.sortable.sourceModel, card_id);

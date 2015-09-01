@@ -41,8 +41,6 @@ angular.module('trelloRedmine')
                     getLastImage($scope.card);
                 }
                 
-            }, function (error) {
-                console.log(error);
             });
         };
 
@@ -83,8 +81,6 @@ angular.module('trelloRedmine')
                             card.attachments = result.data.issue.attachments;
                             card.hasAttachments = true;
                             getLastImage(card);
-                        }, function (error) {
-                            console.log(error);
                         });
                         console.log('file ' + config.file.name + ' uploaded. Response: ' + data);
                     });
