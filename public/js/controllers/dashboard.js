@@ -33,29 +33,7 @@ angular.module('trelloRedmine')
             dropOnEmpty: true,
             'ui-floating': true,
             stop: function(event, ui) {
-
-                var has_moved = ui.item.sortable.received;
-                var card_id = ui.item.attr('id');
-                if(has_moved) {
-                    var target_status = ui.item.sortable.droptarget.attr('widget-status');
-                    var card_target_index = ui.item.sortable.dropindex;
-                    var target_widget = $scope.widgets[target_status-1];
-                    var moved_card = target_widget.cards[card_target_index];
-                    moved_card.card_loading = true;
-                    redmineService.updateIssue(card_id, {
-                        status_id: target_status
-                    }).then(function(result){
-                        // moved_card.card_loading = false;
-                        delete moved_card.card_loading;
-                        moved_card.status.id = Number(target_status);
-                        moved_card.status.name = redmineAPI.allowed_statuses_names[target_status-8];
-                        cardsHelpers.reorderWidgetElement(target_widget.cards, card_id);
-                    }, function(error){
-                        console.log(error);
-                    });
-                } else {
-                    cardsHelpers.reorderWidgetElement(ui.item.sortable.sourceModel, card_id);
-                }
+                cardsHelpers.update_status(ui.item);
             }
         };
 
