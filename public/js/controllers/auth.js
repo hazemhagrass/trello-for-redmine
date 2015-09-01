@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('AuthCtrl', ['$scope', 'redmineService', '$location', '$localStorage',
-    function($scope, redmineService, $location, $localStorage) {
+.controller('AuthCtrl', ['$scope', '$location', '$localStorage', '$window', 'redmineService',
+    function($scope, $location, $localStorage, $window, redmineService) {
     
         $scope.username = "";
         $scope.password = "";
@@ -16,6 +16,17 @@ angular.module('trelloRedmine')
                 $localStorage.current_api_key =  result.data.user.api_key;
                 $localStorage.first_project_id = result.data.first_project_id;
                 $location.path('/trello/' + result.data.first_project_id);
+            }, function(){
+                alert('Unauthorized user');
+            });
+        };
+
+        $scope.logout = function() {
+
+            redmineService.logout()
+            .then(function(result){
+                $localStorage.$reset();
+                $window.location.href = 'http://redmine.badrit.com';
             });
         };
     }

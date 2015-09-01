@@ -247,6 +247,13 @@ router.post('/login/user', function (req, res, next) {
 	
 });
 
+router.post('/logout/user/:api_key', function (req, res, next) {
+	redis_client.del(req.params.api_key);
+	delete req.session.current_api_key;
+	setApiKey(undefined);
+	res.sendStatus(200);
+});
+
 router.post('/authenticate', function (req, res, next) {
 	// var data = req.body;
 
@@ -255,7 +262,7 @@ router.post('/authenticate', function (req, res, next) {
 	redis_client.set(api_key, api_key);
 	req.session.current_api_key = api_key;
 	setApiKey(api_key);
-	res.send(200);
+	res.sendStatus(200);
 	
 });
 
