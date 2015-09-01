@@ -65,11 +65,11 @@ angular.module('trelloRedmine')
                             old_card.status = new_card.status;
                             sortingUtility.insertInOrder(target_widget.cards, old_card);
                         }
-                    }).finally( function() {
-                        delete parent_card.card_loading;
                     });
                 }
 
+            }).finally( function() {
+                delete parent_card.card_loading;
             });
         };
 
