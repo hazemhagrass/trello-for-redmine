@@ -38,6 +38,7 @@ angular.module('trelloRedmine')
         };
 
         $scope.updateIssue = function(issue_id, updated_data, parent_card) {
+            parent_card.card_loading = true;
             redmineService.updateIssue(issue_id, updated_data)
             .then(function (result) {
                 // Check the updated data is a task inside a card
@@ -66,6 +67,8 @@ angular.module('trelloRedmine')
                         }
                     }, function (error) {
                         console.log(error);
+                    }).finally( function() {
+                        delete parent_card.card_loading;
                     });
                 }
 
