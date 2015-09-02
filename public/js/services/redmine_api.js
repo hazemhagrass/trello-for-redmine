@@ -143,6 +143,8 @@ angular.module('trelloRedmine')
     redmineService.getActivities(project_id)
     .then(function (result) {
       var data = JSON.parse(result.data);
+      // NOTE writing activities = [] would make a new reference and hence the scope won't have the same reference as this one
+      activities.length = 0;
       angular.forEach(data.activities, function(activity){
         activities.push(activity);
       })
