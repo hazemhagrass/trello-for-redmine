@@ -19,7 +19,7 @@ Trello For Redmine is currently in **Development Mode**.
 
 3. Run `./install.sh`
 
-4. To start the application: `./start.sh`a
+4. To start the application: `./start.sh`
 
 [tr]: https://trello.com/
 [rm]: http://www.redmine.org/
