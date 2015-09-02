@@ -244,7 +244,7 @@ router.post('/logout/user/:api_key', function (req, res, next) {
 	redis_client.del(req.params.api_key);
 	delete req.session.current_api_key;
 	setApiKey(undefined);
-	res.sendStatus(200);
+	res.redirect(host);
 });
 
 router.post('/authenticate', function (req, res, next) {

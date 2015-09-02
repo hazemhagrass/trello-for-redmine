@@ -8,7 +8,9 @@
         <select ng-model="selected_project" ng-options="project.name for project in user_projects track by project.id" ng-change="goToProject(selected_project)"></select>
       </div> 
       <button class='btn btn-info' ng-click='refresh()'>Reload</button>
-      <button class='btn btn-info' ng-click='logout()' ng-controller='AuthCtrl'>SignOut</button>
+      <form action="{{logoutUrl}}" ng-controller='LogoutCtrl' method="POST" ng-submit='logout()'>
+        <input class='btn btn-info'  type="submit" value="SignOut" />
+      </form>
       <a href="#">Scrummer</a>
     </ul>
   </div> <!-- end of navbar -->
