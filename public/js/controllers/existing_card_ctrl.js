@@ -33,7 +33,6 @@ angular.module('trelloRedmine')
             $scope.card.attachments.splice(id, 1); 
             redmineService.deleteAttachment(attachment_id)
             .then(function (result) {
-                console.log(result);
                 if($scope.card.attachments.length == 0) {
                     $scope.card.last_image = null;
                     $scope.card.hasAttachments = false;

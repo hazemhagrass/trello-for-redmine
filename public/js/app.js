@@ -28,7 +28,6 @@
             $httpProvider.interceptors.push(['toaster', '$q', function(toaster, $q) {
                 return {
                     'responseError': function(rejection) {
-                        console.log(rejection);
                         toaster.pop({ type: 'error',
                             title: 'Network error, please reload.',
                             showCloseButton: true
