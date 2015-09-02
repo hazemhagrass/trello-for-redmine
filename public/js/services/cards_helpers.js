@@ -17,7 +17,7 @@ angular.module('trelloRedmine')
       var target_status = item.sortable.droptarget.attr('widget-status');
       var card_target_index = item.sortable.dropindex;
       var target_widget = redmineAPI.widgets[target_status-1];
-      var moved_card = target_widget.cards[card_target_index];
+      var moved_card =  target_widget.cards.length === 1 ? target_widget.cards[0] : target_widget.cards[card_target_index];
       moved_card.card_loading = true;
       redmineService.updateIssue(card_id, {
         status_id: target_status
