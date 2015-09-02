@@ -6,6 +6,6 @@ exports.init = function () {
 	console.log('Connecting to Redmine');
 	redmine = new Redmine({
 		host: config.host,
-		apiKey: config.apiKey
+		apiKey: 'dummy'
 	});
 }
