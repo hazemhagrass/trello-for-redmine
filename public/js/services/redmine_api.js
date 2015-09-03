@@ -62,57 +62,6 @@ angular.module('trelloRedmine')
       angular.extend(priorities, result.data.issue_priorities);
     });
 
-    function getLastImage(card) {
-      angular.forEach(card.attachments, function(attach) {
-        if(attach.content_type.search("image/") >= 0) {
-          card.last_image = attach;
-        }
-      }, card.last_image);
-    };
-
-    function getAttachments(card) {
-
-      if(card.attachments.length > 0) {
-        card.hasAttachments = true;
-      } else {
-        card.hasAttachments = false;
-      }
-
-      // redmineService.getIssueAttachments(card.id)
-      // .then(function (result) {
-      //   card.attachments = result.data.issue.attachments;
-      //   if(card.attachments.length > 0) {
-      //     card.hasAttachments = true;
-      //   } else {
-      //     card.hasAttachments = false;
-      //   }
-      //   getLastImage(card);
-      // });
-    }
-
-    function getSubTasks(card) {
-      var storyId = card.id;
-      var projectId = card.project.id;
-      var issues = [];                        
-      var subTasks = [];
-
-      card.finishedTasks = 0;
-      card.subTasks = card.children;
-
-      // redmineService.getStoryTasks(projectId, storyId)
-      // .then(function (result) {
-      //   issues = result.data.issues;
-      //   angular.forEach(issues, function(issue) {    
-      //     if (issue.parent && issue.parent.id == storyId) {
-      //       if (issue.status.id == 14) card.finishedTasks++;
-      //       this.push(issue);
-      //     }
-      //   }, subTasks);
-
-      //   card.subTasks = subTasks;
-      // });
-    }
-
     redmineService.getIssuesStatuses()
     .then(function (result) {
         angular.extend(widgets, result.data);
@@ -139,8 +88,9 @@ angular.module('trelloRedmine')
               for(var card_key in widgets[key - 1].cards) {
                 var card = widgets[key - 1].cards[card_key];
                 card.showDetails = false;
-                getSubTasks(card);
-                getAttachments(card);
+                card.finishedTasks = 0;
+                card.subTasks = card.children;
+                card.hasAttachments = !!card.attachments.length;
               }
             }
           }
