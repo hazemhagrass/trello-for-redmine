@@ -1,4 +1,4 @@
 {
-    "host": "redmine.badrit.com",
+    "host": "localhost",
     "apiKey": "xxxxxxxxxxxxxxxxxx"
 }
