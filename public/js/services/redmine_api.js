@@ -71,16 +71,23 @@ angular.module('trelloRedmine')
     };
 
     function getAttachments(card) {
-      redmineService.getIssueAttachments(card.id)
-      .then(function (result) {
-        card.attachments = result.data.issue.attachments;
-        if(card.attachments.length > 0) {
-          card.hasAttachments = true;
-        } else {
-          card.hasAttachments = false;
-        }
-        getLastImage(card);
-      });
+
+      if(card.attachments.length > 0) {
+        card.hasAttachments = true;
+      } else {
+        card.hasAttachments = false;
+      }
+
+      // redmineService.getIssueAttachments(card.id)
+      // .then(function (result) {
+      //   card.attachments = result.data.issue.attachments;
+      //   if(card.attachments.length > 0) {
+      //     card.hasAttachments = true;
+      //   } else {
+      //     card.hasAttachments = false;
+      //   }
+      //   getLastImage(card);
+      // });
     }
 
     function getSubTasks(card) {
@@ -90,20 +97,20 @@ angular.module('trelloRedmine')
       var subTasks = [];
 
       card.finishedTasks = 0;
-      card.subTasks = [];
+      card.subTasks = card.children;
 
-      redmineService.getStoryTasks(projectId, storyId)
-      .then(function (result) {
-        issues = result.data.issues;
-        angular.forEach(issues, function(issue) {    
-          if (issue.parent && issue.parent.id == storyId) {
-            if (issue.status.id == 14) card.finishedTasks++;
-            this.push(issue);
-          }
-        }, subTasks);
+      // redmineService.getStoryTasks(projectId, storyId)
+      // .then(function (result) {
+      //   issues = result.data.issues;
+      //   angular.forEach(issues, function(issue) {    
+      //     if (issue.parent && issue.parent.id == storyId) {
+      //       if (issue.status.id == 14) card.finishedTasks++;
+      //       this.push(issue);
+      //     }
+      //   }, subTasks);
 
-        card.subTasks = subTasks;
-      });
+      //   card.subTasks = subTasks;
+      // });
     }
 
     redmineService.getIssuesStatuses()

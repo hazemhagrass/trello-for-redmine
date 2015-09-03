@@ -6,7 +6,8 @@ var express = require('express'),
     redis_client = redis.createClient(),
     http = require('http'),
     fs = require('fs'),
-    querystring = require('querystring');
+    querystring = require('querystring'),
+    async = require('async');
 
 var host = 'http://' + config.host + '/';
 // list all trackers in redmine
@@ -126,16 +127,44 @@ router.get('/projects/:project_id/issues/:parent_id/:api_key', function (req, re
 
 // get all issues in a specific project
 router.get('/projects/:project_id/userstories/:api_key', function (req, res, next) {
+	var api_key = req.session.current_api_key ||  req.params.api_key;
+
 	setApiKey(req.session.current_api_key ||  req.params.api_key);
+
 	redmine.get('issues', {
 		project_id: req.params.project_id,
 		tracker_id: '5',
 		limit: 100
 	}).success(function (data) {
-		var result = _.groupBy(data.issues, function(obj) {
-			return obj.status.id;
+
+		async.map(data.issues, function(issue, callback) {
+
+			var url = host + "trello_issues/issues.json?issue_id=" + issue.id + "&include=children";
+			request.get({
+				headers: {'X-Redmine-API-Key': api_key},
+				url:     url
+			}, function(error, response, body){
+				//console.log(body);
+				//console.log(issue);
+				if(error) { callback(error, null); }
+				var issue_with_children = JSON.parse(body).issue;
+				issue_with_children.children = issue_with_children.children || [];
+				callback(null, issue_with_children);
+			})
+
+		}, function(error, result_with_children) {
+
+			if(error) {
+				res.status(404).json(error);
+			} else {
+				var result_with_children = _.groupBy(result_with_children, function(obj) {
+					return obj.status.id;
+				});
+				res.json(result_with_children);
+			}
+
 		});
-		res.json(result);
+
 	}).error(function (err) {
 		console.log(err);
 		res.status(404).json(err);
