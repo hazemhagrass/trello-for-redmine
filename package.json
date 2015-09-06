@@ -3,7 +3,8 @@
   "version": "1.0.0-beta",
   "private": true,
   "scripts": {
-    "start": "forever ./bin/www"
+    "start": "forever ./bin/www",
+    "uglify": "node_modules/uglify-js/bin/uglifyjs public/js/app.js public/js/**/*.js -o public/js/app.min.js --source-map public/js/app.min.js.map --source-map-url app.min.js"
   },
   "repository": {
     "type": "git",
@@ -33,5 +34,8 @@
     "request": "~2.53.0",
     "serve-favicon": "^2.2.0",
     "underscore-node": "^0.1.2"
+  },
+  "devDependencies": {
+    "uglify-js": "^2.4.24"
   }
 }
