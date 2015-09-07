@@ -118,7 +118,12 @@ angular.module('trelloRedmine')
         .then(function (result) {
             
           // RESOLVE PROMISE FOR ROUTE TO DISPLAY CONTROLLER AFTER FETCHING THE PROJECT USERSTORIES
+
+          // NORMAL STATUS FOR THE SITE: deferred.resolve()
           deferred.resolve();
+          
+          // TO ALWAYS SHOW LOADER AND DONT SHOW THE PAGE'S CONTENT: deferred.reject()
+          // deferred.reject();
 
           for(var i = 0; i < widgets.length; i++) {
             widgets[i].cards = [];
