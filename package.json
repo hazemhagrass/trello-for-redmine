@@ -11,7 +11,7 @@
 
     "uglify": "npm run uglify-js && npm run uglify-css",
 
-    "watch-js": "node_modules/wr/bin/wr 'npm run uglify-js' public/js/*.js public/js/**/*.js",
+    "watch-js": "node_modules/wr/bin/wr 'npm run uglify-js' public/js/*.js public/js/*/*.js",
 
     "watch-css": "node_modules/wr/bin/wr 'npm run uglify-css' public/assets/stylesheets/*.css",
 
