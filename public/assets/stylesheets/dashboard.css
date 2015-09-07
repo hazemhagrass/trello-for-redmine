@@ -1,0 +1,107 @@
+html {
+	height: 100%;
+}
+
+.alert-success {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.alert-success i.fa {
+	margin-right: 10px;
+}
+
+form#top-buttons {
+	display: inline-block;
+	margin-top: 7px;
+}
+
+form#top-buttons input,
+button#top-reload,
+.choise-select span {
+	font-family: "FontAwesome";
+}
+
+.choise-select select {
+	font-size: 16px;
+	margin-left: 5px;
+}
+
+#widget-columns:after {
+	content: "."; 
+	visibility: hidden; 
+	display: block; 
+	height: 0; 
+	clear: both;
+}
+
+.page-header .col-headers {
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+.page-header .col-headers i.fa {
+	margin-right: 5px;
+}
+
+.box-content {
+	max-height: none !important;
+}
+
+.gridster-loaded .gridster-item {
+	/*height: 100% !important;*/
+}
+
+.container.ng-scope {
+	overflow-y: hidden;
+}
+
+.box-content {
+	padding-bottom: 370px !important;
+}
+
+li.gridster-item:last-of-type {
+    height: 1000px !important;
+    padding-bottom: 130px;
+}
+
+li.gridster-item:last-of-type .box-content {
+	padding-bottom: 0 !important;
+}
+
+.modal-section p span {
+	margin-left: 0;
+}
+
+.attach-btn {
+	cursor: pointer;
+	padding: 3px 0;
+}
+
+.attach-btn:before {
+	font-family: "FontAwesome";
+	content: "\f093";
+}
+
+@media (max-width: 1366px) {
+	li.gridster-item:last-of-type {
+	    height: 1000px !important;
+	    padding-bottom: 420px;
+	}
+
+	.box-content {
+		padding-bottom: 300px !important;
+	}
+}
+
+@media (max-width: 1280px) {
+	.box-content {
+		padding-bottom: 230px;
+	}
+
+	li.gridster-item:last-of-type {
+		padding-bottom: 390px;
+	}
+}
