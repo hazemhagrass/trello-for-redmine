@@ -52,7 +52,7 @@ angular.module('trelloRedmine')
           if(updated_data.assigned_to_id) { getUserInfo(task_index, updated_data.assigned_to_id); }
           if(updated_data.status_id) { parent_card.subTasks[task_index].status.id = updated_data.status_id; }
 
-          redmineService.getIssue(updated_data.parent.id)
+          redmineService.getIssue(parent_card.id)
           .then(function (result) {
             var old_card = parent_card;
             var new_card = result.data.issue;
