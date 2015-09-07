@@ -16,7 +16,6 @@ angular.module('trelloRedmine')
         // $scope.projectMembers = [];
         // $scope.subject = "";
 
-        $scope.styleUrl = 'assets/stylesheets/cards_style.css';
         $scope.project_id = $routeParams.project_id;
         $scope.gridsterOptions = gridsterOptions;
 
