@@ -14,10 +14,10 @@ angular.module('trelloRedmine')
 
     $scope.deleteTask = function(card, task) {
       // TODO: find way to handle success and error
-      var task_index = card.subTasks.indexOf(task);
-      card.subTasks.splice(task_index, 1);
-      redmineService.deleteTask(task.id);
-      cardsHelpers.calculateProgress(card);
+      // var task_index = card.subTasks.indexOf(task);
+      // card.subTasks.splice(task_index, 1);
+      // redmineService.deleteTask(task.id);
+      // cardsHelpers.calculateProgress(card);
     };
 
     $scope.changeTaskStatus = function(card, task, state_val) {
