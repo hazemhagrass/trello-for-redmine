@@ -6,9 +6,9 @@
         <span>Project</span>
         <select ng-model="selected_project" ng-options="project.name for project in user_projects track by project.id" ng-change="goToProject(selected_project)"></select>
       </div> 
-      <button class='btn btn-info' ng-click='refresh()'>Reload</button>
-      <form action="{{logoutUrl}}" ng-controller='LogoutCtrl' method="POST" ng-submit='logout()'>
-        <input class='btn btn-info'  type="submit" value="SignOut" />
+      <button id="top-reload" class='btn btn-info' ng-click='refresh()'>&#xf021;  Reload</button>
+      <form id="top-buttons" action="{{logoutUrl}}" ng-controller='LogoutCtrl' method="POST" ng-submit='logout()'>
+        <input class='btn btn-info'  type="submit" value="&#xf08b;  Sign Out" />
       </form>
       <a href="#">Scrummer</a>
     </ul>
@@ -16,22 +16,22 @@
 
   <div class="page-header">
     <div class="col-headers col-lg-3 col-md-3 col-xs-3">
-      <span>Defined</span>
+      <span><i class="fa fa-folder-open"></i>Defined</span>
     </div>
     <div class="col-headers col-lg-3 col-md-3 col-xs-3">
-      <span>Inprogress</span>
+      <span><i class="fa fa-sliders"></i>In Progress</span>
     </div>
     <div class="col-headers col-lg-3 col-md-3 col-xs-3">
-      <span>Completed</span>
+      <span><i class="fa fa-check"></i>Completed</span>
     </div>
     <div class="col-headers col-lg-3 col-md-3 col-xs-3">
-      <span>Activities</span>
+      <span><i class="fa fa-users"></i>Activities</span>
     </div>
   </div> <!-- end of page-header -->
 
   <div gridster="gridsterOptions">
     <div ng-model="widgets">
-      <ul>
+      <ul id="widget-columns">
         <li gridster-item="widget" ng-repeat="widget in widgets | filter: {allowed: true}">
           <div class="box column-box" ng-controller="CustomWidgetCtrl">
             <div class="box-header">
@@ -73,7 +73,7 @@
 
                         <li ng-show="card.hasAttachments" ><a href="#" class=""><i class="fa fa-paperclip"></i></a></li>
 
-                        <li><a href="#" ng-click="editCard(widget, card)" class="" data-toggle="modal" data-target="#userStoryModal"><i class="fa fa-arrows-alt"></i></a></li>
+                        <li><a href="#" ng-click="editCard(widget, card)" class="" data-toggle="modal" data-target="#userStoryModal"><i class="fa fa-pencil"></i></a></li>
 
                         <li><a href="#" trigger-card-accordion class="toggle-btn"><i class="fa fa-arrows-v"></i></a></li>
 
