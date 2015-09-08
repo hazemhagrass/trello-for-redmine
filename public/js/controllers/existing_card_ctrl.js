@@ -27,6 +27,7 @@ angular.module('trelloRedmine')
     $scope.updateCard = function(card) {
         // To do: handle error
       card.card_loading = true;
+      card.assigned_to.name = 'Updating ...';
       redmineService.updateIssue(card.id, card).then(function(result) {
         // GET ISSUE AFTER UPDATING TO UPDATE ASSIGNED TO FIELD IN ANGULAR
         redmineService.getIssue(card.id)
