@@ -34,6 +34,8 @@ angular.module('trelloRedmine')
   };
   
   function populateData(controller_project_id) {
+    redmineService.setApiKey($localStorage.current_api_key);
+
     var deferred = $q.defer();
 
     project_id = controller_project_id;
