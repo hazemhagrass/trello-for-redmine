@@ -31,7 +31,8 @@
                 </tr>
                 <tr>
                     <td style="width:30%;"><b class="blue-text">Assignee:</b></td>
-                    <td>{{card.assigned_to.name}}</td>
+                    <td ng-if="selected_project.members.length" editable-select="card.assigned_to_id" e-ng-options="p.id as p.name for p in selected_project.members" onaftersave="updateCard(card)">{{card.assigned_to.name}}</td>
+                    <td ng-if="!selected_project.members.length">{{card.assigned_to.name}}</td>
                 </tr>
                 <tr>
                     <td style="width:30%;"><b class="blue-text">Story-size:</b></td>

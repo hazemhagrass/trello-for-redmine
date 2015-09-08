@@ -11,6 +11,7 @@ module.exports = function(req, res, next) {
         	if(data || req.session.current_api_key) {
         		next();
         	} else {
+            console.log('===================INVALID REQUEST===================');
             res.redirect('http://' + config.host);
         	}
     	});

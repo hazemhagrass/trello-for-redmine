@@ -10,6 +10,11 @@
         <span editable-select="newCard.priority_id" e-name="priority_id" e-ng-options="p.id as p.name for p in priorities">
         </span>
       </div>
+      <div ng-if="selected_project.members.length">
+        <span class="title">assignee: </span>
+        <span editable-select="newCard.assigned_to_id" e-name="assigned_to_id" e-ng-options="p.id as p.name for p in selected_project.members">
+        </span>
+      </div>
       <span ng-show="editableForm.$visible">
         <button type="submit" class="btn btn-primary" ng-disabled="editableForm.$waiting">
           Save
