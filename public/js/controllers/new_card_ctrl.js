@@ -19,7 +19,8 @@ angular.module('trelloRedmine')
       redmineService.createTask($scope.newCard)
       .then(function (result) {
         var issue = result.data.issue;
-        issue.assigned_to.mail = $localStorage.user_mail;
+        // issue.assigned_to.mail = $localStorage.user_mail;
+         issue.assigned_to.mail = issue.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
         issue.subTasks = []; 
         issue.attachments = [];
         widget.cards.unshift(issue);
