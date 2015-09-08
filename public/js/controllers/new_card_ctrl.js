@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('NewCardCtrl', ['$scope', '$localStorage', 'redmineService',
-  function($scope, $localStorage, redmineService) {
+.controller('NewCardCtrl', ['$scope', '$localStorage', 'redmineService', 'toaster',
+  function($scope, $localStorage, redmineService, toaster) {
 
     $scope.newCard = {
       subject: "",
@@ -15,6 +15,10 @@ angular.module('trelloRedmine')
     };
 
     $scope.addNewCard = function(widget) { 
+      toaster.pop({ type: 'info',
+        title: 'A new card is being added.',
+        showCloseButton: true
+      });
       $scope.newCard.status_id = widget.status_id;
       redmineService.createTask($scope.newCard)
       .then(function (result) {
