@@ -276,16 +276,18 @@ router.post('/logout/user/:api_key', function (req, res, next) {
 	res.redirect(host);
 });
 
-router.post('/authenticate', function (req, res, next) {
+
+router.get('/authenticate/:project_id/:api_key', function (req, res, next) {
 	// var data = req.body;
 
 	// var user_data = JSON.parse(data);
-	var api_key = req.body.api_key;
+	var api_key = req.params.api_key;
 	redis_client.set(api_key, api_key);
 	req.session.current_api_key = api_key;
 	setApiKey(api_key);
-	res.sendStatus(200);
-	
+	res.redirect(host + 'trello/' + req.params.project_id);
+	//res.send(200);
+
 });
 
 router.post('/upload/file/:issue_id/:api_key', function (req, res, next) {
