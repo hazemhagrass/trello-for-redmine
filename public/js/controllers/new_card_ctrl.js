@@ -2,17 +2,7 @@ angular.module('trelloRedmine')
 .controller('NewCardCtrl', ['$scope', '$localStorage', 'redmineService', 'toaster',
   function($scope, $localStorage, redmineService, toaster) {
 
-    $scope.newCard = {
-      subject: "",
-      description: "",
-      project_id: $scope.project_id,
-      tracker_id: 5,
-      status_id: '',
-      priority_id : '',
-      parent_issue_id : '',
-      is_private: 0,
-      assigned_to_id: $localStorage.user_id
-    };
+    $scope.newCard = initiateCard();
 
     $scope.addNewCard = function(widget) { 
       toaster.pop({ type: 'info',
@@ -28,7 +18,23 @@ angular.module('trelloRedmine')
         issue.subTasks = []; 
         issue.attachments = [];
         widget.cards.unshift(issue);
+      }).finally( function() {
+        $scope.newCard = initiateCard();
       });
     };
+
+    function initiateCard(){
+      return {
+        subject: "",
+        description: "",
+        project_id: $scope.project_id,
+        tracker_id: 5,
+        status_id: '',
+        priority_id : '',
+        parent_issue_id : '',
+        is_private: 0,
+        assigned_to_id: $localStorage.user_id
+      };
+    }
   }
 ]);
