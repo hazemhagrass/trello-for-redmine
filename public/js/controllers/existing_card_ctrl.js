@@ -26,18 +26,22 @@ angular.module('trelloRedmine')
 
     $scope.updateCard = function(card) {
         // To do: handle error
-      card.card_loading = true;
-      card.assigned_to.name = 'Updating ...';
+      if(card.assigned_to_id){
+        card.assigned_to.name = 'Updating ...';
+      }
       redmineService.updateIssue(card.id, card).then(function(result) {
-        // GET ISSUE AFTER UPDATING TO UPDATE ASSIGNED TO FIELD IN ANGULAR
-        redmineService.getIssue(card.id)
-        .then(function (updated_card) {
-          card.assigned_to = updated_card.data.issue.assigned_to;
-          card.assigned_to.mail = card.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';;
-          console.log(result);
-        }).finally( function() {
-          delete card.card_loading;
-        });
+        if(card.assigned_to_id){
+          card.card_loading = true;
+          // GET ISSUE AFTER UPDATING TO UPDATE ASSIGNED TO FIELD IN ANGULAR
+          redmineService.getIssue(card.id)
+          .then(function (updated_card) {
+            card.assigned_to = updated_card.data.issue.assigned_to;
+            card.assigned_to.mail = card.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
+          }).finally( function() {
+            card.assigned_to_id = undefined;
+            delete card.card_loading;
+          });
+        }
       });
     };
 
