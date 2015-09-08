@@ -1,6 +1,6 @@
 (function() {
 	angular.module('trelloRedmine', ['gridster', 'ui.bootstrap.accordion', 'ui.bootstrap.tpls', 'ui.bootstrap.modal', 'ngRoute', 'ui.sortable', 'ngAnimate', 'mgcrea.ngStrap.popover', 'mgcrea.ngStrap.tooltip',
-                                    'ui.gravatar', 'xeditable', 'ngSanitize', 'ngStorage', 'angularFileUpload'])
+                                    'ui.gravatar', 'xeditable', 'ngSanitize', 'ngStorage', 'angularFileUpload', 'toaster'])
 		.config(['$routeProvider', '$locationProvider',
 			function($routeProvider, $locationProvider) {
 				$routeProvider
@@ -10,7 +10,12 @@
                     })
                     .when('/trello/:project_id', {
                         templateUrl: 'views/templates/home.html',
-                        controller: 'DashboardCtrl'
+                        controller: 'DashboardCtrl',
+                        resolve: {
+                            populationFinished: ['$route', 'redmineAPI', function($route, redmineAPI) {
+                                return redmineAPI.populateData($route.current.params.project_id);
+                            }]
+                        }
                     })
                     .otherwise({
                         redirectTo: '/login'
@@ -19,6 +24,19 @@
                 $locationProvider.html5Mode(true);
             }
         ])
+        .config(['$httpProvider', function($httpProvider) {
+            $httpProvider.interceptors.push(['toaster', '$q', function(toaster, $q) {
+                return {
+                    'responseError': function(rejection) {
+                        toaster.pop({ type: 'error',
+                            title: 'Network error, please reload.',
+                            showCloseButton: true
+                        });
+                        return $q.reject(rejection);
+                    }
+                };
+            }])
+        }])
         .run(function(editableOptions) {
             editableOptions.theme = 'bs3';
         })

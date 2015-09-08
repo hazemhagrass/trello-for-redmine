@@ -37,7 +37,6 @@ angular.module('trelloRedmine')
         scope.edit = true;
  
         setTimeout(function () {
-          console.log(element.children().children('input'));
           element.children().children('input')[0].focus();
           element.children().children('input').bind('blur', function (e) {
             scope.$apply(function () {

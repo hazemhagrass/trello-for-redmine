@@ -11,7 +11,7 @@ module.exports = function(req, res, next) {
         	if(data || req.session.current_api_key) {
         		next();
         	} else {
-        		res.redirect('/login');
+            res.redirect('http://' + config.host);
         	}
     	});
 	}

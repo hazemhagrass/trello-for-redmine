@@ -1,45 +1,37 @@
 <div>
-  <link rel="stylesheet" ng-href="{{ styleUrl }}" />
+  <toaster-container></toaster-container>
   <div class="navbar navbar-inverse">
     <ul class="nav navbar-nav navbar-left">
       <div class="choise-select">
-        <span>Release</span>
-        <select class="selectpicker">
-          <option>Mustard</option>
-          <option>Ketchup</option>
-          <option>Relish</option>
-        </select>
-      </div> <!-- end of choise-select -->
-      <div class="choise-select">
-        <span>Sprint</span>
-        <select class="selectpicker">
-          <option>Mustard</option>
-          <option>Ketchup</option>
-          <option>Relish</option>
-        </select>
-      </div> <!-- end of choise-select -->
+        <span>Project</span>
+        <select ng-model="selected_project" ng-options="project.name for project in user_projects track by project.id" ng-change="goToProject(selected_project)"></select>
+      </div> 
+      <button id="top-reload" class='btn btn-info' ng-click='refresh()'>&#xf021;  Reload</button>
+      <form id="top-buttons" action="{{logoutUrl}}" ng-controller='LogoutCtrl' method="POST" ng-submit='logout()'>
+        <input class='btn btn-info'  type="submit" value="&#xf08b;  Sign Out" />
+      </form>
       <a href="#">Scrummer</a>
     </ul>
   </div> <!-- end of navbar -->
 
   <div class="page-header">
     <div class="col-headers col-lg-3 col-md-3 col-xs-3">
-      <span>Defined</span>
+      <span><i class="fa fa-folder-open"></i>Defined</span>
     </div>
     <div class="col-headers col-lg-3 col-md-3 col-xs-3">
-      <span>Inprogress</span>
+      <span><i class="fa fa-sliders"></i>In Progress</span>
     </div>
     <div class="col-headers col-lg-3 col-md-3 col-xs-3">
-      <span>Completed</span>
+      <span><i class="fa fa-check"></i>Completed</span>
     </div>
     <div class="col-headers col-lg-3 col-md-3 col-xs-3">
-      <span>Activities</span>
+      <span><i class="fa fa-users"></i>Activities</span>
     </div>
   </div> <!-- end of page-header -->
 
   <div gridster="gridsterOptions">
     <div ng-model="widgets">
-      <ul>
+      <ul id="widget-columns">
         <li gridster-item="widget" ng-repeat="widget in widgets | filter: {allowed: true}">
           <div class="box column-box" ng-controller="CustomWidgetCtrl">
             <div class="box-header">
@@ -54,7 +46,7 @@
             </div> <!-- end of box-header -->
             <div class="box-content">
               <ul class="connectedSortable" ui-sortable="sortableTemplates" sortable ng-model="widget.cards" widget-status="{{widget.status_id}}">
-                <li class="card" ng-repeat="card in widget.cards" id="{{card.id}}">
+                <li class="card" ng-repeat="card in widget.cards" id="{{card.id}}" ng-controller="ExistingCardCtrl" trigger-loader>
                   <div class="card-header heigh">
                     <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
                     <h5>{{card.subject}}</h5>
@@ -63,80 +55,7 @@
                   <accordion close-others="oneAtATime">
                     <accordion-group>
                       <accordion-heading><i id="accord-{{card.id}}" ng-hide="false" href="#" class=""></accordion-heading>
-                      <div ng-repeat="task in card.subTasks track by $index" class="task-component">
-                        <div class="task-line">
-                          <div class="task-line-info">
-                            <input class="pull-left" type="checkbox" ng-click="changeTaskStatus(card, task, status_val)" ng-model="status_val" ng-checked="task.status.id == 14">
-                            <a target="_blank" href="http://{{config.host}}/issues/{{task.id}}" class="id">{{task.id}}</a>
-                            <p>{{task.subject}}</p>
-                          </div> <!-- end of task-line-info -->
-
-                          <div class="related-task-image">
-                            <img class="member" title="{{task.assigned_to.name}}" gravatar-src="task.assigned_to.mail" gravatar-size="100" />
-                          </div>
-                        </div> <!-- end of task-line -->
-
-                        <div class="related-task-icons">
-                          <ul>
-                            <li><a href="" data-toggle="modal" data-target="#relatedTask-modal{{task.id}}"><i class="fa fa-arrows-alt"></i></a></li>
-                            <li><a href="#" confirmed-click="deleteTask(card, task)" ng-confirm-click="Are you sure about deleting this task?"><i class="fa fa-trash-o"></i></a></li>
-                          </ul>
-                        </div> <!-- end of related-task-icons -->
-
-                        <!-- modal that contains task details -->
-                        <div class="modal fade" id="relatedTask-modal{{task.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                  <h4 class="modal-title" id="myModalLabel"><div onaftersave="updateIssue(task.id, task, card)" editable-text="task.subject">{{task.subject}}</div></h4>
-                                </div>
-                                <div class="modal-body">
-                                  <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="userstory-edit-img">
-                                            <img class="member" title="{{card.assigned_to.firstname}} {{card.assigned_to.lastname}}" gravatar-src="card.assigned_to.mail" gravatar-size="100" />
-                                        </div>
-                                        <p><b>Added by: </b> {{task.author.name}}</p>
-                                        <p><b>From: </b> {{task.created_on}}</p>
-                                        <p><b>Updated: </b> {{task.updated_on}}</p>
-                                    </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="modal-row col-lg-12">
-                                        <table>
-                                          <tr>
-                                              <td style="width:30%;"><b class="blue-text">Description:</b></td>
-                                              <td>{{task.description}}</td>
-                                          </tr>
-                                          <tr>
-                                              <td style="width:30%;"><b class="blue-text">Assignee:</b></td>
-                                              <td>{{task.assigned_to.name}}</td>
-                                          </tr>
-                                          <tr>
-                                              <td style="width:30%;"><b class="blue-text">Status:</b></td>
-                                              <td>{{task.status.name}}</td>
-                                          </tr>
-                                        </table>
-                                    </div>
-                                  </div>
-                                  <!--<div class="row">
-                                    <div class="modal-row col-lg-12">
-                                      <p><b>Assignee: </b> <a href="#" onaftersave="updateTask(task)" editable-select="task.assigned_to_id" e-ng-options="m.id as m.name for m in projectMembers">
-                                                {{task.assigned_to.name}}
-                                         </a></p>
-                                    </div>
-                                  </div>-->
-                                </div>
-                                
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                  <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
-                                </div>
-                              </div>
-                            </div>
-                        </div>
-                        <!-- end of modal -->
+                      <div ng-repeat="task in card.subTasks track by $index" class="task-component" ng-controller="ExistingTaskCtrl" ng-include="'views/templates/view_task.html'">
                       </div> <!-- end of task card.subTasks -->
                     </accordion-group>
                   </accordion>
@@ -150,57 +69,27 @@
                     </div> <!-- end of task-user -->
                     <div class="card-btns">
                       <ul>
-                        <li><a href="" ng-click="addNewSubTask(card)" data-toggle="modal" data-target="#addSubtask-modal"><i class="fa fa-plus"></i></a></li>
+                        <li><a href="" ng-click="addNewSubTask(card)" data-toggle="modal" data-target="#addSubtask-modal" ng-controller="NewTaskCtrl"> <i class="fa fa-plus"></i></a></li>
 
                         <li ng-show="card.hasAttachments" ><a href="#" class=""><i class="fa fa-paperclip"></i></a></li>
 
-                        <li><a href="#" ng-click="editCard(widget, card)" class="" data-toggle="modal" data-target="#userStoryModal"><i class="fa fa-arrows-alt"></i></a></li>
+                        <li><a href="#" ng-click="editCard(widget, card)" class="" data-toggle="modal" data-target="#userStoryModal"><i class="fa fa-pencil"></i></a></li>
 
-                        <li><a href="#" ng-click="showCardAccordion(card)" class="toggle-btn"><i class="fa fa-arrows-v"></i></a></li>
+                        <li><a href="#" trigger-card-accordion class="toggle-btn"><i class="fa fa-arrows-v"></i></a></li>
 
                       </ul>
                     </div> <!-- end of card-btns -->
                   </div> <!-- end of card-footer -->
-                  
+
                     <!--<p>
-                        <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank">{{card.subject}}</h3></a>  
+                        <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank">{{card.subject}}</h3></a>
                     </p>-->
-                  <div id="overlay">
+                  <div id="overlay" ng-show="card.card_loading">
                     <img id="loading" src="http://bit.ly/pMtW1K "></img>
                   </div> <!-- end of overlay -->
                 </li> <!-- end of card -->
-                <li ng-show="widget.cards.length===0" style="background-color: #CCEEFA; visibility: hidden;">&nbsp;</li>
               </ul>
-              <form editable-form name="editableForm" onaftersave="addNewCard(widget)" >
-                <span ng-show="editableForm.$visible">
-                  <div class="addNew-form">
-                    <div>
-                      <span class="title">subject: </span>
-                      <span editable-text="newCard.subject" e-name="subject" e-required></span>
-                    </div>
-                    <div>
-                      <span class="title">priority: </span>
-                      <span editable-select="newCard.priority_id" e-name="priority_id" e-ng-options="p.id as p.name for p in priorities">
-                      </span>
-                    </div>
-                    <span ng-show="editableForm.$visible">
-                      <button type="submit" class="btn btn-primary" ng-disabled="editableForm.$waiting">
-                        Save
-                      </button>
-                      <button type="button" class="btn btn-default" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()">
-                        Cancel
-                      </button>
-                    </span> <!-- end of editableForm -->
-                  </div>
-
-                </span> <!-- end of editableForm -->
-                <div class="buttons">
-                  <button type="button" class="btn btn-default add-card-btn" ng-show="!editableForm.$visible" ng-click="editableForm.$show()">
-                    Add a card
-                  </button>
-                  
-                </div> <!-- end of buttons -->
-              </form>
+              <ng-include src="'views/templates/new_card.html'"></ng-include>
             </div> <!-- end of box-content -->
           </div> <!-- end of box -->
         </li> <!-- end of widget -->
@@ -223,7 +112,7 @@
                   <p><div ng-bind-html="parseTrustSnippt(activity.description)"></div></p>
                 </div>
                 <div class="activity-img">
-                  <img src=" " alt="">
+                  <img title="{{activity.author.name}}" gravatar-src="activity.author.email" gravatar-size="50">
                 </div>
             </div>
           </div>

@@ -1,0 +1,18 @@
+<div class="task-line">
+  <div class="task-line-info">
+    <input class="pull-left" type="checkbox" ng-click="changeTaskStatus(card, task, status_val)" ng-model="status_val" ng-checked="task.status.id == 14">
+    <a target="_blank" href="http://{{config.host}}/issues/{{task.id}}" class="id" ng-class="tasksHelpers.taskClass(task.status.id, false)">{{task.id}}</a>
+    <p>{{task.subject}}</p>
+  </div> <!-- end of task-line-info -->
+
+  <div class="related-task-image">
+    <img class="member" title="{{task.assigned_to.name}}" gravatar-src="task.assigned_to.mail" gravatar-size="100" />
+  </div>
+</div> <!-- end of task-line -->
+
+<div class="related-task-icons">
+  <ul>
+    <li><a href="" ng-click="editTask(card, task)" data-toggle="modal" data-target="#relatedTask-modal{{task.id}}"><i class="fa fa-arrows-alt"></i></a></li>
+    <li><a href="#" confirmed-click="deleteTask(card, task)" ng-confirm-click="To be added"><i class="fa fa-trash-o"></i></a></li>
+  </ul>
+</div> <!-- end of related-task-icons -->
