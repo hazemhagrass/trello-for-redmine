@@ -1,19 +1,24 @@
 <div class="modal-header newTask-header">
     <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
-    <span>
-    Add new subtask
-    </span>
+    <span>Add new subtask</span>
 </div>
 <div class="modal-body">
-  <div class="row">
-    <div class="col-lg-12">
-      <input class="modal-textInput" type="text" ng-model="newTask.subject">
+    <div class="row">
+        <div class="modal-row col-lg-12">
+            <table>
+                <tr>
+                    <td style="width:30%;"><b class="blue-text">Description:</b></td>
+                    <td><input class="modal-textInput" type="text" ng-model="newTask.subject"></td>
+                </tr>
+                <tr ng-if="selected_project.members.length">
+                    <td style="width:30%;"><b class="blue-text">Assignee:</b></td>
+                    <td><select ng-model="newTask.assigned_to_id" ng-options="p.id as p.name for p in selected_project.members"></select></td>
+                </tr>
+            </table>
+        </div>
     </div>
-  </div>
 </div>
-
 <div class="modal-footer">
   <button type="button" class="btn btn-default" ng-click="dismiss()">Close</button>
   <button type="button" ng-click="createTask(card, newTask)" class="btn btn-primary">Save changes</button>
 </div>
-    

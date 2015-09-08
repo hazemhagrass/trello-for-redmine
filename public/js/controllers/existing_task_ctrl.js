@@ -46,10 +46,13 @@ angular.module('trelloRedmine')
 
     $scope.updateTask = function(issue_id, updated_data, parent_card) {
         parent_card.card_loading = true;
+        if(updated_data.assigned_to_id){
+          updated_data.assigned_to.name = 'Updating ...';
+        }
         redmineService.updateIssue(issue_id, updated_data)
         .then(function (result) {
           var task_index = parent_card.subTasks.indexOf(updated_data);
-          if(updated_data.assigned_to_id) { getUserInfo(task_index, updated_data.assigned_to_id); }
+          // if(updated_data.assigned_to_id) { getUserInfo(task_index, updated_data.assigned_to_id); }
           if(updated_data.status_id) { parent_card.subTasks[task_index].status.id = updated_data.status_id; }
 
           redmineService.getIssue(parent_card.id)
@@ -72,16 +75,26 @@ angular.module('trelloRedmine')
             }
           });
 
+          if(updated_data.assigned_to_id){
+            redmineService.getIssue(updated_data.id)
+            .then(function (updated_task) {
+              updated_data.assigned_to = updated_task.data.issue.assigned_to;
+              updated_data.assigned_to.mail = updated_data.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
+            }).finally( function() {
+              updated_data.assigned_to_id = undefined;
+            });
+          }
+
         }).finally( function() {
           delete parent_card.card_loading;
         });
     };
 
-    function getUserInfo(index, assign_to_id) {
-      redmineService.getUserInfo(assign_to_id)
-      .then(function (result) {
-        $scope.subTasks[index].assigned_to = result.data;
-      });
-    };
+    // function getUserInfo(index, assign_to_id) {
+    //   redmineService.getUserInfo(assign_to_id)
+    //   .then(function (result) {
+    //     $scope.subTasks[index].assigned_to = result.data;
+    //   });
+    // };
   }
 ]);

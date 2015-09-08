@@ -2,15 +2,7 @@ angular.module('trelloRedmine')
 .controller('NewTaskCtrl', ['$scope', '$modal', '$localStorage', 'redmineService', 'cardsHelpers',
     function($scope, $modal, $localStorage, redmineService, cardsHelpers) {
 
-        $scope.newTask = {
-            subject: "",
-            description: "",
-            priority_id: 0,
-            project_id: $scope.project_id,
-            parent_issue_id: 0,
-            tracker_id: 4,
-            assigned_to_id: 0
-        };
+        $scope.newTask = initiateTask();
 
         $scope.addNewSubTask = function(card) {
             $modalInstance = $modal.open({
@@ -22,7 +14,7 @@ angular.module('trelloRedmine')
 
         $scope.createTask = function(card, newTask) {
         
-            var assigned_to_id = (card.assigned_to) ? card.assigned_to.id : '';
+            var assigned_to_id = newTask.assigned_to_id ? newTask.assigned_to_id : $localStorage.user_id;
             var priority_to_id = (card.priority) ? card.priority.id : '';
             
             newTask.priority_id = priority_to_id;
@@ -34,10 +26,24 @@ angular.module('trelloRedmine')
             redmineService.createTask(newTask)
             .then(function (result) {
                 var issue = result.data.issue;
-                issue.assigned_to.mail = $localStorage.user_mail;
+                issue.assigned_to.mail = issue.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
                 card.subTasks.unshift(issue);
                 cardsHelpers.calculateProgress(card);
+            }).finally( function() {
+                $scope.newTask = initiateTask();
             });
         };
+
+        function initiateTask(){
+            return {
+                subject: "",
+                description: "",
+                priority_id: 0,
+                project_id: $scope.project_id,
+                parent_issue_id: 0,
+                tracker_id: 4,
+                assigned_to_id: $localStorage.user_id
+            };
+        }
     }
 ]);

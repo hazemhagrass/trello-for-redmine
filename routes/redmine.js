@@ -71,15 +71,44 @@ router.get('/users/:user_id/projects/:project_id/issues/:api_key', function (req
 	});
 });
 
-// get projects of specific user
+// get projects of specific user + members of this project IF user is authorized
 router.get('/users/:user_id/projects/:api_key', function (req, res, next) {
-	setApiKey(req.session.current_api_key ||  req.params.api_key);
+	setApiKey(req.params.api_key || req.session.current_api_key);
 	redmine.get('users/' + req.params.user_id, {
 		include: 'memberships'
 	}).success(function (data) {
-		res.json(data);
+
+		async.each(data.user.memberships, function(membership, callback) {
+
+			var api_key = req.params.api_key || req.session.current_api_key;
+			var url = host + "projects/" + membership.project.id + "/memberships.json";
+
+			request.get({
+				headers: {'X-Redmine-API-Key': api_key},
+				url:     url
+			}, function(error, response, body){
+				if(error) { callback(error, null); }
+				membership.project.members = [];
+				if(response.statusCode == 200) {
+					var project_members = JSON.parse(body).memberships;
+					project_members.forEach( function(member) {
+						membership.project.members.push(member.user);
+					});
+				}
+				callback(null);
+			});
+
+		}, function(error) {
+
+			if(error) {
+				res.status(404).json(error);
+			} else {
+				res.json(data);
+			}
+		});
+
+		// res.json(data);
 	}).error(function (err) {
-		console.log(err);
 		res.status(404).json(err);
 	});
 });
@@ -208,15 +237,14 @@ router.post('/create/issue/:api_key', function (req, res, next) {
 
 // delete an issue
 router.delete('/issues/:issue_id/:api_key', function (req, res, next) {
-
 	setApiKey(req.session.current_api_key ||  req.params.api_key);
 
-	console.log();
 	
 	/*request.del({
 		headers: {'X-Redmine-API-Key':req.session.current_api_key ||  req.params.api_key},
-		url:     'http://redmine.badrit.com/attachments/' + attachment_id +'.json'
+		url:     'http://redmine.badrit.com/issues/' + req.params.issue_id +'.json'
 	}, function(error, response, body){
+		console.log(JSON.stringify(error));
 		res.json(body);
 	});*/
 
@@ -229,16 +257,19 @@ router.delete('/issues/:issue_id/:api_key', function (req, res, next) {
 	});
 });
 
-// GET project members
+// GET project members | THIS ROUTE IS NOT USED IN THIS PHASE
 router.get('/projects/:project_id/memberships/:api_key', function (req, res, next) {
-	var api_key = req.session.current_api_key ||  req.params.api_key;
+	var api_key = req.params.api_key || req.session.current_api_key;
 	var url = host + "projects/" + req.params.project_id + "/memberships.json";
 
 	request.get({
 		headers: {'X-Redmine-API-Key': api_key},
 		url:     url
 	}, function(error, response, body){
-		res.json(body);
+		console.log(error);
+		console.log(response);
+		console.log(body);
+		response.statusCode == 200 ? res.status(200).json(JSON.parse(body)) : res.status(response.statusCode).json('');
 	});
 });
 
@@ -269,13 +300,6 @@ router.post('/login/user', function (req, res, next) {
 	
 });
 
-router.post('/logout/user/:api_key', function (req, res, next) {
-	redis_client.del(req.params.api_key);
-	delete req.session.current_api_key;
-	setApiKey(undefined);
-	res.redirect(host);
-});
-
 
 router.get('/authenticate/:project_id/:api_key', function (req, res, next) {
 	// var data = req.body;
@@ -288,6 +312,13 @@ router.get('/authenticate/:project_id/:api_key', function (req, res, next) {
 	res.redirect(host + 'trello/' + req.params.project_id);
 	//res.send(200);
 
+});
+
+router.post('/logout/user/:api_key', function (req, res, next) {
+	redis_client.del(req.params.api_key);
+	delete req.session.current_api_key;
+	setApiKey(undefined);
+	res.redirect(host);
 });
 
 router.post('/upload/file/:issue_id/:api_key', function (req, res, next) {
