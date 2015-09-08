@@ -230,7 +230,7 @@ router.delete('/issues/:issue_id/:api_key', function (req, res, next) {
 
 // GET project members
 router.get('/projects/:project_id/memberships/:api_key', function (req, res, next) {
-	var api_key = req.session.current_api_key ||  req.params.api_key;
+	var api_key = req.params.api_key || req.session.current_api_key;
 	var url = host + "projects/" + req.params.project_id + "/memberships.json";
 
 	request.get({
@@ -240,7 +240,7 @@ router.get('/projects/:project_id/memberships/:api_key', function (req, res, nex
 		console.log(error);
 		console.log(response);
 		console.log(body);
-		res.status(response.statusCode).json(body);
+		response.statusCode == 200 ? res.status(200).json(JSON.parse(body)) : res.status(response.statusCode).json('');;
 	});
 });
 
