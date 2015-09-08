@@ -53,35 +53,35 @@ angular.module('trelloRedmine')
       user_projects.some(function(project) {
         if(project.id == project_id) {
           angular.extend(selected_project, project);
-          if(project_id == 209){
-            // testing on an unauthorized user
-            selected_project.members = [
-              {
-                "id": 34,
-                "name": "Hazem Hagrass"
-              },
-              {
-                "id": 99,
-                "name": "Kareem Fikry"
-              },
-              {
-                "id": 143,
-                "name": "Ahmad Gaber"
-              },
-              {
-                "id": 115,
-                "name": "Ahmad Ali"
-              },
-              {
-                "id": 42,
-                "name": "Ahmed Moawad"
-              },
-              {
-                "id": 139,
-                "name": "Ossama Sanosi"
-              }
-            ]
-          }
+          // if(project_id == 209){
+          //   // testing on an unauthorized user
+          //   selected_project.members = [
+          //     {
+          //       "id": 34,
+          //       "name": "Hazem Hagrass"
+          //     },
+          //     {
+          //       "id": 99,
+          //       "name": "Kareem Fikry"
+          //     },
+          //     {
+          //       "id": 143,
+          //       "name": "Ahmad Gaber"
+          //     },
+          //     {
+          //       "id": 115,
+          //       "name": "Ahmad Ali"
+          //     },
+          //     {
+          //       "id": 42,
+          //       "name": "Ahmed Moawad"
+          //     },
+          //     {
+          //       "id": 139,
+          //       "name": "Ossama Sanosi"
+          //     }
+          //   ]
+          // }
           return true;
         }
       });
