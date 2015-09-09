@@ -8,7 +8,7 @@ module.exports = function(req, res, next) {
 		var params = req.params[0].split("/");
 		var api_key = params[params.length - 1] ;
 		redis_client.get(api_key, function (err, data) {
-        	if(data || req.session.current_api_key) {
+        	if(data) {
         		next();
         	} else {
             console.log('===================INVALID REQUEST===================');

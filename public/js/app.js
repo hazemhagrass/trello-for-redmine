@@ -8,7 +8,7 @@
                         templateUrl: 'views/templates/login.html',
                         controller: 'AuthCtrl'
                     })
-                    .when('/trello/:project_id', {
+                    .when('/trello/:project_id/:api_key', {
                         templateUrl: 'views/templates/home.html',
                         controller: 'DashboardCtrl',
                         resolve: {

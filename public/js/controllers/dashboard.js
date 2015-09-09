@@ -24,7 +24,7 @@ angular.module('trelloRedmine')
         };
 
         $scope.goToProject = function (project) {
-            $location.path('/trello/' + project.id);
+            $location.path('/trello/' + project.id + '/' + $localStorage.current_api_key);
         };
 
         $scope.sortableTemplates = {
