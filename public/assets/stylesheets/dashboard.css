@@ -2,6 +2,10 @@ html {
 	height: 100%;
 }
 
+.navbar.navbar-inverse {
+	background-color: #444 !important;
+}
+
 .alert-success {
 	position: absolute;
 	top: 50%;
@@ -40,10 +44,29 @@ button#top-reload,
 .page-header .col-headers {
 	text-transform: uppercase;
 	letter-spacing: 1px;
+	text-align: left;
 }
 
 .page-header .col-headers i.fa {
 	margin-right: 5px;
+}
+
+.page-header .col-headers.defined,
+ul#widget-columns .one-column:nth-of-type(1) {
+	/*background-color: red;*/
+}
+
+.page-header .col-headers.in-progress,
+ul#widget-columns .one-column:nth-of-type(2) {
+	/*background-color: #666;*/
+}
+
+.page-header .col-headers.completed {
+	background-color: #199570;
+}
+
+ul#widget-columns .one-column:nth-of-type(3) {
+	background-color: #1FA77E;
 }
 
 .box-content {
@@ -69,6 +92,7 @@ li.gridster-item:last-of-type {
 
 li.gridster-item:last-of-type .box-content {
 	padding-bottom: 0 !important;
+	margin-bottom: 20px !important;
 }
 
 .modal-section p span {
@@ -85,14 +109,72 @@ li.gridster-item:last-of-type .box-content {
 	content: "\f093";
 }
 
+.page-header .col-headers {
+	position: relative;
+	padding-top: 6px;
+}
+
+.page-header .col-headers span.add-card {
+	position: absolute;
+	right: 11px;
+	top: 11px;
+	cursor: pointer;
+	font-size: 10px;
+}
+
+.task-line-info {
+	margin-top: 6px;
+	margin-left: 6px;
+}
+
+.heigh {
+	border-color: transparent;
+}
+
+.card-header {
+	height: auto;
+	padding: 15px 10px;
+}
+
+.card-header h5 {
+	float: none;
+	margin: 0;
+}
+
+.box li {
+	margin-bottom: 20px !important;
+}
+
+.card-btns ul li {
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+.card-footer {
+	height: 48px;
+}
+
+.card-footer .task-user span {
+	margin-top: 10px;
+	font-style: normal;
+}
+
+.card-footer .task-user .task-user-img {
+	margin-top: 3px;
+}
+
+.card-footer .card-btns {
+	margin-top: 10px;
+}
+
 @media (max-width: 1366px) {
 	li.gridster-item:last-of-type {
 	    height: 1000px !important;
-	    padding-bottom: 420px;
+	    padding-bottom: 330px;
 	}
 
 	.box-content {
-		padding-bottom: 300px !important;
+		padding-bottom: 230px !important;
 	}
 }
 
