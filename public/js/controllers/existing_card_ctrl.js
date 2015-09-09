@@ -30,14 +30,20 @@ angular.module('trelloRedmine')
         card.assigned_to.name = 'Updating ...';
       }
       redmineService.updateIssue(card.id, card).then(function(result) {
-        if(card.assigned_to_id){
+        if(card.assigned_to_id || card.priority_id){
           card.card_loading = true;
-          // GET ISSUE AFTER UPDATING TO UPDATE ASSIGNED TO FIELD IN ANGULAR
+          // GET ISSUE AFTER UPDATING TO UPDATE ASSIGNED TO || PRIORITY FIELD IN ANGULAR
           redmineService.getIssue(card.id)
           .then(function (updated_card) {
-            card.assigned_to = updated_card.data.issue.assigned_to;
-            card.assigned_to.mail = card.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
+            if( card.priority_id ) {
+              card.priority = updated_card.data.issue.priority;
+            }
+            if( card.assigned_to_id ) {
+              card.assigned_to = updated_card.data.issue.assigned_to;
+              card.assigned_to.mail = card.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
+            }
           }).finally( function() {
+            card.priority_id = undefined;
             card.assigned_to_id = undefined;
             delete card.card_loading;
           });
@@ -122,6 +128,12 @@ angular.module('trelloRedmine')
         templateUrl: 'views/templates/edit_card.html',
         backdropClass: "backdrop-fix"
       });
-  }
+    }
+
+    $scope.updateCardPriority = function(card){
+      card.priority_id = card.priority.id;
+      card.priority.name = 'Updating ...';
+      $scope.updateCard(card);
+    }
   }
 ]);
