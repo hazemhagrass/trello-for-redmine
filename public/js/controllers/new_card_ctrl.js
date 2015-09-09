@@ -6,7 +6,7 @@ angular.module('trelloRedmine')
 
     $scope.addNewCard = function(widget) { 
       toaster.pop({ type: 'info',
-        title: 'A new card is being added.',
+        title: 'A new card is being added to widget ' + widget.title + '.',
         showCloseButton: true
       });
       $scope.newCard.status_id = widget.status_id;
@@ -18,6 +18,10 @@ angular.module('trelloRedmine')
         issue.subTasks = []; 
         issue.attachments = [];
         widget.cards.unshift(issue);
+        toaster.pop({ type: 'info',
+          title: 'A new card has been added successfully.',
+          showCloseButton: true
+        });
       }).finally( function() {
         $scope.newCard = initiateCard();
       });
