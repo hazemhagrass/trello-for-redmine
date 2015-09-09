@@ -34,7 +34,7 @@ angular.module('trelloRedmine')
         project_id: $scope.project_id,
         tracker_id: 5,
         status_id: '',
-        priority_id : '',
+        priority_id : 3,
         parent_issue_id : '',
         is_private: 0,
         assigned_to_id: $localStorage.user_id
