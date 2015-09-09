@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('ExistingTaskCtrl', ['$scope', '$modal', 'redmineService', 'tasksHelpers', 'cardsHelpers', 'sortingUtility', 'toaster',
-  function($scope, $modal, redmineService, tasksHelpers, cardsHelpers, sortingUtility, toaster) {
+.controller('ExistingTaskCtrl', ['$scope', '$modal', '$modalStack', 'redmineService', 'tasksHelpers', 'cardsHelpers', 'sortingUtility', 'toaster',
+  function($scope, $modal, $modalStack, redmineService, tasksHelpers, cardsHelpers, sortingUtility, toaster) {
       
     $scope.tasksHelpers = tasksHelpers;
 
@@ -10,6 +10,9 @@ angular.module('trelloRedmine')
         templateUrl: 'views/templates/edit_task.html',
         backdropClass: "backdrop-fix"
       });
+      $modalInstance.result.finally( function() {
+        synchronizeParentCard(card);
+      })
     }
 
     $scope.deleteTask = function(card, task) {
@@ -55,25 +58,9 @@ angular.module('trelloRedmine')
           // if(updated_data.assigned_to_id) { getUserInfo(task_index, updated_data.assigned_to_id); }
           if(updated_data.status_id) { parent_card.subTasks[task_index].status.id = updated_data.status_id; }
 
-          redmineService.getIssue(parent_card.id)
-          .then(function (result) {
-            var old_card = parent_card;
-            var new_card = result.data.issue;
-            var old_card_status_id = old_card.status.id;
-            var new_card_status_id = new_card.status.id;
-            if(old_card_status_id !== new_card_status_id){
-              var source_widget = $scope.widgets[old_card_status_id - 1];
-              var target_widget = $scope.widgets[new_card_status_id - 1];
-              var card_index = source_widget.cards.indexOf(old_card);
-              source_widget.cards.splice( card_index, 1 );
-              toaster.pop({ type: 'info',
-                title: 'Moved card ' + new_card.id + ' from ' +  old_card.status.name + ' to ' +  new_card.status.name + '.',
-                showCloseButton: true
-              });
-              old_card.status = new_card.status;
-              sortingUtility.insertInOrder(target_widget.cards, old_card);
-            }
-          });
+          if( !$modalStack.getTop() ){
+            synchronizeParentCard(parent_card);
+          }
 
           if(updated_data.assigned_to_id){
             redmineService.getIssue(updated_data.id)
@@ -90,6 +77,27 @@ angular.module('trelloRedmine')
         });
     };
 
+    function synchronizeParentCard(parent_card){
+      redmineService.getIssue(parent_card.id)
+      .then(function (result) {
+        var old_card = parent_card;
+        var new_card = result.data.issue;
+        var old_card_status_id = old_card.status.id;
+        var new_card_status_id = new_card.status.id;
+        if(old_card_status_id !== new_card_status_id){
+          var source_widget = $scope.widgets[old_card_status_id - 1];
+          var target_widget = $scope.widgets[new_card_status_id - 1];
+          var card_index = source_widget.cards.indexOf(old_card);
+          source_widget.cards.splice( card_index, 1 );
+          toaster.pop({ type: 'info',
+            title: 'Moved card ' + new_card.id + ' from ' +  old_card.status.name + ' to ' +  new_card.status.name + '.',
+            showCloseButton: true
+          });
+          old_card.status = new_card.status;
+          sortingUtility.insertInOrder(target_widget.cards, old_card);
+        }
+      });
+    }
     // function getUserInfo(index, assign_to_id) {
     //   redmineService.getUserInfo(assign_to_id)
     //   .then(function (result) {
