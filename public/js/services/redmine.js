@@ -18,7 +18,7 @@ angular.module('trelloRedmine')
     }
 
     this.setApiKey = function (key){
-        current_api_key = $localStorage.current_api_key;
+        current_api_key = key;
     }
 
     this.getUserInfo = function (user_id) {
