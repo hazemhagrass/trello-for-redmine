@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('ExistingTaskCtrl', ['$scope', '$modal', '$modalStack', 'redmineService', 'tasksHelpers', 'cardsHelpers', 'sortingUtility', 'toaster',
-  function($scope, $modal, $modalStack, redmineService, tasksHelpers, cardsHelpers, sortingUtility, toaster) {
+.controller('ExistingTaskCtrl', ['$scope', '$modal', '$modalStack', 'redmineService', 'tasksHelpers', 'cardsHelpers', 'issuesHelpers', 'sortingUtility', 'toaster',
+  function($scope, $modal, $modalStack, redmineService, tasksHelpers, cardsHelpers, issuesHelpers, sortingUtility, toaster) {
       
     $scope.tasksHelpers = tasksHelpers;
 
@@ -61,12 +61,12 @@ angular.module('trelloRedmine')
           }
 
           if(task.assigned_to_id){
-            task.assigned_to.name = tasksHelpers.getAssigneeName(task.assigned_to_id);
+            task.assigned_to.name = issuesHelpers.getAssigneeName(task.assigned_to_id);
             task.assigned_to.mail = task.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
           }
 
           if( task.priority_id ) {
-            task.priority.name = tasksHelpers.getPriorityName(task.priority_id);
+            task.priority.name = issuesHelpers.getPriorityName(task.priority_id);
           }
 
         }).finally( function() {
