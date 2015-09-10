@@ -23,41 +23,18 @@ angular.module('trelloRedmine')
       // cardsHelpers.calculateProgress(card);
     };
 
-    $scope.changeTaskStatus = function(card, task, state_val) {
-      if(!angular.isNumber(state_val)){
-        if(state_val) {
-          card.finishedTasks++;
-          task.status_id = 14;
-          task.status.name = 'Finished';
-        } else {
-          card.finishedTasks--;
-          task.status_id = 9;
-          task.status.name = 'In progress';
-        }
-      } else {
-        task.status_id = state_val;
-        $scope.allowed_statuses_object.some(function(status){
-          if(status.id === state_val){
-            task.status.name = status.name;
-            return true;
-          }
-        })
-      }
-      $scope.updateTask(task, card);
-      cardsHelpers.calculateProgress(card);
-    };
-
     $scope.updateTask = function(task, parent_card) {
         parent_card.card_loading = true;
 
         redmineService.updateIssue(task.id, task)
         .then(function (result) {
-          var task_index = parent_card.subTasks.indexOf(task);
-          // if(task.assigned_to_id) { getUserInfo(task_index, task.assigned_to_id); }
-          if(task.status_id) { parent_card.subTasks[task_index].status.id = task.status_id; }
 
           if( !$modalStack.getTop() ){
             synchronizeParentCard(parent_card);
+          }
+
+          if(task.status_id) {
+            task.status.name = issuesHelpers.getStatusName(task.status_id);
           }
 
           if(task.assigned_to_id){
@@ -113,6 +90,26 @@ angular.module('trelloRedmine')
     $scope.updateTaskAssignee = function(task, card){
       task.assigned_to_id = task.assigned_to.id;
       task.assigned_to.name = 'Updating ...';
+      $scope.updateTask(task, card);
+    }
+
+    $scope.updateTaskStatusFromCheckbox = function(is_finished, task, card) {
+      if(is_finished) {
+        card.finishedTasks++;
+        task.status_id = 14;
+        task.status.id = 14;
+      } else {
+        card.finishedTasks--;
+        task.status_id = 9;
+        task.status.id = 9;
+      }
+      task.status.name = 'Updating ...';
+      $scope.updateTask(task, card);
+    }
+
+    $scope.updateTaskStatusFromList = function(task, card) {
+      task.status_id = task.status.id;
+      task.status.name = 'Updating ...';
       $scope.updateTask(task, card);
     }
   }
