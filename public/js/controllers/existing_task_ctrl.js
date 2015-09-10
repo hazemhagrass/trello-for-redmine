@@ -47,37 +47,37 @@ angular.module('trelloRedmine')
       cardsHelpers.calculateProgress(card);
     };
 
-    $scope.updateTask = function(issue_id, updated_data, parent_card) {
+    $scope.updateTask = function(issue_id, task, parent_card) {
         parent_card.card_loading = true;
-        if(updated_data.assigned_to_id){
-          updated_data.assigned_to.name = 'Updating ...';
+        if(task.assigned_to_id){
+          task.assigned_to.name = 'Updating ...';
         }
-        redmineService.updateIssue(issue_id, updated_data)
+        redmineService.updateIssue(issue_id, task)
         .then(function (result) {
-          var task_index = parent_card.subTasks.indexOf(updated_data);
-          // if(updated_data.assigned_to_id) { getUserInfo(task_index, updated_data.assigned_to_id); }
-          if(updated_data.status_id) { parent_card.subTasks[task_index].status.id = updated_data.status_id; }
+          var task_index = parent_card.subTasks.indexOf(task);
+          // if(task.assigned_to_id) { getUserInfo(task_index, task.assigned_to_id); }
+          if(task.status_id) { parent_card.subTasks[task_index].status.id = task.status_id; }
 
           if( !$modalStack.getTop() ){
             synchronizeParentCard(parent_card);
           }
 
-          if(updated_data.assigned_to_id){
-            redmineService.getIssue(updated_data.id)
+          if(task.assigned_to_id){
+            redmineService.getIssue(task.id)
             .then(function (updated_task) {
-              updated_data.assigned_to = updated_task.data.issue.assigned_to;
-              updated_data.assigned_to.mail = updated_data.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
+              task.assigned_to = updated_task.data.issue.assigned_to;
+              task.assigned_to.mail = task.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
             }).finally( function() {
-              updated_data.assigned_to_id = undefined;
+              task.assigned_to_id = undefined;
             });
           }
 
-          if( updated_data.priority_id ) {
-            updated_data.priority.name = tasksHelpers.getPriorityName(updated_data.priority_id);
+          if( task.priority_id ) {
+            task.priority.name = tasksHelpers.getPriorityName(task.priority_id);
           }
 
         }).finally( function() {
-          updated_data.priority_id = undefined;
+          task.priority_id = undefined;
           delete parent_card.card_loading;
         });
     };
