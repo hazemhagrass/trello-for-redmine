@@ -27,7 +27,7 @@
           </tr>
           <tr>
               <td style="width:30%;"><b class="blue-text">Priority:</b></td>
-              <td>{{task.priority.name}}</td>
+              <td editable-select="task.priority.id" e-ng-options="p.id as p.name for p in priorities" onaftersave="updateTaskPriority(task, card)">{{task.priority.name}}</td>
           </tr>
           <tr>
               <td style="width:30%;"><b class="blue-text">Status:</b></td>

@@ -72,7 +72,12 @@ angular.module('trelloRedmine')
             });
           }
 
+          if( updated_data.priority_id ) {
+            updated_data.priority.name = tasksHelpers.getPriorityName(updated_data.priority_id);
+          }
+
         }).finally( function() {
+          updated_data.priority_id = undefined;
           delete parent_card.card_loading;
         });
     };
@@ -104,5 +109,11 @@ angular.module('trelloRedmine')
     //     $scope.subTasks[index].assigned_to = result.data;
     //   });
     // };
+
+    $scope.updateTaskPriority = function(task, card){
+      task.priority_id = task.priority.id;
+      task.priority.name = 'Updating ...';
+      $scope.updateTask(task.id, task, card);
+    }
   }
 ]);

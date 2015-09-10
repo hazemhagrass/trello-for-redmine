@@ -1,8 +1,9 @@
 angular.module('trelloRedmine')
-.service('tasksHelpers', function (){
+.service('tasksHelpers', ['redmineAPI', function (redmineAPI){
 
   return {
-    taskClass: taskClass
+    taskClass: taskClass,
+    getPriorityName: getPriorityName
   }
 
   function taskClass(task_status_id, in_modal){
@@ -13,4 +14,15 @@ angular.module('trelloRedmine')
     }
   };
 
-});
+  function getPriorityName(priority_id) {
+    var priority_name;
+    redmineAPI.priorities.some( function(priority) {
+      if( priority.id == priority_id ){
+        priority_name = priority.name;
+        return true;
+      }
+    });
+    return priority_name;
+  }
+
+}]);
