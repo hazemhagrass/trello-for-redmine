@@ -43,16 +43,16 @@ angular.module('trelloRedmine')
           }
         })
       }
-      $scope.updateTask(task.id, task, card);
+      $scope.updateTask(task, card);
       cardsHelpers.calculateProgress(card);
     };
 
-    $scope.updateTask = function(issue_id, task, parent_card) {
+    $scope.updateTask = function(task, parent_card) {
         parent_card.card_loading = true;
         if(task.assigned_to_id){
           task.assigned_to.name = 'Updating ...';
         }
-        redmineService.updateIssue(issue_id, task)
+        redmineService.updateIssue(task.id, task)
         .then(function (result) {
           var task_index = parent_card.subTasks.indexOf(task);
           // if(task.assigned_to_id) { getUserInfo(task_index, task.assigned_to_id); }
@@ -113,7 +113,7 @@ angular.module('trelloRedmine')
     $scope.updateTaskPriority = function(task, card){
       task.priority_id = task.priority.id;
       task.priority.name = 'Updating ...';
-      $scope.updateTask(task.id, task, card);
+      $scope.updateTask(task, card);
     }
   }
 ]);
