@@ -3,7 +3,8 @@ angular.module('trelloRedmine')
 
   return {
     taskClass: taskClass,
-    getPriorityName: getPriorityName
+    getPriorityName: getPriorityName,
+    getAssigneeName: getAssigneeName
   }
 
   function taskClass(task_status_id, in_modal){
@@ -23,6 +24,17 @@ angular.module('trelloRedmine')
       }
     });
     return priority_name;
+  }
+
+  function getAssigneeName(assignee_id) {
+    var assignee_name;
+    redmineAPI.selected_project.members.some( function(assignee) {
+      if( assignee.id == assignee_id ){
+        assignee_name = assignee.name;
+        return true;
+      }
+    });
+    return assignee_name;
   }
 
 }]);

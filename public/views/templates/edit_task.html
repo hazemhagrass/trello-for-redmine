@@ -22,7 +22,7 @@
           </tr>
           <tr>
               <td style="width:30%;"><b class="blue-text">Assignee:</b></td>
-              <td ng-if="selected_project.members.length" editable-select="task.assigned_to_id" e-ng-options="p.id as p.name for p in selected_project.members" onaftersave="updateTask(task, card)">{{task.assigned_to.name}}</td>
+              <td ng-if="selected_project.members.length" editable-select="task.assigned_to.id" e-ng-options="p.id as p.name for p in selected_project.members" onaftersave="updateTaskAssignee(task, card)">{{task.assigned_to.name}}</td>
               <td ng-if="!selected_project.members.length">{{task.assigned_to.name}}</td>
           </tr>
           <tr>

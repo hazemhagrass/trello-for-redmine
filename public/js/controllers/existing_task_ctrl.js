@@ -49,9 +49,7 @@ angular.module('trelloRedmine')
 
     $scope.updateTask = function(task, parent_card) {
         parent_card.card_loading = true;
-        if(task.assigned_to_id){
-          task.assigned_to.name = 'Updating ...';
-        }
+
         redmineService.updateIssue(task.id, task)
         .then(function (result) {
           var task_index = parent_card.subTasks.indexOf(task);
@@ -63,13 +61,8 @@ angular.module('trelloRedmine')
           }
 
           if(task.assigned_to_id){
-            redmineService.getIssue(task.id)
-            .then(function (updated_task) {
-              task.assigned_to = updated_task.data.issue.assigned_to;
-              task.assigned_to.mail = task.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
-            }).finally( function() {
-              task.assigned_to_id = undefined;
-            });
+            task.assigned_to.name = tasksHelpers.getAssigneeName(task.assigned_to_id);
+            task.assigned_to.mail = task.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
           }
 
           if( task.priority_id ) {
@@ -78,6 +71,7 @@ angular.module('trelloRedmine')
 
         }).finally( function() {
           task.priority_id = undefined;
+          task.assigned_to_id = undefined;
           delete parent_card.card_loading;
         });
     };
@@ -113,6 +107,12 @@ angular.module('trelloRedmine')
     $scope.updateTaskPriority = function(task, card){
       task.priority_id = task.priority.id;
       task.priority.name = 'Updating ...';
+      $scope.updateTask(task, card);
+    }
+
+    $scope.updateTaskAssignee = function(task, card){
+      task.assigned_to_id = task.assigned_to.id;
+      task.assigned_to.name = 'Updating ...';
       $scope.updateTask(task, card);
     }
   }
