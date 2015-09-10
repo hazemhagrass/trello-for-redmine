@@ -24,33 +24,33 @@ angular.module('trelloRedmine')
     };
 
     $scope.updateTask = function(task, parent_card) {
-        parent_card.card_loading = true;
+      parent_card.card_loading = true;
 
-        redmineService.updateIssue(task.id, task)
-        .then(function (result) {
+      redmineService.updateIssue(task.id, task)
+      .then(function (result) {
 
-          if( !$modalStack.getTop() ){
-            synchronizeParentCard(parent_card);
-          }
+        if( !$modalStack.getTop() ){
+          synchronizeParentCard(parent_card);
+        }
 
-          if(task.status_id) {
-            task.status.name = issuesHelpers.getStatusName(task.status_id);
-          }
+        if(task.status_id) {
+          task.status.name = issuesHelpers.getStatusName(task.status_id);
+        }
 
-          if(task.assigned_to_id){
-            task.assigned_to.name = issuesHelpers.getAssigneeName(task.assigned_to_id);
-            task.assigned_to.mail = task.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
-          }
+        if(task.assigned_to_id){
+          task.assigned_to.name = issuesHelpers.getAssigneeName(task.assigned_to_id);
+          task.assigned_to.mail = task.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
+        }
 
-          if( task.priority_id ) {
-            task.priority.name = issuesHelpers.getPriorityName(task.priority_id);
-          }
+        if( task.priority_id ) {
+          task.priority.name = issuesHelpers.getPriorityName(task.priority_id);
+        }
 
-        }).finally( function() {
-          task.priority_id = undefined;
-          task.assigned_to_id = undefined;
-          delete parent_card.card_loading;
-        });
+      }).finally( function() {
+        task.priority_id = undefined;
+        task.assigned_to_id = undefined;
+        delete parent_card.card_loading;
+      });
     };
 
     function synchronizeParentCard(parent_card){
