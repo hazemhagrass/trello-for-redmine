@@ -1,7 +1,8 @@
 angular.module('trelloRedmine')
-.controller('NewTaskCtrl', ['$scope', '$modal', '$localStorage', 'redmineService', 'cardsHelpers', 'activitiesHelpers',
-  function($scope, $modal, $localStorage, redmineService, cardsHelpers, activitiesHelpers) {
+.controller('NewTaskCtrl', ['$scope', '$modal', '$localStorage', 'redmineService', 'cardsHelpers', 'activitiesHelpers', 'tasksHelpers',
+  function($scope, $modal, $localStorage, redmineService, cardsHelpers, activitiesHelpers, tasksHelpers) {
 
+    $scope.tasksHelpers = tasksHelpers;
     $scope.newTask = initiateTask();
 
     $scope.addNewSubTask = function(card) {
