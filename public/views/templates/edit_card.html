@@ -15,11 +15,17 @@
         </div>
     </div>
     <div class="row">
-        <div class="modal-section progress-section col-lg-6">
+        <!-- <div class="modal-section progress-section col-lg-6">
             <p><b>Progress:</b><span>{{card.progress}}%</span></p>
         </div>
+
         <div class="modal-section progress-section col-lg-6">
             <p><b>Done:</b><span>{{card.done_ratio}}%</span></p>
+        </div>
+        -->
+        <div class="modal-section col-lg-12">
+            <b class="blue-text">Done:</b>
+            <progressbar animate="false" value="card.done_ratio" type="success"><b>{{card.done_ratio}}%</b></progressbar>
         </div>
     </div>
     <div class="row">
