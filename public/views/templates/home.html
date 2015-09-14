@@ -68,13 +68,13 @@
                     </div> <!-- end of task-user -->
                     <div class="card-btns">
                       <ul>
-                        <li><a href="" ng-click="addNewSubTask(card)" data-toggle="modal" data-target="#addSubtask-modal" ng-controller="NewTaskCtrl"> <i class="fa fa-plus"></i></a></li>
+                        <li><a href="" ng-click="addNewSubTask(card)" data-toggle="modal" data-target="#addSubtask-modal" ng-controller="NewTaskCtrl" title="Add Task"> <i class="fa fa-plus"></i></a></li>
 
-                        <li ng-show="card.hasAttachments" ><a href="#" class=""><i class="fa fa-paperclip"></i></a></li>
+                        <li ng-show="card.hasAttachments" ><a href="#" class="" title="Contains Attachments"><i class="fa fa-paperclip"></i></a></li>
 
-                        <li><a href="#" ng-click="editCard(widget, card)" class="" data-toggle="modal" data-target="#userStoryModal"><i class="fa fa-pencil"></i></a></li>
+                        <li><a href="#" ng-click="editCard(widget, card)" class="" data-toggle="modal" data-target="#userStoryModal" title="Edit Card"><i class="fa fa-pencil"></i></a></li>
 
-                        <li><a href="#" trigger-card-accordion class="toggle-btn"><i class="fa fa-arrows-v"></i></a></li>
+                        <li><a href="#" trigger-card-accordion class="toggle-btn" title="{{accordion_icon_title}}"><i class="fa fa-arrows-v"></i></a></li>
 
                       </ul>
                     </div> <!-- end of card-btns -->
