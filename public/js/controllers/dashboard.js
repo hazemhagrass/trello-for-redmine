@@ -31,7 +31,7 @@ angular.module('trelloRedmine')
             connectWith: '.connectedSortable',
             dropOnEmpty: true,
             'ui-floating': true,
-            stop: function(event, ui) {
+            update: function(event, ui) {
                 cardsHelpers.update_status(ui.item);
             }
         };
