@@ -279,6 +279,7 @@ router.post('/login/user', function (req, res, next) {
   		if (!error && response.statusCode == 200) {
     		var user_data = JSON.parse(body);
     		redis_client.set(user_data.user.api_key, body);
+    		req.session.current_api_key = user_data.user.api_key;
     		setApiKey(user_data.user.api_key);
 
 			redmine.get('users/' + user_data.user.id, {
@@ -307,13 +308,15 @@ router.get('/authenticate/:project_id/:api_key', function (req, res, next) {
 	var api_key = req.params.api_key;
 	redis_client.set(api_key, api_key);
 	setApiKey(api_key);
-	res.redirect(host + 'trello/' + req.params.project_id + '/' + api_key);
+	req.session.current_api_key = api_key;
+	res.redirect(host + 'trello/' + req.params.project_id);
 	//res.send(200);
 
 });
 
 router.post('/logout/user/:api_key', function (req, res, next) {
 	redis_client.del(req.params.api_key);
+	delete req.session.current_api_key;
 	setApiKey(undefined);
 	res.redirect(host);
 });
