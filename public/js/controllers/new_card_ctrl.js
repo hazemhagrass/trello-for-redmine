@@ -4,11 +4,7 @@ angular.module('trelloRedmine')
 
     $scope.newCard = initiateCard();
 
-    $scope.addNewCard = function(widget) { 
-      pop({ type: 'info',
-        title: 'A new card is being added to widget ' + widget.title + '.',
-        showCloseButton: true
-      });
+    $scope.addNewCard = function(widget) {
       $scope.newCard.status_id = widget.status_id;
       redmineService.createTask($scope.newCard)
       .then(function (result) {
