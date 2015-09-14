@@ -29,7 +29,7 @@ angular.module('trelloRedmine')
         issue.assigned_to.mail = issue.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
         card.subTasks.unshift(issue);
         cardsHelpers.calculateProgress(card);
-        activitiesHelpers.appendTask(issue);
+        activitiesHelpers.synchronize();
       }).finally( function() {
         $scope.newTask = initiateTask();
       });

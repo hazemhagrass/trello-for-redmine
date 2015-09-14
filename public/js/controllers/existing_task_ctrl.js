@@ -35,7 +35,7 @@ angular.module('trelloRedmine')
 
         if(task.status_id) {
           task.status.name = issuesHelpers.getStatusName(task.status_id);
-          activitiesHelpers.appendTask(task);
+          activitiesHelpers.synchronize();
         }
 
         if(task.assigned_to_id){

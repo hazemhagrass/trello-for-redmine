@@ -14,7 +14,7 @@ angular.module('trelloRedmine')
         issue.subTasks = []; 
         issue.attachments = [];
         widget.cards.unshift(issue);
-        activitiesHelpers.appendCard(issue);
+        activitiesHelpers.synchronize();
       }).finally( function() {
         $scope.newCard = initiateCard();
       });
