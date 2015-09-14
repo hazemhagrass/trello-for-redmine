@@ -1,11 +1,11 @@
 angular.module('trelloRedmine')
-.controller('NewCardCtrl', ['$scope', '$localStorage', 'redmineService', 'toaster',
-  function($scope, $localStorage, redmineService, toaster) {
+.controller('NewCardCtrl', ['$scope', '$localStorage', 'redmineService', 'activitiesHelpers',
+  function($scope, $localStorage, redmineService, activitiesHelpers) {
 
     $scope.newCard = initiateCard();
 
     $scope.addNewCard = function(widget) { 
-      toaster.pop({ type: 'info',
+      pop({ type: 'info',
         title: 'A new card is being added to widget ' + widget.title + '.',
         showCloseButton: true
       });
@@ -18,10 +18,7 @@ angular.module('trelloRedmine')
         issue.subTasks = []; 
         issue.attachments = [];
         widget.cards.unshift(issue);
-        toaster.pop({ type: 'info',
-          title: 'A new card has been added successfully.',
-          showCloseButton: true
-        });
+        activitiesHelpers.appendCard(issue);
       }).finally( function() {
         $scope.newCard = initiateCard();
       });

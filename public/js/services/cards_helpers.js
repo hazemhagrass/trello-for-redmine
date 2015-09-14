@@ -1,5 +1,5 @@
 angular.module('trelloRedmine')
-.service('cardsHelpers', ['redmineAPI', 'redmineService', 'sortingUtility', function (redmineAPI, redmineService, sortingUtility){
+.service('cardsHelpers', ['redmineAPI', 'redmineService', 'sortingUtility', 'activitiesHelpers', function (redmineAPI, redmineService, sortingUtility, activitiesHelpers){
 
   return {
     calculateProgress: calculateProgress,
@@ -22,11 +22,12 @@ angular.module('trelloRedmine')
       redmineService.updateIssue(card_id, {
         status_id: target_status
       }).then(function(result){
-        // delete is better than setting to false because we send the card in another update request
         moved_card.status.id = Number(target_status);
         moved_card.status.name = redmineAPI.allowed_statuses_names[target_status-8];
         sortingUtility.reorderWidgetElement(target_widget.cards, card_id);
+        activitiesHelpers.appendCard(moved_card);
       }).finally(function() {
+        // delete is better than setting to false because we send the card in another update request
         delete moved_card.card_loading;
       });
     } else {

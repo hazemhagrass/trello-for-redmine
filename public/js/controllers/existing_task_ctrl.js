@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('ExistingTaskCtrl', ['$scope', '$modal', '$modalStack', 'redmineService', 'tasksHelpers', 'cardsHelpers', 'issuesHelpers', 'sortingUtility', 'toaster',
-  function($scope, $modal, $modalStack, redmineService, tasksHelpers, cardsHelpers, issuesHelpers, sortingUtility, toaster) {
+.controller('ExistingTaskCtrl', ['$scope', '$modal', '$modalStack', 'redmineService', 'tasksHelpers', 'cardsHelpers', 'issuesHelpers', 'sortingUtility', 'toaster', 'activitiesHelpers',
+  function($scope, $modal, $modalStack, redmineService, tasksHelpers, cardsHelpers, issuesHelpers, sortingUtility, toaster, activitiesHelpers) {
       
     $scope.tasksHelpers = tasksHelpers;
 
@@ -35,6 +35,7 @@ angular.module('trelloRedmine')
 
         if(task.status_id) {
           task.status.name = issuesHelpers.getStatusName(task.status_id);
+          activitiesHelpers.appendTask(task);
         }
 
         if(task.assigned_to_id){

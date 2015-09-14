@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('NewTaskCtrl', ['$scope', '$modal', '$localStorage', 'redmineService', 'cardsHelpers', 'toaster',
-  function($scope, $modal, $localStorage, redmineService, cardsHelpers, toaster) {
+.controller('NewTaskCtrl', ['$scope', '$modal', '$localStorage', 'redmineService', 'cardsHelpers', 'activitiesHelpers',
+  function($scope, $modal, $localStorage, redmineService, cardsHelpers, activitiesHelpers) {
 
     $scope.newTask = initiateTask();
 
@@ -13,10 +13,6 @@ angular.module('trelloRedmine')
     }
 
     $scope.createTask = function(card, newTask) {
-      toaster.pop({ type: 'info',
-        title: 'A new task is being added to card ' + card.id + '.',
-        showCloseButton: true
-      });
       var assigned_to_id = newTask.assigned_to_id ? newTask.assigned_to_id : $localStorage.user_id;
       var priority_to_id = (card.priority) ? card.priority.id : '';
 
@@ -32,10 +28,7 @@ angular.module('trelloRedmine')
         issue.assigned_to.mail = issue.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
         card.subTasks.unshift(issue);
         cardsHelpers.calculateProgress(card);
-        toaster.pop({ type: 'info',
-          title: 'A new task has been added successfully.',
-          showCloseButton: true
-          });
+        activitiesHelpers.appendTask(issue);
       }).finally( function() {
         $scope.newTask = initiateTask();
       });
