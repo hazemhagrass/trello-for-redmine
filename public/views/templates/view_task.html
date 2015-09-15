@@ -11,6 +11,7 @@
 </div> <!-- end of task-line -->
 
 <div class="related-task-icons">
+  <div ng-bind-html="parseTrustSnippt(task.description)" ng-show="task.description.length"></div>
   <ul>
     <li><a href="" ng-click="editTask(card, task)" data-toggle="modal" data-target="#relatedTask-modal{{task.id}}" title="Edit Task"><i class="fa fa-pencil"></i></a></li>
     <li><a href="#" confirmed-click="deleteTask(card, task)" ng-confirm-click="To be added" title="Delete Task"><i class="fa fa-trash-o"></i></a></li>

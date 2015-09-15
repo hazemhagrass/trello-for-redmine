@@ -51,6 +51,7 @@
                   <div class="card-header heigh">
                     <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
                     <h5>{{card.subject}}</h5>
+                    <div ng-bind-html="parseTrustSnippt(card.description)" ng-show="card.description.length"></div>
                   </div> <!-- end of card-header -->
 
                   <accordion close-others="oneAtATime">
