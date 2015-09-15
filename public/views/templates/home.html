@@ -5,7 +5,6 @@
       <div class="choise-select">
         <span>Project</span>
         <select ng-model="selected_project" ng-options="project.name for project in user_projects track by project.id" ng-change="goToProject(selected_project)"></select>
-        <a ng-href="http://{{config.host}}/projects/{{selected_project.id}}" target="_blank" class="id">{{selected_project.id}}</a>
       </div> 
       <button id="top-reload" class='btn btn-info' ng-click='refresh()'>&#xf021;  Reload</button>
       <form id="top-buttons" action="{{logoutUrl}}" ng-controller='LogoutCtrl' method="POST" ng-submit='logout()'>
