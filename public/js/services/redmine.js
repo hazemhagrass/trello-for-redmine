@@ -17,6 +17,10 @@ angular.module('trelloRedmine')
         return deferred.promise;
     }
 
+    this.setApiKey = function (key){
+        current_api_key = key;
+    }
+
     this.getUserInfo = function (user_id) {
         var query = users_url + user_id + "/" + current_api_key;
         return restAPI('get', query);

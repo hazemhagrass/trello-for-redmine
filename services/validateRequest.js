@@ -1,7 +1,7 @@
 var redis = require("redis"),
     redis_client = redis.createClient();
 
-module.exports = function(req, res, next) {
+module.exports = function(req, res, next) {  
 	if (req.url == "/login" || req.url == "/redmine/login/user") {
 		next();
 	} else {
@@ -11,6 +11,7 @@ module.exports = function(req, res, next) {
         	if(data || req.session.current_api_key) {
         		next();
         	} else {
+            console.log('===================INVALID REQUEST===================');
             res.redirect('http://' + config.host);
         	}
     	});

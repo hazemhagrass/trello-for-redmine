@@ -1,5 +1,5 @@
 angular.module('trelloRedmine')
-.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', '$localStorage', '$location', '$sce', '$route', '$routeParams', 'toaster', 'redmineService', 'redmineAPI', 'gridsterOptions', 'cardsHelpers', 'sortingUtility', function($scope, $timeout, $modal, $http, $localStorage, $location, $sce, $route, $routeParams, toaster, redmineService, redmineAPI, gridsterOptions, cardsHelpers, sortingUtility) {
+.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', '$localStorage', '$location', '$sce', '$route', '$routeParams', 'redmineService', 'redmineAPI', 'gridsterOptions', 'cardsHelpers', 'sortingUtility', function($scope, $timeout, $modal, $http, $localStorage, $location, $sce, $route, $routeParams, redmineService, redmineAPI, gridsterOptions, cardsHelpers, sortingUtility) {
 
         $scope.current_user = redmineAPI.current_user;
         $scope.user_projects = redmineAPI.user_projects;
@@ -16,7 +16,6 @@ angular.module('trelloRedmine')
         // $scope.projectMembers = [];
         // $scope.subject = "";
 
-        $scope.styleUrl = 'assets/stylesheets/cards_style.css';
         $scope.project_id = $routeParams.project_id;
         $scope.gridsterOptions = gridsterOptions;
 
@@ -32,7 +31,7 @@ angular.module('trelloRedmine')
             connectWith: '.connectedSortable',
             dropOnEmpty: true,
             'ui-floating': true,
-            stop: function(event, ui) {
+            update: function(event, ui) {
                 cardsHelpers.update_status(ui.item);
             }
         };
