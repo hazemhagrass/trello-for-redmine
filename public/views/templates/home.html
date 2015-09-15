@@ -76,7 +76,7 @@
 
                         <li><a href="#" ng-click="editCard(widget, card)" class="" data-toggle="modal" data-target="#userStoryModal" title="Edit Card"><i class="fa fa-pencil"></i></a></li>
 
-                        <li><a href="#" trigger-card-accordion class="toggle-btn" title="{{accordion_icon_title}}"><i class="fa fa-arrows-v"></i></a></li>
+                        <li><a href="#" trigger-card-accordion class="toggle-btn" title="{{accordion_icon_title}}" ng-show="card.subTasks.length"><i class="fa fa-arrows-v"></i></a></li>
 
                       </ul>
                     </div> <!-- end of card-btns -->
