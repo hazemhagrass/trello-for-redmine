@@ -12,19 +12,18 @@
       </form>
     </ul>
   </div> <!-- end of navbar -->
-
   <div class="page-header">
     <div class="col-headers defined col-lg-3 col-md-3 col-xs-3">
       <span><i class="fa fa-folder-open"></i>Defined</span>
-      <span class="add-card"><i class="fa fa-plus"></i>Add Card</span>
+      <span class="add-card" ng-click="addNewCard(7)" ng-controller="NewCardCtrl" title="Add Card"><i class="fa fa-plus"></i>Add Card</span>
     </div>
     <div class="col-headers in-progress col-lg-3 col-md-3 col-xs-3">
       <span><i class="fa fa-sliders"></i>In Progress</span>
-      <span class="add-card"><i class="fa fa-plus"></i>Add Card</span>
+      <span class="add-card" ng-click="addNewCard(8)" ng-controller="NewCardCtrl" title="Add Card"><i class="fa fa-plus"></i>Add Card</span>
     </div>
     <div class="col-headers completed col-lg-3 col-md-3 col-xs-3">
       <span><i class="fa fa-check"></i>Completed</span>
-      <span class="add-card"><i class="fa fa-plus"></i>Add Card</span>
+      <span class="add-card" ng-click="addNewCard(9)" ng-controller="NewCardCtrl" title="Add Card"><i class="fa fa-plus"></i>Add Card</span>
     </div>
     <div class="col-headers activities col-lg-3 col-md-3 col-xs-3">
       <span><i class="fa fa-users"></i>Activities</span>
@@ -91,7 +90,6 @@
                   </div> <!-- end of overlay -->
                 </li> <!-- end of card -->
               </ul>
-              <ng-include src="'views/templates/new_card.html'"></ng-include>
             </div> <!-- end of box-content -->
           </div> <!-- end of box -->
         </li> <!-- end of widget -->

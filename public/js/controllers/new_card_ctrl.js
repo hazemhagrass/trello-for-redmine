@@ -1,11 +1,21 @@
 angular.module('trelloRedmine')
-.controller('NewCardCtrl', ['$scope', '$localStorage', 'redmineService', 'activitiesHelpers',
-  function($scope, $localStorage, redmineService, activitiesHelpers) {
+.controller('NewCardCtrl', ['$scope', '$modal', '$localStorage', 'redmineService', 'activitiesHelpers',
+  function($scope, $modal, $localStorage, redmineService, activitiesHelpers) {
 
     $scope.newCard = initiateCard();
 
-    $scope.addNewCard = function(widget) {
+    $scope.addNewCard = function(widget_index) {
+      $scope.widget = $scope.widgets[widget_index];
+      $modalInstance = $modal.open({
+        scope: $scope,
+        templateUrl: 'views/templates/new_card.html',
+        backdropClass: "backdrop-fix"
+      });
+    }
+
+    $scope.createCard = function(widget) {
       $scope.newCard.status_id = widget.status_id;
+      $scope.dismiss();
       redmineService.createTask($scope.newCard)
       .then(function (result) {
         var issue = result.data.issue;
