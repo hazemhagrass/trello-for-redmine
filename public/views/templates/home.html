@@ -14,16 +14,19 @@
   </div> <!-- end of navbar -->
 
   <div class="page-header">
-    <div class="col-headers col-lg-3 col-md-3 col-xs-3">
+    <div class="col-headers defined col-lg-3 col-md-3 col-xs-3">
       <span><i class="fa fa-folder-open"></i>Defined</span>
+      <span class="add-card"><i class="fa fa-plus"></i>Add Card</span>
     </div>
-    <div class="col-headers col-lg-3 col-md-3 col-xs-3">
+    <div class="col-headers in-progress col-lg-3 col-md-3 col-xs-3">
       <span><i class="fa fa-sliders"></i>In Progress</span>
+      <span class="add-card"><i class="fa fa-plus"></i>Add Card</span>
     </div>
-    <div class="col-headers col-lg-3 col-md-3 col-xs-3">
+    <div class="col-headers completed col-lg-3 col-md-3 col-xs-3">
       <span><i class="fa fa-check"></i>Completed</span>
+      <span class="add-card"><i class="fa fa-plus"></i>Add Card</span>
     </div>
-    <div class="col-headers col-lg-3 col-md-3 col-xs-3">
+    <div class="col-headers activities col-lg-3 col-md-3 col-xs-3">
       <span><i class="fa fa-users"></i>Activities</span>
     </div>
   </div> <!-- end of page-header -->
@@ -31,7 +34,7 @@
   <div gridster="gridsterOptions">
     <div ng-model="widgets">
       <ul id="widget-columns">
-        <li gridster-item="widget" ng-repeat="widget in widgets | filter: {allowed: true}">
+        <li gridster-item="widget" ng-repeat="widget in widgets | filter: {allowed: true}" class="one-column">
           <div class="box column-box" ng-controller="CustomWidgetCtrl">
             <div class="box-header">
               <section>
