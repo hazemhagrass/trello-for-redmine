@@ -13,7 +13,7 @@ angular.module('trelloRedmine')
     redmineAPI.activities.loader = show_loader;
     redmineService.getActivities(redmineAPI.selected_project.id)
     .then(function (result) {
-      var data = JSON.parse(result.data);
+      var data = result.data;
       if( redmineAPI.activities.length ) {
         var first_activity_time = redmineAPI.activities[0].time;
         var first_activity_title = redmineAPI.activities[0].title;
