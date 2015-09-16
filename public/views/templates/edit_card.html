@@ -48,6 +48,7 @@
                 </tr>
                 <tr>
                     <td style="width:30%;"><b class="blue-text">Priority:</b></td>
+                    <!-- redmine permission error 403 -->
                     <td ng-if="false" editable-select="card.priority.id" e-ng-options="p.id as p.name for p in priorities" onaftersave="updateCardPriority(card)">{{card.priority.name}}</td>
                     <td>{{card.priority.name}}</td>
                 </tr>

@@ -26,7 +26,7 @@
       <span class="add-card" ng-click="addNewCard(9)" ng-controller="NewCardCtrl" title="Add Card"><i class="fa fa-plus"></i>Add Card</span>
     </div>
     <div class="col-headers activities col-lg-3 col-md-3 col-xs-3">
-      <span><i class="fa fa-users"></i>Activities</span>
+      <span><i ng-show="activities.loader"><i class="fa fa-spinner fa-spin"></i></i><i class="fa fa-users"></i>Activities</span>
     </div>
   </div> <!-- end of page-header -->
 

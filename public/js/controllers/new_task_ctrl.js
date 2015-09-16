@@ -28,7 +28,7 @@ angular.module('trelloRedmine')
         var issue = result.data.issue;
         issue.assigned_to.mail = issue.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
         card.subTasks.unshift(issue);
-        activitiesHelpers.synchronize();
+        activitiesHelpers.synchronize(true);
       }).finally( function() {
         $scope.newTask = initiateTask();
       });

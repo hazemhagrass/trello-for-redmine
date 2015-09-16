@@ -2,13 +2,15 @@ angular.module('trelloRedmine')
 .factory('activitiesHelpers', ['$interval', 'redmineAPI', 'redmineService', function ($interval, redmineAPI, redmineService) {
 
   var POLL_DURATION = 10000;
-  $interval(synchronize, POLL_DURATION);
+  $interval(synchronize, POLL_DURATION, 0, false, false);
 
   return {
     synchronize: synchronize
   }
 
-  function synchronize(){
+  function synchronize(show_loader){
+
+    redmineAPI.activities.loader = show_loader;
     redmineService.getActivities(redmineAPI.selected_project.id)
     .then(function (result) {
       var data = JSON.parse(result.data);
@@ -32,6 +34,7 @@ angular.module('trelloRedmine')
 
       });
 
+      redmineAPI.activities.loader = false;
     });
   };
 

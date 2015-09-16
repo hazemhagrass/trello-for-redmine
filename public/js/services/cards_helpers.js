@@ -23,7 +23,7 @@ angular.module('trelloRedmine')
       redmineService.updateIssue(card_id, {
         status_id: target_status
       }).then(function(result){
-        activitiesHelpers.synchronize();
+        activitiesHelpers.synchronize(true);
       }, function() {
         // Moving card back to its original widget in case of error
         target_widget.splice(target_widget.indexOf(moved_card), 1);
