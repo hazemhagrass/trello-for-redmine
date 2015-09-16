@@ -12,8 +12,10 @@ angular.module('trelloRedmine')
     redmineService.getActivities(redmineAPI.selected_project.id)
     .then(function (result) {
       var data = JSON.parse(result.data);
-      var first_activity_time = redmineAPI.activities[0].time;
-      var first_activity_title = redmineAPI.activities[0].title;
+      if( redmineAPI.activities.length ) {
+        var first_activity_time = redmineAPI.activities[0].time;
+        var first_activity_title = redmineAPI.activities[0].title;
+      }
       var matched_flag = false;
       // NOTE writing activities = [] would make a new reference and hence the scope won't have the same reference as this one
       redmineAPI.activities.length = 0;
