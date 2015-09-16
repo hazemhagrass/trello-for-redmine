@@ -24,6 +24,12 @@ angular.module('trelloRedmine')
         status_id: target_status
       }).then(function(result){
         activitiesHelpers.synchronize();
+      }, function() {
+        // Moving card back to its original widget in case of error
+        target_widget.splice(target_widget.indexOf(moved_card), 1);
+        moved_card.status.id = Number(source_status);
+        moved_card.status.name = redmineAPI.allowed_statuses_names[source_status-8];
+        sortingUtility.insertInOrder(source_widget, moved_card);
       }).finally(function() {
         // delete is better than setting to false because we send the card in another update request
         delete moved_card.card_loading;
