@@ -1,6 +1,6 @@
 angular.module('trelloRedmine')
-.controller('ExistingCardCtrl', ['$scope', '$modal', '$upload', '$localStorage', 'redmineService', 'cardsHelpers',
-  function($scope, $modal, $upload, $localStorage, redmineService, cardsHelpers) {
+.controller('ExistingCardCtrl', ['$scope', '$modal', '$upload', '$localStorage', 'redmineService', 'cardsHelpers', 'issuesHelpers',
+  function($scope, $modal, $upload, $localStorage, redmineService, cardsHelpers, issuesHelpers) {
 
     // $scope.widget = widget;
     // $scope.status_val = false;
@@ -26,23 +26,25 @@ angular.module('trelloRedmine')
 
     $scope.updateCard = function(card) {
         // To do: handle error
-      if(card.assigned_to_id){
-        card.assigned_to.name = 'Updating ...';
-      }
+
+      card.card_loading = true;
       redmineService.updateIssue(card.id, card).then(function(result) {
+
         if(card.assigned_to_id){
-          card.card_loading = true;
-          // GET ISSUE AFTER UPDATING TO UPDATE ASSIGNED TO FIELD IN ANGULAR
-          redmineService.getIssue(card.id)
-          .then(function (updated_card) {
-            card.assigned_to = updated_card.data.issue.assigned_to;
-            card.assigned_to.mail = card.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
-          }).finally( function() {
-            card.assigned_to_id = undefined;
-            delete card.card_loading;
-          });
+          card.assigned_to.name = issuesHelpers.getAssigneeName(card.assigned_to_id);
+          card.assigned_to.mail = card.assigned_to.name.replace(/ /g, '.').toLowerCase() + '@badrit.com';
         }
+
+        if( card.priority_id ) {
+          card.priority.name = issuesHelpers.getPriorityName(card.priority_id);
+        }
+
+      }).finally( function() {
+        card.priority_id = undefined;
+        card.assigned_to_id = undefined;
+        delete card.card_loading;
       });
+
     };
 
     $scope.deleteAttachment = function(attachment_id, id) {
@@ -111,17 +113,26 @@ angular.module('trelloRedmine')
       // var issues = [];
       // $scope.subTasks = [];
       // $scope.progress = 0;
-      // $scope.finishedTasks = 0;
 
       // $scope.attachments = [];
-
-      cardsHelpers.calculateProgress(card);
 
       $modalInstance = $modal.open({
         scope: $scope,
         templateUrl: 'views/templates/edit_card.html',
         backdropClass: "backdrop-fix"
       });
-  }
+    }
+
+    $scope.updateCardPriority = function(card){
+      card.priority_id = card.priority.id;
+      card.priority.name = 'Updating ...';
+      $scope.updateCard(card);
+    }
+
+    $scope.updateCardAssignee = function(card){
+      card.assigned_to_id = card.assigned_to.id;
+      card.assigned_to.name = 'Updating ...';
+      $scope.updateCard(card);
+    }
   }
 ]);

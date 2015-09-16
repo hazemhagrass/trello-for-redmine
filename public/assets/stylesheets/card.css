@@ -66,3 +66,23 @@
 .connectedSortable {
     min-height: 10px;
 }
+
+.element.ng-enter {
+  transition: all linear 600ms;
+  opacity: 0;
+}
+
+.element.ng-enter-active {
+  opacity: 1;
+}
+
+/*.element.ng-leave {
+  transition: all linear 600ms;
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.element.ng-leave.ng-leave-active {
+  opacity: 0;
+  transform: translate3d(100px, 0, 0);
+}*/

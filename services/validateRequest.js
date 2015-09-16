@@ -1,7 +1,7 @@
 var redis = require("redis"),
     redis_client = redis.createClient();
 
-module.exports = function(req, res, next) {
+module.exports = function(req, res, next) {  
 	if (req.url == "/login" || req.url == "/redmine/login/user") {
 		next();
 	} else {

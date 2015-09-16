@@ -1,6 +1,9 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
-    <span><a href="#" onaftersave="updateCard(card)" editable-text="card.subject">{{card.subject}}</a></span>
+    <span>
+        <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
+        <a href="#" onaftersave="updateCard(card)" editable-text="card.subject">{{card.subject}}</a>
+    </span>
     <!--<img style="width: 50%; height: 50%; " ng-src="{{getImageLink(card)}}" />-->
 </div>
 <div class="modal-body">
@@ -15,11 +18,16 @@
         </div>
     </div>
     <div class="row">
-        <div class="modal-section progress-section col-lg-6">
+        <!-- <div class="modal-section progress-section col-lg-6">
             <p><b>Progress:</b><span>{{card.progress}}%</span></p>
         </div>
+
         <div class="modal-section progress-section col-lg-6">
             <p><b>Done:</b><span>{{card.done_ratio}}%</span></p>
+        </div>
+        -->
+        <div class="modal-section col-lg-12">
+            <progressbar animate="false" value="card.done_ratio" type="success"><b>{{card.done_ratio}}%</b></progressbar>
         </div>
     </div>
     <div class="row">
@@ -31,12 +39,17 @@
                 </tr>
                 <tr>
                     <td style="width:30%;"><b class="blue-text">Assignee:</b></td>
-                    <td ng-if="selected_project.members.length" editable-select="card.assigned_to_id" e-ng-options="p.id as p.name for p in selected_project.members" onaftersave="updateCard(card)">{{card.assigned_to.name}}</td>
+                    <td ng-if="selected_project.members.length" editable-select="card.assigned_to.id" e-ng-options="p.id as p.name for p in selected_project.members" onaftersave="updateCardAssignee(card)">{{card.assigned_to.name}}</td>
                     <td ng-if="!selected_project.members.length">{{card.assigned_to.name}}</td>
                 </tr>
                 <tr>
                     <td style="width:30%;"><b class="blue-text">Story-size:</b></td>
                     <td editable-select="card.custom_fields[0].value" e-ng-options="s for s in estimateSizes" onaftersave="updateCard(card)">{{card.custom_fields[0].value}}</td>
+                </tr>
+                <tr>
+                    <td style="width:30%;"><b class="blue-text">Priority:</b></td>
+                    <td ng-if="false" editable-select="card.priority.id" e-ng-options="p.id as p.name for p in priorities" onaftersave="updateCardPriority(card)">{{card.priority.name}}</td>
+                    <td>{{card.priority.name}}</td>
                 </tr>
                 <tr>
                     <td style="width:30%;"><b class="blue-text">Business value:</b></td>

@@ -1,12 +1,15 @@
 <div class="modal-header" ng-class="tasksHelpers.taskClass(task.status.id, true)">
   <button type="button" class="close" ng-click="dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  <h4 class="modal-title" id="myModalLabel"><div onaftersave="updateTask(task.id, task, card)" editable-text="task.subject">{{task.subject}}</div></h4>
+  <h4 class="modal-title" id="myModalLabel">
+    <a target="_blank" href="http://{{config.host}}/issues/{{task.id}}" class="id" ng-class="tasksHelpers.taskClass(task.status.id, false)">{{task.id}}</a>
+    <div onaftersave="updateTask(task, card)" editable-text="task.subject">{{task.subject}}</div>
+  </h4>
 </div>
 <div class="modal-body">
   <div class="row">
     <div class="col-lg-12">
         <div class="userstory-edit-img">
-            <img class="member" title="{{card.assigned_to.firstname}} {{card.assigned_to.lastname}}" gravatar-src="task.assigned_to.mail" gravatar-size="100" />
+            <img class="member" title="{{task.assigned_to.name}}" gravatar-src="task.assigned_to.mail" gravatar-size="100" />
         </div>
         <p><b>Added by: </b> {{task.author.name}}</p>
         <p><b>From: </b> {{task.created_on}}</p>
@@ -22,17 +25,17 @@
           </tr>
           <tr>
               <td style="width:30%;"><b class="blue-text">Assignee:</b></td>
-              <td ng-if="selected_project.members.length" editable-select="task.assigned_to_id" e-ng-options="p.id as p.name for p in selected_project.members" onaftersave="updateTask(task.id, task, card)">{{task.assigned_to.name}}</td>
+              <td ng-if="selected_project.members.length" editable-select="task.assigned_to.id" e-ng-options="p.id as p.name for p in selected_project.members" onaftersave="updateTaskAssignee(task, card)">{{task.assigned_to.name}}</td>
               <td ng-if="!selected_project.members.length">{{task.assigned_to.name}}</td>
           </tr>
           <tr>
               <td style="width:30%;"><b class="blue-text">Priority:</b></td>
-              <td>{{task.priority.name}}</td>
+              <td editable-select="task.priority.id" e-ng-options="p.id as p.name for p in priorities" onaftersave="updateTaskPriority(task, card)">{{task.priority.name}}</td>
           </tr>
-          <!-- <tr>
+          <tr>
               <td style="width:30%;"><b class="blue-text">Status:</b></td>
-              <td editable-select="task.status.id" e-ng-options="o.id as o.name for o in allowed_statuses_object" onaftersave="changeTaskStatus(card, task, task.status.id)">{{task.status.name}}</td>
-          </tr> -->
+              <td editable-select="task.status.id" e-ng-options="o.id as o.name for o in allowed_statuses_object" onaftersave="updateTaskStatusFromList(task, card)">{{task.status.name}}</td>
+          </tr>
         </table>
     </div>
   </div>

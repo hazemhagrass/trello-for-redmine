@@ -1,35 +1,28 @@
-<form editable-form name="editableForm" onaftersave="addNewCard(widget)" ng-controller="NewCardCtrl">
-  <span ng-show="editableForm.$visible">
-    <div class="addNew-form">
-      <div>
-        <span class="title">subject: </span>
-        <span editable-text="newCard.subject" e-name="subject" e-required></span>
-      </div>
-      <div>
-        <span class="title">priority: </span>
-        <span editable-select="newCard.priority_id" e-name="priority_id" e-ng-options="p.id as p.name for p in priorities">
-        </span>
-      </div>
-      <div ng-if="selected_project.members.length">
-        <span class="title">assignee: </span>
-        <span editable-select="newCard.assigned_to_id" e-name="assigned_to_id" e-ng-options="p.id as p.name for p in selected_project.members">
-        </span>
-      </div>
-      <span ng-show="editableForm.$visible">
-        <button type="submit" class="btn btn-primary" ng-disabled="editableForm.$waiting">
-          Save
-        </button>
-        <button type="button" class="btn btn-default" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()">
-          Cancel
-        </button>
-      </span> <!-- end of editableForm -->
+<div class="modal-header">
+  <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
+  <span>Add New Card</span>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="modal-row col-lg-12">
+      <table>
+        <tr>
+          <td style="width:30%;"><b class="blue-text">Subject:</b></td>
+          <td><input class="modal-textInput" type="text" ng-model="newCard.subject"></td>
+        </tr>
+        <tr>
+          <td style="width:30%;"><b class="blue-text">Priority:</b></td>
+          <td><select ng-model="newCard.priority_id" ng-options="p.id as p.name for p in priorities"></select></td>
+        </tr>
+        <tr ng-if="selected_project.members.length">
+          <td style="width:30%;"><b class="blue-text">Assignee:</b></td>
+          <td><select ng-model="newCard.assigned_to_id" ng-options="p.id as p.name for p in selected_project.members"></select></td>
+        </tr>
+      </table>
     </div>
-
-  </span> <!-- end of editableForm -->
-  <div class="buttons">
-    <button type="button" class="btn btn-default add-card-btn" ng-show="!editableForm.$visible" ng-click="editableForm.$show()">
-      Add a card
-    </button>
-    
-  </div> <!-- end of buttons -->
-</form>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" ng-click="dismiss()">Close</button>
+  <button type="button" ng-click="createCard(widget)" class="btn btn-primary">Create Card</button>
+</div>
