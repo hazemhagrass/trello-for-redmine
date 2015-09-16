@@ -212,3 +212,12 @@ li.gridster-item:last-of-type .box-content {
 		padding-bottom: 390px;
 	}
 }
+
+.activity-animate.ng-enter {
+  transition: all ease-out 600ms;
+  opacity: 0;
+}
+
+.activity-animate.ng-enter-active {
+  opacity: 1;
+}

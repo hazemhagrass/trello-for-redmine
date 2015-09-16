@@ -102,10 +102,8 @@
                     <h3>Project Activities</h3>
                 </section>
             </div>
-            <div ng-repeat="activity in activities track by $index" class="box-content activity-box-content">
-                <!--<ul>
-                    <li ng-repeat="activity in activities track by $index">{{activity.author.name}}<br>{{activity.time}}<br>{{activity.title}}<br><div ng-bind-html="parseTrustSnippt(activity.description)"></div><br></li>
-                </ul>-->
+            <!-- ngAnimate does NOT work with track by $index -->
+            <div ng-repeat="activity in activities" class="box-content activity-box-content" ng-class="{'activity-animate' : activity.animate}" >
                 <div  class="activity-details">
                   <b>{{activity.title}}</b>
                   <b>{{activity.time}}</b>
