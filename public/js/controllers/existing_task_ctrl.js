@@ -24,7 +24,7 @@ angular.module('trelloRedmine')
 
     $scope.updateTask = function(task, parent_card) {
       parent_card.card_loading = true;
-
+      task.loading = true;
       redmineService.updateIssue(task.id, task)
       .then(function (result) {
 
@@ -50,6 +50,7 @@ angular.module('trelloRedmine')
         task.priority_id = undefined;
         task.assigned_to_id = undefined;
         delete parent_card.card_loading;
+        delete task.loading;
       });
     };
 

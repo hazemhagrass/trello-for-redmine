@@ -22,7 +22,7 @@ angular.module('trelloRedmine')
       newTask.parent_issue_id = card.id;
 
       $scope.dismiss();
-
+      card.card_loading = true;
       redmineService.createTask(newTask)
       .then(function (result) {
         var issue = result.data.issue;
@@ -31,6 +31,7 @@ angular.module('trelloRedmine')
         activitiesHelpers.synchronize(true);
       }).finally( function() {
         $scope.newTask = initiateTask();
+        delete card.card_loading;
       });
     };
 
