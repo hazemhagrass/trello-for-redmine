@@ -71,6 +71,8 @@
                     </div> <!-- end of task-user -->
                     <div class="card-btns">
                       <ul>
+                        <li><a ng-show="card.card_loading"><i class="fa fa-spinner fa-spin" title="Loading Card"></i></a></li>
+
                         <li><a href="" ng-click="addNewSubTask(card)" data-toggle="modal" data-target="#addSubtask-modal" ng-controller="NewTaskCtrl" title="Add Task"> <i class="fa fa-plus"></i></a></li>
 
                         <li ng-show="card.hasAttachments" ><a href="#" class="" title="Contains Attachments"><i class="fa fa-paperclip"></i></a></li>
@@ -86,9 +88,9 @@
                     <!--<p>
                         <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank">{{card.subject}}</h3></a>
                     </p>-->
-                  <div id="overlay" ng-show="card.card_loading">
+                  <!-- <div id="overlay" ng-show="card.card_loading">
                     <img id="loading" src="/assets/images/spiffygif_134x134.gif"></img>
-                  </div> <!-- end of overlay -->
+                  </div> --> <!-- end of overlay -->
                 </li> <!-- end of card -->
               </ul>
             </div> <!-- end of box-content -->
@@ -104,7 +106,7 @@
             </div>
             <!-- ngAnimate does NOT work with track by $index -->
             <div ng-repeat="activity in activities" class="box-content activity-box-content" ng-class="{'activity-animate' : activity.animate}" >
-                <div  class="activity-details">
+                <div class="activity-details">
                   <b>{{activity.title}}</b>
                   <b>{{activity.time}}</b>
                   <b>{{activity.author.name}}</b>
