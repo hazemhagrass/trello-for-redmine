@@ -19,14 +19,15 @@ angular.module('trelloRedmine')
       var target_widget = redmineAPI.widgets[target_status-1].cards;
       var moved_card =  item.sortable.model;
       moved_card.card_loading = true;
-      item.sortable.cancel(); // cancel here to stop the library from removing the card from the source and remove it manually later
+      // cancel here to stop the library from removing the card from the source and remove it manually later
+      item.sortable.cancel();
+      source_widget.splice(source_widget.indexOf(moved_card), 1);
+      moved_card.status.id = Number(target_status);
+      moved_card.status.name = redmineAPI.allowed_statuses_names[target_status-8];
+      sortingUtility.insertInOrder(target_widget, moved_card);
       redmineService.updateIssue(card_id, {
         status_id: target_status
       }).then(function(result){
-        source_widget.splice(source_widget.indexOf(moved_card), 1);
-        moved_card.status.id = Number(target_status);
-        moved_card.status.name = redmineAPI.allowed_statuses_names[target_status-8];
-        sortingUtility.insertInOrder(target_widget, moved_card);
         activitiesHelpers.synchronize();
       }).finally(function() {
         // delete is better than setting to false because we send the card in another update request
