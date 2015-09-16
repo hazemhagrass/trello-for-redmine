@@ -14,6 +14,7 @@ angular.module('trelloRedmine')
     }
 
     $scope.createCard = function(widget) {
+      widget.loader = true;
       $scope.newCard.status_id = widget.status_id;
       $scope.dismiss();
       redmineService.createTask($scope.newCard)
@@ -27,6 +28,7 @@ angular.module('trelloRedmine')
         activitiesHelpers.synchronize(true);
       }).finally( function() {
         $scope.newCard = initiateCard();
+        widget.loader = false;
       });
     };
 
