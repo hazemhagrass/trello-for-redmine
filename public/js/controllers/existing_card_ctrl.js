@@ -113,11 +113,8 @@ angular.module('trelloRedmine')
       // var issues = [];
       // $scope.subTasks = [];
       // $scope.progress = 0;
-      // $scope.finishedTasks = 0;
 
       // $scope.attachments = [];
-
-      cardsHelpers.calculateProgress(card);
 
       $modalInstance = $modal.open({
         scope: $scope,

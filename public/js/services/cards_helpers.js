@@ -2,13 +2,8 @@ angular.module('trelloRedmine')
 .service('cardsHelpers', ['redmineAPI', 'redmineService', 'sortingUtility', 'activitiesHelpers', function (redmineAPI, redmineService, sortingUtility, activitiesHelpers){
 
   return {
-    calculateProgress: calculateProgress,
     update_status: update_status
   }
-
-  function calculateProgress(card) {
-      card.progress = ( card.subTasks.length == 0) ? 0 : parseInt(( card.finishedTasks / card.subTasks.length ) * 100);
-  };
 
   function update_status(item){
     if( item.sortable.received ){

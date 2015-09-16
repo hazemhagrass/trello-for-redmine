@@ -20,7 +20,6 @@ angular.module('trelloRedmine')
       // var task_index = card.subTasks.indexOf(task);
       // card.subTasks.splice(task_index, 1);
       // redmineService.deleteTask(task.id);
-      // cardsHelpers.calculateProgress(card);
     };
 
     $scope.updateTask = function(task, parent_card) {
@@ -96,11 +95,9 @@ angular.module('trelloRedmine')
 
     $scope.updateTaskStatusFromCheckbox = function(is_finished, task, card) {
       if(is_finished) {
-        card.finishedTasks++;
         task.status_id = 14;
         task.status.id = 14;
       } else {
-        card.finishedTasks--;
         task.status_id = 9;
         task.status.id = 9;
       }

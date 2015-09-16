@@ -123,7 +123,6 @@ angular.module('trelloRedmine')
               for(var card_key in widgets[key - 1].cards) {
                 var card = widgets[key - 1].cards[card_key];
                 card.showDetails = false;
-                card.finishedTasks = 0;
                 card.subTasks = card.children;
                 card.hasAttachments = !!card.attachments.length;
               }
