@@ -1,7 +1,7 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
     <span>
-        <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
+        <a ng-href="http://{{config.redmine_host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
         <a href="#" onaftersave="updateCard(card)" editable-text="card.subject">{{card.subject}}</a>
     </span>
     <!--<img style="width: 50%; height: 50%; " ng-src="{{getImageLink(card)}}" />-->
@@ -124,7 +124,7 @@
                                     <a confirmed-click="deleteTask(task)" ng-confirm-click="Are you sure about deleting this task?">
                                         <i class="fa fa-remove"></i>
                                     </a>
-                                    <a ng-href="http://{{config.host}}/issues/{{task.id}}" target="_blank">redmine link</a>
+                                    <a ng-href="http://{{config.redmine_host}}/issues/{{task.id}}" target="_blank">redmine link</a>
                                 <div class="pull-right task-img">
                                     <img class="us-member member" title="{{task.assigned_to.firstname}} {{task.assigned_to.lastname}}" gravatar-src="task.assigned_to.mail" gravatar-size="100" />
                                 </div>

@@ -12,7 +12,7 @@ module.exports = function(req, res, next) {
         		next();
         	} else {
             console.log('===================INVALID REQUEST===================');
-            res.redirect('http://' + config.host);
+            res.redirect('http://' + config.redmine_host);
         	}
     	});
 	}

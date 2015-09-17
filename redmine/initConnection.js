@@ -5,7 +5,7 @@ var Redmine = require('promised-redmine');
 exports.init = function () {
 	console.log('Connecting to Redmine');
 	redmine = new Redmine({
-		host: config.host,
+		host: config.redmine_host,
 		apiKey: 'dummy'
 	});
 }

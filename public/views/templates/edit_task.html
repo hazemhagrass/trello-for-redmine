@@ -1,7 +1,7 @@
 <div class="modal-header" ng-class="tasksHelpers.taskClass(task.status.id, true)">
   <button type="button" class="close" ng-click="dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <h4 class="modal-title" id="myModalLabel">
-    <a target="_blank" href="http://{{config.host}}/issues/{{task.id}}" class="id" ng-class="tasksHelpers.taskClass(task.status.id, false)">{{task.id}}</a>
+    <a target="_blank" href="http://{{config.redmine_host}}/issues/{{task.id}}" class="id" ng-class="tasksHelpers.taskClass(task.status.id, false)">{{task.id}}</a>
     <div onaftersave="updateTask(task, card)" editable-text="task.subject">{{task.subject}}</div>
   </h4>
 </div>

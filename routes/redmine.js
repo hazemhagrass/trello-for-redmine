@@ -9,7 +9,8 @@ var express = require('express'),
     querystring = require('querystring'),
     async = require('async');
 
-var host = 'http://' + config.host + '/';
+var redmine_host = 'http://' + config.redmine_host + '/';
+var trello_host = 'http://' + config.trello_host + '/';
 // list all trackers in redmine
 router.get('/trackers/:api_key', function (req, res, next) {
 	setApiKey(req.params.api_key);
@@ -81,7 +82,7 @@ router.get('/users/:user_id/projects/:api_key', function (req, res, next) {
 		async.each(data.user.memberships, function(membership, callback) {
 
 			var api_key = req.params.api_key;
-			var url = host + "projects/" + membership.project.id + "/memberships.json";
+			var url = redmine_host + "projects/" + membership.project.id + "/memberships.json";
 
 			request.get({
 				headers: {'X-Redmine-API-Key': api_key},
@@ -168,7 +169,7 @@ router.get('/projects/:project_id/userstories/:api_key', function (req, res, nex
 
 		async.map(data.issues, function(issue, callback) {
 
-			var url = host + "trello_issues/issues.json?issue_id=" + issue.id + "&include=children";
+			var url = redmine_host + "trello_issues/issues.json?issue_id=" + issue.id + "&include=children";
 			request.get({
 				headers: {'X-Redmine-API-Key': api_key},
 				url:     url
@@ -260,7 +261,7 @@ router.delete('/issues/:issue_id/:api_key', function (req, res, next) {
 // GET project members | THIS ROUTE IS NOT USED IN THIS PHASE
 router.get('/projects/:project_id/memberships/:api_key', function (req, res, next) {
 	var api_key = req.params.api_key;
-	var url = host + "projects/" + req.params.project_id + "/memberships.json";
+	var url = redmine_host + "projects/" + req.params.project_id + "/memberships.json";
 
 	request.get({
 		headers: {'X-Redmine-API-Key': api_key},
@@ -275,7 +276,7 @@ router.get('/projects/:project_id/memberships/:api_key', function (req, res, nex
 
 router.post('/login/user', function (req, res, next) {
 	var data = req.body;
-	request("http://" + data.username + ":" + data.password + "@" + config.host + "/users/current.json", function (error, response, body) {
+	request("http://" + data.username + ":" + data.password + "@" + config.redmine_host + "/users/current.json", function (error, response, body) {
   		if (!error && response.statusCode == 200) {
     		var user_data = JSON.parse(body);
     		redis_client.set(user_data.user.api_key, body);
@@ -309,7 +310,7 @@ router.get('/authenticate/:project_id/:api_key', function (req, res, next) {
 	redis_client.set(api_key, api_key);
 	setApiKey(api_key);
 	req.session.current_api_key = api_key;
-	res.redirect(host + 'trello/' + req.params.project_id);
+	res.redirect(trello_host + 'trello/' + req.params.project_id);
 	//res.send(200);
 
 });
@@ -318,7 +319,7 @@ router.post('/logout/user/:api_key', function (req, res, next) {
 	redis_client.del(req.params.api_key);
 	delete req.session.current_api_key;
 	setApiKey(undefined);
-	res.redirect(host);
+	res.redirect(redmine_host);
 });
 
 router.post('/upload/file/:issue_id/:api_key', function (req, res, next) {
@@ -332,7 +333,7 @@ router.post('/upload/file/:issue_id/:api_key', function (req, res, next) {
 		}
 		request.post({
 			headers: {'content-type' : 'application/octet-stream', 'X-Redmine-API-Key': api_key},
-			url:     host + 'uploads.json',
+			url:     redmine_host + 'uploads.json',
 			body:    file_data
 		}, function(error, response, body){
   			var parsed_data = JSON.parse(body);
@@ -382,7 +383,7 @@ router.delete('/attachments/:attachment_id/:api_key', function (req, res, next) 
 	var attachment_id = req.params.attachment_id;
 	request.del({
 		headers: {'X-Redmine-API-Key': api_key},
-		url:     host + 'attachments/' + attachment_id +'.json'
+		url:     redmine_host + 'attachments/' + attachment_id +'.json'
 	}, function(error, response, body){
 		res.json(body);
 	});
@@ -391,7 +392,7 @@ router.delete('/attachments/:attachment_id/:api_key', function (req, res, next) 
 router.get('/activities/:project_id/:api_key', function (req, res, next) {
 	var api_key = req.params.api_key;
 	var project_id = req.params.project_id;
-	var url = host + "projects/" + project_id + "/activity.json";
+	var url = redmine_host + "projects/" + project_id + "/activity.json";
 	request.get({
 		headers: {'X-Redmine-API-Key': api_key},
 		url:     url

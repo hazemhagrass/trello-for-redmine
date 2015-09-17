@@ -49,7 +49,7 @@
               <ul class="connectedSortable" ui-sortable="sortableTemplates" sortable ng-model="widget.cards" widget-status="{{widget.status_id}}">
                 <li class="card element" ng-repeat="card in widget.cards" id="{{card.id}}" ng-controller="ExistingCardCtrl">
                   <div class="card-header heigh">
-                    <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
+                    <a ng-href="http://{{config.redmine_host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
                     <h5>{{card.subject}}</h5>
                     <div ng-bind-html="parseTrustSnippt(card.description)" ng-show="card.description.length"></div>
                   </div> <!-- end of card-header -->
@@ -86,7 +86,7 @@
                   </div> <!-- end of card-footer -->
 
                     <!--<p>
-                        <a ng-href="http://{{config.host}}/issues/{{card.id}}" target="_blank">{{card.subject}}</h3></a>
+                        <a ng-href="http://{{config.redmine_host}}/issues/{{card.id}}" target="_blank">{{card.subject}}</h3></a>
                     </p>-->
                   <!-- <div id="overlay" ng-show="card.card_loading">
                     <img id="loading" src="/assets/images/spiffygif_134x134.gif"></img>
