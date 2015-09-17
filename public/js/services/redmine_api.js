@@ -111,6 +111,10 @@ angular.module('trelloRedmine')
           // TO ALWAYS SHOW LOADER AND DONT SHOW THE PAGE'S CONTENT: deferred.reject()
           // deferred.reject();
 
+          if( angular.equals({}, result.data) ) {
+            alert('This project has no userstories');
+          }
+
           for(var i = 0; i < widgets.length; i++) {
             widgets[i].cards = [];
           }
