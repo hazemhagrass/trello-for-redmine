@@ -231,6 +231,37 @@ div[ng-bind-html="parseTrustSnippt(card.description)"] ul li {
 	font-style: normal;
 }
 
+.page-header .col-headers span.add-card
+
+.activity-animate.ng-enter {
+  transition: all ease-out 600ms;
+  opacity: 0;
+}
+
+.activity-animate.ng-enter-active {
+  opacity: 1;
+}
+
+.page-header .col-headers span.filter {
+	position: absolute;
+	left: 0; right: 0;
+	margin: auto;
+	text-align: center;
+	cursor: pointer;
+}
+
+.box-content .filter-area {
+    background: #EFE8B1;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.box-content .filter-area .filter label {
+	cursor: pointer;
+}
+
+/*===============--------------- MEDIA QUERIES ---------------===============*/
+
 @media (min-width: 768px) {
 	.modal-dialog {
 	    width: 420px;
@@ -256,13 +287,4 @@ div[ng-bind-html="parseTrustSnippt(card.description)"] ul li {
 	li.gridster-item:last-of-type {
 		padding-bottom: 390px;
 	}
-}
-
-.activity-animate.ng-enter {
-  transition: all ease-out 600ms;
-  opacity: 0;
-}
-
-.activity-animate.ng-enter-active {
-  opacity: 1;
 }
