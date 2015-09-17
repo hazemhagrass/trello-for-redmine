@@ -260,6 +260,20 @@ div[ng-bind-html="parseTrustSnippt(card.description)"] ul li {
 	cursor: pointer;
 }
 
+span.filter input[type=checkbox] {
+	display:none;
+}
+
+span.filter input[type=checkbox] + label:before {
+  font-family: FontAwesome;
+  display: inline-block;
+}
+
+span.filter input[type=checkbox] + label:before { content: "\f00e"; }
+
+span.filter input[type=checkbox]:checked + label:before { content: "\f010"; }
+
+
 /*===============--------------- MEDIA QUERIES ---------------===============*/
 
 @media (min-width: 768px) {

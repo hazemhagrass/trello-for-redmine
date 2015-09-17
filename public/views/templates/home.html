@@ -16,17 +16,17 @@
     <div class="col-headers defined col-lg-3 col-md-3 col-xs-3">
       <span><i ng-show="widgets[7].loader"><i class="fa fa-spinner fa-spin"></i></i><i class="fa fa-folder-open"></i>Defined</span>
       <span class="add-card" ng-click="addNewCard(7)" ng-controller="NewCardCtrl" title="Add Card"><i class="fa fa-plus"></i>Add Card</span>
-      <span class="filter"><i class="fa fa-search"></i></span>
+      <span class="filter"><input id="box1" type="checkbox" ng-model="widgets[7].search_visibility"/><label for="box1"></label></span>
     </div>
     <div class="col-headers in-progress col-lg-3 col-md-3 col-xs-3">
       <span><i ng-show="widgets[8].loader"><i class="fa fa-spinner fa-spin"></i></i><i class="fa fa-sliders"></i>In Progress</span>
       <span class="add-card" ng-click="addNewCard(8)" ng-controller="NewCardCtrl" title="Add Card"><i class="fa fa-plus"></i>Add Card</span>
-      <span class="filter"><i class="fa fa-search"></i></span>
+      <span class="filter"><input id="box2" type="checkbox" ng-model="widgets[8].search_visibility"/><label for="box2"></label></span>
     </div>
     <div class="col-headers completed col-lg-3 col-md-3 col-xs-3">
       <span><i ng-show="widgets[9].loader"><i class="fa fa-spinner fa-spin"></i></i><i class="fa fa-check"></i>Completed</span>
       <span class="add-card" ng-click="addNewCard(9)" ng-controller="NewCardCtrl" title="Add Card"><i class="fa fa-plus"></i>Add Card</span>
-      <span class="filter"><i class="fa fa-search"></i></span>
+      <span class="filter"><input id="box3" type="checkbox" ng-model="widgets[9].search_visibility"/><label for="box3"></label></span>
     </div>
     <div class="col-headers activities col-lg-3 col-md-3 col-xs-3">
       <span><i ng-show="activities.loader"><i class="fa fa-spinner fa-spin"></i></i><i class="fa fa-users"></i>Activities</span>
@@ -48,23 +48,23 @@
                   <a title="Remove widget" ng-click="remove(widget)"><i class="glyphicon glyphicon-trash"></i></a>
               </div>
             </div> <!-- end of box-header -->
-            <div class="box-content">
-              <!-- THIS SORTABLE UL ELEMENT SHOULD CONTAIN ONE CHILD ONLY (ACCORDING TO DOCUMENTATION) ui-sortable element should only contain one ng-repeat and not any other elements (above or below). -->
+            <div class="box-content" ng-init="search.field = 'subject'">
+              <div class="filter-area" ng-show="widget.search_visibility">
+                <div class="filter">
+                  <input type="radio" id="{{ 'subject' + $index }}" ng-model="search.field" value="subject">
+                  <label for="{{ 'subject' + $index }}">Subject</label>
+                </div>
+                <div class="filter">
+                  <input type="radio" id="{{ 'assigned-to' + $index }}" ng-model="search.field" value="assigned_to">
+                  <label for="{{ 'assigned-to' + $index }}">Assigned To</label>
+                </div>
+                <div class="filter">
+                  <input type="text" placeholder="Search Keyword" ng-model="search[search.field]">
+                </div>
+              </div><!-- END filter-area -->
+              <!-- THIS SORTABLE UL ELEMENT SHOULD CONTAIN ONE CHILD ONLY (ACCORDING TO DOCUMENTATION) `ui-sortable element should only contain one ng-repeat and not any other elements (above or below).` -->
               <ul class="connectedSortable" ui-sortable="sortableTemplates" sortable ng-model="widget.cards" widget-status="{{widget.status_id}}">
-                <div class="filter-area">
-                  <div class="filter">
-                    <input type="radio" id="title">
-                    <label for="title">Title</label>
-                  </div>
-                  <div class="filter">
-                    <input type="radio" id="assigned-by">
-                    <label for="assigned-by">Assigned By</label>
-                  </div>
-                  <div class="filter">
-                    <input type="text" placeholder="Search Keyword">
-                  </div>
-                </div><!-- END filter-area -->
-                <li class="card element" ng-repeat="card in widget.cards" id="{{card.id}}" ng-controller="ExistingCardCtrl">
+                <li class="card element" ng-repeat="card in widget.cards | filter:{subject: search.subject, assigned_to: {name: search.assigned_to}}" id="{{card.id}}" ng-controller="ExistingCardCtrl">
                   <div class="card-header heigh">
                     <a ng-href="http://{{config.redmine_host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
                     <h5>{{card.subject}}</h5>
