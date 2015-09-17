@@ -123,6 +123,16 @@ angular.module('trelloRedmine')
       });
     }
 
+    $scope.openDescription = function(card) {
+
+      $modalInstance = $modal.open({
+        scope: $scope,
+        templateUrl: 'views/templates/view_card_description.html',
+        backdropClass: "backdrop-fix"
+      });
+
+    }
+
     $scope.updateCardPriority = function(card){
       card.priority_id = card.priority.id;
       card.priority.name = 'Updating ...';

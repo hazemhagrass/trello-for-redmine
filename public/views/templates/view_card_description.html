@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
+    <span>
+        <a ng-href="http://{{config.redmine_host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
+        <b>Card Description</b>
+    </span>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="modal-section col-lg-12">
+            <div ng-bind-html="parseTrustSnippt(card.description)"></div>
+        </div>
+    </div>
+    <div class="row">
+</div>

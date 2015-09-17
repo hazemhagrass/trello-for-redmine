@@ -51,7 +51,6 @@
                   <div class="card-header heigh">
                     <a ng-href="http://{{config.redmine_host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
                     <h5>{{card.subject}}</h5>
-                    <div ng-bind-html="parseTrustSnippt(card.description)" ng-show="card.description.length"></div>
                   </div> <!-- end of card-header -->
 
                   <accordion close-others="oneAtATime">
@@ -74,6 +73,8 @@
                         <li><a ng-show="card.card_loading"><i class="fa fa-spinner fa-spin" title="Loading Card"></i></a></li>
 
                         <li><a href="" ng-click="addNewSubTask(card)" data-toggle="modal" data-target="#addSubtask-modal" ng-controller="NewTaskCtrl" title="Add Task"> <i class="fa fa-plus"></i></a></li>
+
+                        <li><a ng-show="card.description.length" ng-click="openDescription(card)"><i class="fa fa-laptop" title="Open Description"></i></a></li>
 
                         <li ng-show="card.hasAttachments" ><a href="#" class="" title="Contains Attachments"><i class="fa fa-paperclip"></i></a></li>
 
