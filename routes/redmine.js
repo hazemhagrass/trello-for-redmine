@@ -164,7 +164,9 @@ router.get('/projects/:project_id/userstories/:api_key', function (req, res, nex
 	redmine.get('issues', {
 		project_id: req.params.project_id,
 		tracker_id: '5',
-		limit: 100
+		status_id: req.query.status_id || '*',
+		offset: req.query.offset || 0,
+		limit: 40
 	}).success(function (data) {
 
 		async.map(data.issues, function(issue, callback) {

@@ -34,7 +34,7 @@
     <div ng-model="widgets">
       <ul id="widget-columns">
         <li gridster-item="widget" ng-repeat="widget in widgets | filter: {allowed: true}" class="one-column">
-          <div class="box column-box" ng-controller="CustomWidgetCtrl">
+          <div class="box column-box" ng-controller="CustomWidgetCtrl" when-scrolled="loadMore(widget)">
             <div class="box-header">
               <section>
                 <h3>{{widget.title}}</h3>
@@ -46,6 +46,7 @@
               </div>
             </div> <!-- end of box-header -->
             <div class="box-content">
+              <!-- THIS SORTABLE UL ELEMENT SHOULD CONTAIN ONE CHILD ONLY (ACCORDING TO DOCUMENTATION) ui-sortable element should only contain one ng-repeat and not any other elements (above or below). -->
               <ul class="connectedSortable" ui-sortable="sortableTemplates" sortable ng-model="widget.cards" widget-status="{{widget.status_id}}">
                 <li class="card element" ng-repeat="card in widget.cards" id="{{card.id}}" ng-controller="ExistingCardCtrl">
                   <div class="card-header heigh">

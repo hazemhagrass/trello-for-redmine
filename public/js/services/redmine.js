@@ -36,8 +36,11 @@ angular.module('trelloRedmine')
         return restAPI('get', query);
     };
 
-    this.getProjectUserStories = function (project_id) {
-        var query = projects_url + project_id + '/userstories' + "/" + current_api_key;
+    this.getProjectUserStories = function (project_id, status_id, offset) {
+        var offset_query = offset ? 'offset=' + offset : '';
+        var status_query = status_id ? 'status_id=' + status_id : '';
+        var query_string = offset_query && status_query ? '?' + offset_query + '&' + status_query : '';
+        var query = projects_url + project_id + '/userstories' + "/" + current_api_key + query_string;
         return restAPI('get', query);
     };
 

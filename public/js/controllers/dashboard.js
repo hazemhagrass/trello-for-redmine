@@ -1,5 +1,5 @@
 angular.module('trelloRedmine')
-.controller('DashboardCtrl', ['$scope', '$timeout', '$modal', '$http', '$localStorage', '$location', '$sce', '$route', '$routeParams', 'redmineService', 'redmineAPI', 'gridsterOptions', 'cardsHelpers', 'sortingUtility', function($scope, $timeout, $modal, $http, $localStorage, $location, $sce, $route, $routeParams, redmineService, redmineAPI, gridsterOptions, cardsHelpers, sortingUtility) {
+.controller('DashboardCtrl', ['$scope', '$timeout', '$location', '$sce', '$route', '$routeParams', 'redmineService', 'redmineAPI', 'gridsterOptions', 'cardsHelpers', function($scope, $timeout, $location, $sce, $route, $routeParams, redmineService, redmineAPI, gridsterOptions, cardsHelpers) {
 
         $scope.current_user = redmineAPI.current_user;
         $scope.user_projects = redmineAPI.user_projects;
@@ -42,6 +42,19 @@ angular.module('trelloRedmine')
 
         $scope.refresh = function(){
             $route.reload();
+        }
+
+        $scope.loadMore = function(widget){
+            widget.loader = true;
+
+            redmineService.getProjectUserStories($scope.project_id, widget.status_id, widget.cards.length)
+            .then(function (result) {
+                if(result.data[widget.status_id]) {
+                    widget.cards = widget.cards.concat(result.data[widget.status_id]);
+                }
+                widget.loader = false;
+            });
+
         }
     }
 ]);
