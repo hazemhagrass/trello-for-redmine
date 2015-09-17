@@ -2,7 +2,7 @@ angular.module('trelloRedmine')
 .factory('activitiesHelpers', ['$interval', 'redmineAPI', 'redmineService', function ($interval, redmineAPI, redmineService) {
 
   var POLL_DURATION = 10000;
-  $interval(synchronize, POLL_DURATION, 0, false, false);
+  // $interval(synchronize, POLL_DURATION, 0, false, false);
 
   return {
     synchronize: synchronize

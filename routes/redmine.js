@@ -396,7 +396,9 @@ router.get('/activities/:project_id/:api_key', function (req, res, next) {
 		headers: {'X-Redmine-API-Key': api_key},
 		url:     url
 	}, function(error, response, body){
-		res.json(JSON.parse(body));
+		var activities = JSON.parse(body);
+		activities.activities.splice(30, activities.activities.length);
+		res.json(activities);
 	});
 
 });
