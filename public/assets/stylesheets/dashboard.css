@@ -11,6 +11,7 @@ html {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	z-index: 10000;
 }
 
 .alert-success i.fa {
@@ -169,7 +170,11 @@ li.gridster-item:last-of-type .box-content {
 
 .modal-header .editable {
 	display: inline-block;
-	cursor: pointer;
+	cursor: text;
+}
+
+.editable {
+	cursor: text;
 }
 
 .progress {
@@ -184,6 +189,46 @@ li.gridster-item:last-of-type .box-content {
 
 .modal-header span {
 	font-size: 18px;
+}
+
+div[ng-bind-html="parseTrustSnippt(card.description)"] {
+	padding: 10px;
+	margin-top: 10px;
+	border: 1px solid #CCC;
+}
+
+div[ng-bind-html="parseTrustSnippt(card.description)"],
+div[ng-bind-html="parseTrustSnippt(card.description)"] ul,
+div[ng-bind-html="parseTrustSnippt(card.description)"] ul li {
+	background: #EEE;
+}
+
+div[ng-bind-html="parseTrustSnippt(card.description)"] ul li {
+	margin-bottom: 0 !important;
+}
+
+.task-line {
+	height: auto;
+}
+
+.editable:after {
+    font-family: "FontAwesome";
+    content: "\f044";
+    color: #CCC;
+    margin-left: 10px;
+    float: right;
+}
+
+.related-task-icons {
+	height: auto;
+}
+
+.related-task-icons ul li {
+	margin-bottom: 0 !important;
+}
+
+.related-task-icons, .task-line {
+	font-style: normal;
 }
 
 @media (min-width: 768px) {
