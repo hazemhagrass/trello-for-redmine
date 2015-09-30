@@ -11,6 +11,11 @@ var session = require('cookie-session');
 var routes = require('./routes/');
 var dashboard = require('./routes/data.js');
 var settings = require('./routes/settings');
+
+var fs = require('fs');
+config = JSON.parse(fs.readFileSync( 'config.json', 'utf8'));
+
+
 var redmineConnection = require('./redmine/initConnection');
 redmineConnection.init();
 

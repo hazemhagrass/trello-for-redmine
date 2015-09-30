@@ -9,8 +9,8 @@ var express = require('express'),
     querystring = require('querystring'),
     async = require('async');
 
-var redmine_host = 'http://' + config.redmine_host + '/';
-var trello_host = 'http://' + config.trello_host + '/';
+var redmine_host = config.redmine_host + '/';
+var trello_host = config.trello_host + '/';
 // list all trackers in redmine
 router.get('/trackers/:api_key', function (req, res, next) {
 	setApiKey(req.params.api_key);
