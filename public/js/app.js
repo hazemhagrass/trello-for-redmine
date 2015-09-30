@@ -8,12 +8,12 @@
                         templateUrl: 'views/templates/login.html',
                         controller: 'AuthCtrl'
                     })
-                    .when('/trello/:project_id', {
+                    .when('/trello/:project_id/:api_key/:user_id', {
                         templateUrl: 'views/templates/home.html',
                         controller: 'DashboardCtrl',
                         resolve: {
                             populationFinished: ['$route', 'redmineAPI', function($route, redmineAPI) {
-                                return redmineAPI.populateData($route.current.params.project_id);
+                                return redmineAPI.populateData($route.current.params.project_id, $route.current.params.api_key, $route.current.params.user_id);
                             }]
                         }
                     })
