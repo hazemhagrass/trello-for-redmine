@@ -307,7 +307,7 @@ router.post('/login/user', function (req, res, next) {
 router.get('/authenticate/:project_id/:api_key', function (req, res, next) {
 
 	var api_key = req.params.api_key;
-	var url = redmine_host + "/users/current.json";
+	var url = redmine_host + "users/current.json";
 	req.session.current_api_key = api_key;
 	
 
