@@ -305,15 +305,27 @@ router.post('/login/user', function (req, res, next) {
 
 
 router.get('/authenticate/:project_id/:api_key', function (req, res, next) {
-	// var data = req.body;
 
-	// var user_data = JSON.parse(data);
 	var api_key = req.params.api_key;
-	redis_client.set(api_key, api_key);
-	setApiKey(api_key);
+	var url = redmine_host + "/users/current.json";
 	req.session.current_api_key = api_key;
-	res.redirect(trello_host + 'trello/' + req.params.project_id);
-	//res.send(200);
+	
+
+	request.get({
+		headers: {'X-Redmine-API-Key': api_key},
+		url:     url
+	}, function(error, response, body){
+		if (!error && response.statusCode == 200) {
+    		var user_data = JSON.parse(body);
+    		redis_client.set(user_data.user.api_key, body);
+    		setApiKey(user_data.user.api_key);
+			user_data.first_project_id =  req.params.project_id;
+			res.redirect(trello_host + 'trello/' + req.params.project_id + '/' + api_key + '/' + user_data.user.id);
+  		} else {
+  			var err = {"msg" : "unauthorized user"}
+  			res.status(404).json(err);
+  		}
+	});
 
 });
 
