@@ -80,7 +80,7 @@ app.use(function(err, req, res, next) {
     //     message: err.message,
     //     error: {}
     // });
-    res.redirect('http://' + config.host);
+    res.redirect(config.redmine_host);
 });
 
 

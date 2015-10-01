@@ -3,8 +3,6 @@ angular.module('trelloRedmine')
     var users_url = '/redmine/users/';
     var projects_url = '/redmine/projects/';
     var issues_url = '/redmine/issues/';
-    // var current_api_key = $localStorage.current_api_key;
-    var current_api_key = '';
 
     function restAPI (method, query, body) {
         var deferred = $q.defer();
@@ -16,11 +14,6 @@ angular.module('trelloRedmine')
         });
 
         return deferred.promise;
-    }
-
-    this.setApiKey = function (key){
-        // current_api_key = key;
-        current_api_key = '';
     }
 
     this.getUserInfo = function (user_id) {
@@ -42,7 +35,6 @@ angular.module('trelloRedmine')
         var offset_query = offset ? 'offset=' + offset : '';
         var status_query = status_id ? 'status_id=' + status_id : '';
         var query_string = offset_query && status_query ? '?' + offset_query + '&' + status_query : '';
-        // var query = projects_url + project_id + '/userstories' + "/" + current_api_key + query_string;
         var query = projects_url + project_id + '/userstories' + query_string;
         return restAPI('get', query);
     };
