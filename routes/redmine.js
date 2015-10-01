@@ -394,14 +394,11 @@ router.delete('/attachments/:attachment_id', function (req, res, next) {
 router.get('/activities/:project_id', function (req, res, next) {
 	var api_key = req.session.current_api_key;
 	var project_id = req.params.project_id;
-	console.log("API key " + api_key);
 	var url = redmine_host + "projects/" + project_id + "/activity.json";
 	request.get({
 		headers: {'X-Redmine-API-Key': api_key},
 		url:     url
 	}, function(error, response, body){
-		console.log("error   " + error);
-		// console.log("body   " + body);
 		var activities = JSON.parse(body);
 		activities.activities.splice(30, activities.activities.length);
 		res.json(activities);
