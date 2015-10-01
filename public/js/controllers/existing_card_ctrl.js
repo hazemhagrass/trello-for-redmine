@@ -86,7 +86,7 @@ angular.module('trelloRedmine')
         for (var i = 0; i < files.length; i++) {
           var file = files[i];
           $upload.upload({
-            url: '/redmine/upload/file/' + card.id + "/" + $localStorage.current_api_key,
+            url: '/redmine/upload/file/' + card.id,
             file: file
           }).progress(function (evt) {
             var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);

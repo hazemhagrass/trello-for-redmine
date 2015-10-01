@@ -12,8 +12,8 @@ var express = require('express'),
 var redmine_host = config.redmine_host + '/';
 var trello_host = config.trello_host + '/';
 // list all trackers in redmine
-router.get('/trackers/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.get('/trackers', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.get('trackers', 'json').success(function (data) {
 		res.json(data);
 	}).error(function (err) {
@@ -22,8 +22,8 @@ router.get('/trackers/:api_key', function (req, res, next) {
 	});
 });
 
-router.get('/issue_statuses/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.get('/issue_statuses', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.get('/issue_statuses', 'json').success(function (data) {
 		var result = _.map(_.sortBy(data.issue_statuses, function (object){
 			return object.id;
@@ -37,8 +37,8 @@ router.get('/issue_statuses/:api_key', function (req, res, next) {
 	});
 });
 
-router.get('/users/current/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.get('/users/current', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.get('/users/current', 'json').success(function (data) {
 		res.json(data.user);
 	}).error(function (err) {
@@ -48,8 +48,8 @@ router.get('/users/current/:api_key', function (req, res, next) {
 });
 
 // get user info
-router.get('/users/:user_id/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.get('/users/:user_id', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.get('/users/' + req.params.user_id, 'json').success(function (data) {
 		res.json(data.user);
 	}).error(function (err) {
@@ -59,8 +59,8 @@ router.get('/users/:user_id/:api_key', function (req, res, next) {
 });
 
 // get issues of user in a specific project
-router.get('/users/:user_id/projects/:project_id/issues/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.get('/users/:user_id/projects/:project_id/issues', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.get('issues', {
 		project_id: req.params.project_id,
 		assigned_to_id: req.params.user_id
@@ -73,15 +73,15 @@ router.get('/users/:user_id/projects/:project_id/issues/:api_key', function (req
 });
 
 // get projects of specific user + members of this project IF user is authorized
-router.get('/users/:user_id/projects/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.get('/users/:user_id/projects', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.get('users/' + req.params.user_id, {
 		include: 'memberships'
 	}).success(function (data) {
 
 		async.each(data.user.memberships, function(membership, callback) {
 
-			var api_key = req.params.api_key;
+			var api_key = req.session.current_api_key;
 			var url = redmine_host + "projects/" + membership.project.id + "/memberships.json";
 
 			request.get({
@@ -115,8 +115,8 @@ router.get('/users/:user_id/projects/:api_key', function (req, res, next) {
 });
 
 // get issues assigned to specific user
-router.get('/users/:user_id/issues/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.get('/users/:user_id/issues', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.get('issues' , {
 		assigned_to_id: req.params.user_id
 	}).success(function (data) {
@@ -128,8 +128,8 @@ router.get('/users/:user_id/issues/:api_key', function (req, res, next) {
 });
 
 // get all issues in a specific project
-router.get('/projects/:project_id/issues/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.get('/projects/:project_id/issues', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.get('issues', {
 		project_id: req.params.project_id,
 		status_id: '*'
@@ -142,8 +142,8 @@ router.get('/projects/:project_id/issues/:api_key', function (req, res, next) {
 });
 
 // get all issues in a specific project
-router.get('/projects/:project_id/issues/:parent_id/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.get('/projects/:project_id/issues/:parent_id', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.get('issues', {
 		parent_id: req.params.parent_id,
 		status_id: '*'
@@ -156,10 +156,10 @@ router.get('/projects/:project_id/issues/:parent_id/:api_key', function (req, re
 });
 
 // get all issues in a specific project
-router.get('/projects/:project_id/userstories/:api_key', function (req, res, next) {
-	var api_key = req.params.api_key;
+router.get('/projects/:project_id/userstories', function (req, res, next) {
+	var api_key = req.session.current_api_key;
 
-	setApiKey(req.params.api_key);
+	setApiKey(req.session.current_api_key);
 
 	redmine.get('issues', {
 		project_id: req.params.project_id,
@@ -204,8 +204,8 @@ router.get('/projects/:project_id/userstories/:api_key', function (req, res, nex
 });
 
 // get information of specific project
-router.get('/projects/:project_id/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.get('/projects/:project_id', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.getProject(req.params.project_id).success(function (data) {
 		res.json(data);
 	}).error(function (err) {
@@ -215,8 +215,8 @@ router.get('/projects/:project_id/:api_key', function (req, res, next) {
 });
 
 // update an issue
-router.put('/issues/:issue_id/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.put('/issues/:issue_id', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.updateIssue(req.params.issue_id, req.body)
 	.success(function (data) {
 		res.json(data);
@@ -227,8 +227,8 @@ router.put('/issues/:issue_id/:api_key', function (req, res, next) {
 });
 
 // create new issue (User Story or Task)
-router.post('/create/issue/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.post('/create/issue', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 	redmine.postIssue(req.body)
 	.success(function (data) {
 		res.json(data);
@@ -239,8 +239,8 @@ router.post('/create/issue/:api_key', function (req, res, next) {
 });
 
 // delete an issue
-router.delete('/issues/:issue_id/:api_key', function (req, res, next) {
-	setApiKey(req.params.api_key);
+router.delete('/issues/:issue_id', function (req, res, next) {
+	setApiKey(req.session.current_api_key);
 
 	
 	/*request.del({
@@ -261,8 +261,8 @@ router.delete('/issues/:issue_id/:api_key', function (req, res, next) {
 });
 
 // GET project members | THIS ROUTE IS NOT USED IN THIS PHASE
-router.get('/projects/:project_id/memberships/:api_key', function (req, res, next) {
-	var api_key = req.params.api_key;
+router.get('/projects/:project_id/memberships', function (req, res, next) {
+	var api_key = req.session.current_api_key;
 	var url = redmine_host + "projects/" + req.params.project_id + "/memberships.json";
 
 	request.get({
@@ -278,22 +278,23 @@ router.get('/projects/:project_id/memberships/:api_key', function (req, res, nex
 
 router.post('/login/user', function (req, res, next) {
 	var data = req.body;
-	request("http://" + data.username + ":" + data.password + "@" + config.redmine_host + "/users/current.json", function (error, response, body) {
+	request("http://" + data.username + ":" + data.password + "@" + "redmine.badrit.com/users/current.json", function (error, response, body) {
   		if (!error && response.statusCode == 200) {
     		var user_data = JSON.parse(body);
     		redis_client.set(user_data.user.api_key, body);
     		req.session.current_api_key = user_data.user.api_key;
     		setApiKey(user_data.user.api_key);
 
-			redmine.get('users/' + user_data.user.id, {
-				include: 'memberships'
-			}).success(function (data) {
-				var first_project_id = data.user.memberships[0].project.id;
-				user_data.first_project_id = first_project_id;
-				res.json(user_data);
-			}).error(function (err) {
-				res.status(404).json(err);
-			});
+				var url = redmine_host + "users/" + user_data.user.id + '.json?include=memberships';
+				request.get({
+					headers: {'X-Redmine-API-Key': user_data.user.api_key},
+					url:     url
+				}, function(error, response, body){
+					data = JSON.parse(body)
+					var first_project_id = data.user.memberships[0].project.id;
+					user_data.first_project_id = first_project_id;
+					res.json(user_data);
+				});
 
   		} else {
   			var err = {"msg" : "unauthorized user"}
@@ -319,8 +320,8 @@ router.get('/authenticate/:project_id/:api_key', function (req, res, next) {
     		var user_data = JSON.parse(body);
     		redis_client.set(user_data.user.api_key, body);
     		setApiKey(user_data.user.api_key);
-			user_data.first_project_id =  req.params.project_id;
-			res.redirect(trello_host + 'trello/' + req.params.project_id + '/' + api_key + '/' + user_data.user.id);
+				user_data.first_project_id =  req.params.project_id;
+				res.redirect(trello_host + 'trello/' + req.params.project_id + '/' + api_key + '/' + user_data.user.id);
   		} else {
   			var err = {"msg" : "unauthorized user"}
   			res.status(404).json(err);
@@ -329,15 +330,19 @@ router.get('/authenticate/:project_id/:api_key', function (req, res, next) {
 
 });
 
-router.post('/logout/user/:api_key', function (req, res, next) {
-	redis_client.del(req.params.api_key);
-	delete req.session.current_api_key;
-	setApiKey(undefined);
-	res.redirect(redmine_host);
+router.post('/logout/user', function (req, res, next) {
+	// delete req.session.current_api_key;
+	var api_key = req.session.current_api_key;
+	req.session.destroy(function(err) {
+		// if( err ) throw Error()
+		redis_client.del(api_key);
+		setApiKey(undefined);
+		res.redirect(redmine_host);
+	});
 });
 
-router.post('/upload/file/:issue_id/:api_key', function (req, res, next) {
-	var api_key = req.params.api_key;
+router.post('/upload/file/:issue_id', function (req, res, next) {
+	var api_key = req.session.current_api_key;
 	var issue_id = req.params.issue_id;
 	var file = req.files.file;
   fs.readFile(file.path, function (err,file_data) {
@@ -367,9 +372,9 @@ router.post('/upload/file/:issue_id/:api_key', function (req, res, next) {
 	});
 });
 
-router.get('/issue/:issue_id/attachments/:api_key', function (req, res, next) {
+router.get('/issue/:issue_id/attachments', function (req, res, next) {
 	var issue_id = req.params.issue_id;
-	setApiKey(req.params.api_key);
+	setApiKey(req.session.current_api_key);
 	redmine.get('issues/' + issue_id, {
 		include: 'attachments'
 	}).success(function (data) {	
@@ -380,9 +385,9 @@ router.get('/issue/:issue_id/attachments/:api_key', function (req, res, next) {
 	});
 });
 
-router.get('/issue/:issue_id/:api_key', function (req, res, next) {
+router.get('/issue/:issue_id', function (req, res, next) {
 	var issue_id = req.params.issue_id;
-	setApiKey(req.params.api_key);
+	setApiKey(req.session.current_api_key);
 	redmine.get('issues/' + issue_id, {}).success(function (data) {	
 		res.json(data);
 	}).error(function (err) {
@@ -392,8 +397,8 @@ router.get('/issue/:issue_id/:api_key', function (req, res, next) {
 });
 
 
-router.delete('/attachments/:attachment_id/:api_key', function (req, res, next) {
-	var api_key = req.params.api_key;
+router.delete('/attachments/:attachment_id', function (req, res, next) {
+	var api_key = req.session.current_api_key;
 	var attachment_id = req.params.attachment_id;
 	request.del({
 		headers: {'X-Redmine-API-Key': api_key},
@@ -403,8 +408,8 @@ router.delete('/attachments/:attachment_id/:api_key', function (req, res, next) 
 	});
 });
 
-router.get('/activities/:project_id/:api_key', function (req, res, next) {
-	var api_key = req.params.api_key;
+router.get('/activities/:project_id', function (req, res, next) {
+	var api_key = req.session.current_api_key;
 	var project_id = req.params.project_id;
 	console.log("API key " + api_key);
 	var url = redmine_host + "projects/" + project_id + "/activity.json";
@@ -413,7 +418,7 @@ router.get('/activities/:project_id/:api_key', function (req, res, next) {
 		url:     url
 	}, function(error, response, body){
 		console.log("error   " + error);
-		console.log("body   " + body);
+		// console.log("body   " + body);
 		var activities = JSON.parse(body);
 		activities.activities.splice(30, activities.activities.length);
 		res.json(activities);
@@ -421,8 +426,8 @@ router.get('/activities/:project_id/:api_key', function (req, res, next) {
 
 });
 
-router.get('/enumerations/issue_priorities/:api_key', function (req, res, next) {
-	var api_key = req.params.api_key;
+router.get('/enumerations/issue_priorities', function (req, res, next) {
+	var api_key = req.session.current_api_key;
 	setApiKey(api_key);
 	redmine.get('/enumerations/issue_priorities', 'json')
 	.success(function (data) {	

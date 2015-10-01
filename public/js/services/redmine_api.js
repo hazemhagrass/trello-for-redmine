@@ -33,16 +33,9 @@ angular.module('trelloRedmine')
     populateData: populateData
   };
   
-  function populateData(controller_project_id, api_key, user_id) {
+  function populateData(controller_project_id) {
 
     var deferred = $q.defer();
-
-    if(api_key !== undefined && user_id !== undefined){
-      $localStorage.user_id =  user_id;
-      $localStorage.current_api_key =  api_key;
-      redmineService.setApiKey(api_key);
-      $localStorage.first_project_id = controller_project_id;
-    }
     
     project_id = controller_project_id;
 
