@@ -6,7 +6,8 @@
         <span>Project</span>
         <select ng-model="selected_project" ng-options="project.name for project in user_projects track by project.id" ng-change="goToProject(selected_project)"></select>
       </div> 
-      <button id="top-reload" class='btn btn-info' ng-click='refresh()'>&#xf021;  Reload</button>
+      <!-- <button id="top-reload" class='btn btn-info' ng-click='refresh()'>&#xf021;  Reload</button> -->
+      <div id="top-reload" class='btn btn-info' ng-click='refresh()'><i class="fa fa-refresh"></i> Reload</div>
       <form id="top-buttons" action="{{logoutUrl}}" ng-controller='LogoutCtrl' method="POST" ng-submit='logout()'>
         <input class='btn btn-info'  type="submit" value="&#xf08b;  Sign Out" />
       </form>
