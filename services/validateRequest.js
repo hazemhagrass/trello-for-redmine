@@ -2,7 +2,7 @@ var redis = require("redis"),
     redis_client = redis.createClient();
 
 module.exports = function(req, res, next) {  
-	if (req.url == "/login" || req.url == "/redmine/login/user") {
+	if (req.url == "/login" || req.url == "/redmine/login/user" || req.url.indexOf("/redmine/authenticate") == 0) {
 		next();
 	} else {
 		var api_key = req.session.current_api_key;
