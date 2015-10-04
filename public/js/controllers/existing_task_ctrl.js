@@ -96,8 +96,8 @@ angular.module('trelloRedmine')
 
     $scope.updateTaskStatusFromCheckbox = function(is_finished, task, card) {
       if(is_finished) {
-        task.status_id = 14;
-        task.status.id = 14;
+        task.status_id = 10;
+        task.status.id = 10;
       } else {
         task.status_id = 9;
         task.status.id = 9;

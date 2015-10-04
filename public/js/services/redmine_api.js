@@ -15,8 +15,7 @@ angular.module('trelloRedmine')
   var allowed_statuses_object = [
     { id: 8, name: 'Defined' },
     { id: 9, name: 'In progress' },
-    { id: 10, name: 'Completed' },
-    { id: 14, name: 'Finished' }
+    { id: 10, name: 'Completed' }
   ];
 
   return {
