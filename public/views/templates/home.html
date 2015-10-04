@@ -67,7 +67,7 @@
               <ul class="connectedSortable" ui-sortable="sortableTemplates" sortable ng-model="widget.cards" widget-status="{{widget.status_id}}">
                 <li class="card element" ng-repeat="card in widget.cards | filter:{subject: search.subject, assigned_to: {name: search.assigned_to}}" id="{{card.id}}" ng-controller="ExistingCardCtrl">
                   <div class="card-header heigh">
-                    <a ng-href="http://{{config.redmine_host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
+                    <a ng-href="{{config.redmine_host}}/issues/{{card.id}}" target="_blank" class="id">{{card.id}}</a>
                     <h5>{{card.subject}}</h5>
                   </div> <!-- end of card-header -->
 
