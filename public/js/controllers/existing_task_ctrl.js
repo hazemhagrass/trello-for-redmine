@@ -45,7 +45,7 @@ angular.module('trelloRedmine')
         if( task.priority_id ) {
           task.priority.name = issuesHelpers.getPriorityName(task.priority_id);
         }
-
+        parent_card.done_ratio = calculateDoneRation(parent_card);
       }).finally( function() {
         task.priority_id = undefined;
         task.assigned_to_id = undefined;
@@ -110,6 +110,21 @@ angular.module('trelloRedmine')
       task.status_id = task.status.id;
       task.status.name = 'Updating ...';
       $scope.updateTask(task, card);
+    }
+
+    function calculateDoneRation(parent_task) {
+      var count = 0;
+      if(parent_task && ( parent_task.subTasks || parent_task.children) ){
+        tasks = parent_task.subTasks || parent_task.children;
+        for (var i = tasks.length - 1; i >= 0; i--) {
+          if( tasks[i].status_id == 14 || tasks[i].status_id == 10 || tasks[i].status.id == 14 || tasks[i].status.id == 10){
+            count++;
+          }
+        };
+        return (count / tasks.length) * 100; 
+      } else {
+        return 0;
+      }
     }
   }
 ]);
