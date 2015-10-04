@@ -1,6 +1,6 @@
 <div class="task-line">
   <div class="task-line-info">
-    <input class="pull-left" type="checkbox" ng-click="updateTaskStatusFromCheckbox(is_finished, task, card)" ng-model="is_finished" ng-checked="task.status.id == 10">
+    <input class="pull-left" type="checkbox" ng-click="updateTaskStatusFromCheckbox(is_finished, task, card)" ng-model="is_finished" ng-checked="task.status.id == 10 || task.status.id == 14">
     <a target="_blank" href="{{config.redmine_host}}/issues/{{task.id}}" class="id" ng-class="tasksHelpers.taskClass(task.status.id, false)">{{task.id}}</a>
     <p>{{task.subject}}</p>
   </div> <!-- end of task-line-info -->
